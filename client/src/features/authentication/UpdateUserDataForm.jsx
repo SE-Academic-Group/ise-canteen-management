@@ -10,10 +10,14 @@ function UpdateUserDataForm() {
   const mockUser = {
     email: "mockEmail@gmail.com",
     fullName: "admin01",
+    balance: "7,000,000 vnđ",
+    avatar: null,
+    role: "admin",
   };
 
   const [fullName, setFullName] = useState(mockUser.fullName);
   const [avatar, setAvatar] = useState(null);
+  const [phone, setPhone] = useState(null);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -30,12 +34,16 @@ function UpdateUserDataForm() {
   return (
     <Form onSubmit={handleSubmit}>
       <FormRow label="Email">
-        <Input value={"email@test.com"} disabled />
+        <Input value={mockUser.email} disabled type="email" />
       </FormRow>
 
       {/* This field is for customer only */}
       <FormRow label="Số dư tài khoản">
-        <Input value={"7,000,000 vnđ"} disabled />
+        <Input value={mockUser.balance} disabled />
+      </FormRow>
+
+      <FormRow label="Phần quyền">
+        <Input value={mockUser.role} disabled />
       </FormRow>
 
       <FormRow label="Tên tài khoản">
@@ -44,6 +52,15 @@ function UpdateUserDataForm() {
           value={fullName}
           onChange={(e) => setFullName(e.target.value)}
           id="fullName"
+        />
+      </FormRow>
+
+      <FormRow label="Số điện thoại">
+        <Input
+          type="tel"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          id="phone"
         />
       </FormRow>
 
