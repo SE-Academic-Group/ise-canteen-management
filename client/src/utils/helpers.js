@@ -1,5 +1,5 @@
-import { formatDistance, parseISO } from 'date-fns';
-import { differenceInDays } from 'date-fns/esm';
+import { format, formatDistance, parseISO } from "date-fns";
+import { differenceInDays } from "date-fns/esm";
 
 // We want to make this function work for both Date objects and strings (which come from Supabase)
 export const subtractDates = (dateStr1, dateStr2) =>
@@ -9,8 +9,8 @@ export const formatDistanceFromNow = (dateStr) =>
   formatDistance(parseISO(dateStr), new Date(), {
     addSuffix: true,
   })
-    .replace('about ', '')
-    .replace('in', 'In');
+    .replace("about ", "")
+    .replace("in", "In");
 
 // Supabase needs an ISO date string. However, that string will be different on every render because the MS or SEC have changed, which isn't good. So we use this trick to remove any time
 export const getToday = function (options = {}) {
@@ -25,6 +25,20 @@ export const getToday = function (options = {}) {
 };
 
 export const formatCurrency = (value) =>
-  new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(
+  new Intl.NumberFormat("en", { style: "currency", currency: "USD" }).format(
+    value
+  );
+
+export const padString = (str, length, char = "0") =>
+  str.toString().padStart(length, char);
+
+export const formatVietnamesePhoneNumber = (phoneNumber) => {
+  const phone = phoneNumber.toString();
+  const formattedPhone = phone.replace(/(\d{4})(\d{3})(\d{3})/, "$1-$2-$3");
+  return formattedPhone;
+};
+
+export const formatVietnameseCurrency = (value) =>
+  new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(
     value
   );

@@ -168,7 +168,7 @@ h5,
 h6 {
   overflow-wrap: break-word;
   hyphens: auto;
-  text-wrap: balance;
+  /* text-wrap: balance; */
 }
 
 img {
