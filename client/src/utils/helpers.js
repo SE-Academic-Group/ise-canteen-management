@@ -42,3 +42,6 @@ export const formatVietnameseCurrency = (value) =>
   new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(
     value
   );
+
+export const formatDateTime = (dateStr) =>
+  format(parseISO(dateStr), "MMM d, yyyy");

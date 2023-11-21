@@ -16,8 +16,8 @@ const users = Array.from({ length: 20 }, (_, i) => {
     role,
     balance,
     avatar,
-    created_at: "2021-05-01",
-    updated_at: "2021-05-01",
+    createdAt: "2021-05-01",
+    updatedAt: "2021-05-01",
   };
 });
 
