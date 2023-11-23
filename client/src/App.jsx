@@ -16,7 +16,7 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
 import Products from "./pages/Products";
-import Warehouse from "./pages/Warehouse";
+import Inventory from "./pages/Inventory";
 import Stats from "./pages/Stats";
 
 const queryClient = new QueryClient({
@@ -51,7 +51,7 @@ function App() {
               <Route path="orders" element={<Orders />} />
               <Route path="users" element={<Users />} />
               <Route path="products" element={<Products />} />
-              <Route path="inventory" element={<Warehouse />} />
+              <Route path="inventory" element={<Inventory />} />
               <Route path="stats" element={<Stats />} />
               <Route path="settings" element={<Settings />} />
             </Route>

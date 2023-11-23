@@ -1,6 +1,6 @@
 import Heading from "../ui/Heading";
 
-function Warehouse() {
+function Inventory() {
   return (
     <>
       <Heading as="h1">Quản lý kho hàng</Heading>
@@ -8,4 +8,4 @@ function Warehouse() {
   );
 }
 
-export default Warehouse;
+export default Inventory;
