@@ -20,12 +20,21 @@ const StyledConfirmDelete = styled.div`
   }
 `;
 
-function ConfirmDelete({ resourceName, onConfirm, disabled, onCloseModal }) {
+function ConfirmDelete({
+  resourceName,
+  disabled,
+  title,
+  description,
+  onConfirm = () => {},
+  onCloseModal = () => {},
+}) {
   return (
     <StyledConfirmDelete>
-      <Heading as="h3">Xóa {resourceName}</Heading>
+      <Heading as="h3">{title ?? `Xóa ${resourceName}`}</Heading>
       <p>
-        Bạn có chắc chắn muốn xóa {resourceName} này không? (Không thể hoàn tác)
+        {description ??
+          ` Bạn có chắc chắn muốn xóa ${resourceName} này không? (Không thể hoàn
+        tác)`}
       </p>
 
       <div>
