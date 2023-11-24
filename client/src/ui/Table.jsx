@@ -16,6 +16,10 @@ const CommonRow = styled.div`
   column-gap: 2.4rem;
   align-items: center;
   transition: none;
+
+  &:hover {
+    background-color: var(--color-grey-50);
+  }
 `;
 
 const StyledHeader = styled(CommonRow)`
@@ -47,7 +51,6 @@ const Footer = styled.footer`
   justify-content: center;
   padding: 1.2rem;
 
-  /* This will hide the footer when it contains no child elements. Possible thanks to the parent selector :has 🎉 */
   &:not(:has(*)) {
     display: none;
   }
@@ -88,7 +91,7 @@ function Row({ children }) {
 }
 
 function Body({ data, render }) {
-  if (!data.length) return <Empty>No data to show at the moment</Empty>;
+  if (!data.length) return <Empty>Không có dữ liệu để hiển thị</Empty>;
 
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
