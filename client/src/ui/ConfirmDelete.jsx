@@ -25,6 +25,7 @@ function ConfirmDelete({
   disabled,
   title,
   description,
+  closeOnConfirm = true,
   onConfirm = () => {},
   onCloseModal = () => {},
 }) {
@@ -45,7 +46,14 @@ function ConfirmDelete({
         >
           Hủy
         </Button>
-        <Button variation="danger" disabled={disabled} onClick={onConfirm}>
+        <Button
+          variation="danger"
+          disabled={disabled}
+          onClick={() => {
+            onConfirm();
+            closeOnConfirm && onCloseModal();
+          }}
+        >
           Xác nhận
         </Button>
       </div>
