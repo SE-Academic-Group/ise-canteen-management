@@ -127,7 +127,7 @@ function UserRow({ user, serial }) {
         ) : (
           <Fragment>
             <span className="sr-only">No balance</span>
-            <hr role="presentation" />
+            <span role="presentation">____</span>
           </Fragment>
         )}
       </Amount>
