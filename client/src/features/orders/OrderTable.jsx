@@ -4,19 +4,19 @@ import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
 import Table from "../../ui/Table";
 import OrderRow from "./OrderRow";
-import orders from "./mockOrders";
+
+import { useOrders } from "./useOrders";
 
 export default function OrderTable() {
-  const isLoading = false;
-  const length = 2;
+  const { isLoading, count, orders } = useOrders();
 
   if (isLoading) return <Spinner />;
 
-  if (!length) return <Empty resourceName="bookings" />;
+  if (!count) return <Empty resourceName="đơn hàng" />;
 
   return (
     <Menus>
-      <Table columns="1fr 1.5fr 12ch 1.5fr 2.5fr 1.5fr 3.2rem">
+      <Table columns="8ch 1.5fr 20ch 16ch 3fr 1.2fr 3.2rem">
         <Table.Header>
           <div>STT</div>
           <div>Người đặt</div>
@@ -29,11 +29,13 @@ export default function OrderTable() {
 
         <Table.Body
           data={orders}
-          render={(order) => <OrderRow key={order.id} order={order} />}
+          render={(order, i) => (
+            <OrderRow key={order.id} order={order} serial={i + 1} />
+          )}
         />
 
         <Table.Footer>
-          <Pagination count={55} />
+          <Pagination count={count} />
         </Table.Footer>
       </Table>
     </Menus>

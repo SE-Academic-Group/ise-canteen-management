@@ -1,4 +1,5 @@
 import { HiEye, HiCheckBadge, HiTrash } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
@@ -12,6 +13,8 @@ import {
   formatVietnameseCurrency,
   padString,
 } from "../../utils/helpers";
+import { useCompleteOrder } from "./useCompleteOrder";
+import { useCancelOrder } from "./useCancelOrder";
 
 const Serial = styled.div`
   font-size: 1.6rem;
@@ -19,69 +22,87 @@ const Serial = styled.div`
   color: var(--color-grey-600);
 `;
 
-const Stacked = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-`;
-
 const Amount = styled.div`
   font-weight: 500;
 `;
 
-function UserRow({ order: { id, username, total, status, createdAt, items } }) {
-  const statusToTagName = {
-    completed: "blue",
-    cancelled: "indigo",
-    pending: "silver",
-  };
+const statusToTagName = {
+  completed: "green",
+  cancelled: "red",
+  pending: "silver",
+};
+
+const vietnameseStatus = {
+  completed: "Đã hoàn thành",
+  cancelled: "Đã hủy",
+  pending: "Đang chờ",
+};
+
+function OrderRow({
+  order: { id, user, totalPrice, orderStatus, orderDate, orderItems },
+  serial,
+}) {
+  const navigate = useNavigate();
+  const { isCompleting, completeOrder } = useCompleteOrder();
+  const { isCancelling, cancelOrder } = useCancelOrder();
+  const isWorking = isCompleting || isCancelling;
 
   return (
     <Table.Row>
-      <Serial>{padString(id, 3)}</Serial>
+      <Serial>{padString(serial, 3)}</Serial>
 
-      <span>{username}</span>
+      <span>{user.name}</span>
 
-      <span>{formatDateTime(createdAt)}</span>
+      <span>{formatDateTime(orderDate)}</span>
 
-      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+      <Tag type={statusToTagName[orderStatus]}>
+        {vietnameseStatus[orderStatus].replace("-", " ")}
+      </Tag>
 
-      <Stacked>
-        {items.map((i) => i.quantity + " " + i.name).join(", ")}
-      </Stacked>
+      <span>{orderItems.map((i) => i.quantity + " " + i.name).join(", ")}</span>
 
-      <Amount>{formatVietnameseCurrency(total)}</Amount>
+      <Amount>{formatVietnameseCurrency(totalPrice)}</Amount>
 
       <Modal>
         <Menus.Menu>
           <Menus.Toggle id={id} />
           <Menus.List id={id}>
-            <Menus.Button icon={<HiEye />}>Xem chi tiết</Menus.Button>
+            <Menus.Button
+              icon={<HiEye />}
+              onClick={() => navigate("/orders/" + id)}
+            >
+              Xem chi tiết
+            </Menus.Button>
 
-            <Modal.Open opens="update">
-              <Menus.Button icon={<HiCheckBadge />}>Sẵn sàng</Menus.Button>
-            </Modal.Open>
+            {orderStatus === "pending" && (
+              <>
+                <Menus.Button
+                  icon={<HiCheckBadge />}
+                  disabled={isWorking}
+                  onClick={() => completeOrder(id)}
+                >
+                  Sẵn sàng
+                </Menus.Button>
 
-            <Modal.Open opens="delete">
-              <Menus.Button icon={<HiTrash />}>Hủy đơn hàng</Menus.Button>
-            </Modal.Open>
+                <Modal.Open opens="cancel">
+                  <Menus.Button icon={<HiTrash />}>Hủy đơn hàng</Menus.Button>
+                </Modal.Open>
+              </>
+            )}
           </Menus.List>
         </Menus.Menu>
 
-        <Modal.Window name="delete">
+        <Modal.Window name="cancel">
           <ConfirmDelete
-            resourceName="đơn hàng"
-            disabled={false}
-            onConfirm={() => console.log("delete order")}
+            title="Hủy đơn hàng"
+            description="Bạn có chắc chắn muốn hủy đơn hàng này?"
+            disabled={isWorking}
+            onConfirm={() => cancelOrder(id)}
           />
-        </Modal.Window>
-
-        <Modal.Window name="update">
-          <p>Update user account form</p>
         </Modal.Window>
       </Modal>
     </Table.Row>
   );
 }
 
-export default UserRow;
+export default OrderRow;

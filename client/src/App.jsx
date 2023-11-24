@@ -18,6 +18,7 @@ import AppLayout from "./ui/AppLayout";
 import Products from "./pages/Products";
 import Inventory from "./pages/Inventory";
 import Stats from "./pages/Stats";
+import Order from "./pages/Order";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,6 +50,7 @@ function App() {
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="account" element={<Account />} />
               <Route path="orders" element={<Orders />} />
+              <Route path="orders/:orderId" element={<Order />} />
               <Route path="users" element={<Users />} />
               <Route path="products" element={<Products />} />
               <Route path="inventory" element={<Inventory />} />

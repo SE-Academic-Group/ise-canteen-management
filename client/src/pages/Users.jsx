@@ -1,4 +1,4 @@
-import UserTableOperations from "../features/users/UserOperations";
+import UserTableOperations from "../features/users/UserTableOperations";
 import UserTable from "../features/users/UserTable";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
