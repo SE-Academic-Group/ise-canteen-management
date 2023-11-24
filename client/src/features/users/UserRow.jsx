@@ -1,7 +1,5 @@
+import { HiPencil, HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
-import { HiEye, HiPencil, HiTrash } from "react-icons/hi2";
-
-import { useNavigate } from "react-router-dom";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Menus from "../../ui/Menus";
@@ -15,8 +13,11 @@ import {
   padString,
 } from "../../utils/helpers";
 
-const Serial = styled.div`
-  font-size: 1.6rem;
+import { useDeleteUser } from "./useDeleteUser";
+import { Fragment } from "react";
+import CreateUserForm from "./CreateUserForm";
+
+const Number = styled.div`
   font-weight: 600;
   color: var(--color-grey-600);
 `;
@@ -25,6 +26,15 @@ const Stacked = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+
+  overflow: hidden;
+
+  & span {
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 
   & span:first-child {
     font-weight: 500;
@@ -38,51 +48,94 @@ const Stacked = styled.div`
 
 const Amount = styled.div`
   font-weight: 500;
+  position: relative;
 `;
 
 const Img = styled.img`
   display: block;
-  width: 64px;
-  aspect-ratio: 3 / 2;
+  width: 48px;
+  aspect-ratio: 1 / 1;
+  margin-block: 0.8rem;
+  border-radius: 2px;
   object-fit: cover;
   object-position: center;
   transform: scale(1.5) translateX(-7px);
+  background-color: var(--color-grey-200);
+  font-size: 0.8rem;
+  font-style: italic;
 `;
 
-function UserRow({
-  user: { id, username, email, avatar, phone, role, balance },
-}) {
-  // const navigate = useNavigate();
-  const roleToTagName = {
-    admin: "blue",
-    customer: "indigo",
-    staff: "silver",
-    cashier: "green",
-  };
+const NoImg = styled.div`
+  display: block;
+  width: 48px;
+  aspect-ratio: 1 / 1;
+  margin-block: 0.8rem;
+  border-radius: 2px;
+  transform: scale(1.5) translateX(-7px);
+  background-color: var(--color-brand-500);
+  color: white;
+  outline: 2px solid var(--color-grey-100);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const roleToTagName = {
+  admin: "blue",
+  customer: "indigo",
+  staff: "silver",
+  cashier: "green",
+};
+
+const vietnameseRoleNames = {
+  admin: "Admin",
+  customer: "Khách hàng",
+  staff: "Nhân viên",
+  cashier: "Thu ngân",
+};
+
+function UserRow({ user, serial }) {
+  const { deleteUser, isDeleting } = useDeleteUser();
+
+  const { id, name, email, avatar, phone, role, balance } = user;
 
   return (
     <Table.Row>
-      <Serial>{padString(id, 3)}</Serial>
+      <Number>{padString(serial, 3)}</Number>
 
-      <Img width={64} height={43} src={avatar} alt={"avatar of " + username} />
+      {avatar ? (
+        <Img src={avatar} alt={"Avatar of " + name} />
+      ) : (
+        <NoImg>{name.at(0) ?? "%"}</NoImg>
+      )}
 
       <Stacked>
-        <span>{username}</span>
+        <span>{name}</span>
         <span>{email}</span>
       </Stacked>
 
-      <span>{formatVietnamesePhoneNumber(phone)}</span>
+      <Number>{formatVietnamesePhoneNumber(phone)}</Number>
 
-      <Tag type={roleToTagName[role]}>{role.replace("-", " ")}</Tag>
+      <Tag type={roleToTagName[role]}>
+        {vietnameseRoleNames[role].replace("-", " ")}
+      </Tag>
 
-      <Amount>{formatVietnameseCurrency(balance)}</Amount>
+      <Amount>
+        {role === "customer" ? (
+          formatVietnameseCurrency(balance)
+        ) : (
+          <Fragment>
+            <span className="sr-only">No balance</span>
+            <hr role="presentation" />
+          </Fragment>
+        )}
+      </Amount>
 
       <Modal>
         <Menus.Menu>
           <Menus.Toggle id={id} />
           <Menus.List id={id}>
-            <Menus.Button icon={<HiEye />}>Xem chi tiết</Menus.Button>
-
             <Modal.Open opens="update">
               <Menus.Button icon={<HiPencil />}>Cập nhật</Menus.Button>
             </Modal.Open>
@@ -93,16 +146,16 @@ function UserRow({
           </Menus.List>
         </Menus.Menu>
 
+        <Modal.Window name="update">
+          <CreateUserForm userToEdit={user} />
+        </Modal.Window>
+
         <Modal.Window name="delete">
           <ConfirmDelete
             resourceName="tài khoản"
-            disabled={false}
-            onConfirm={() => console.log("delete user")}
+            disabled={isDeleting}
+            onConfirm={() => deleteUser(id)}
           />
-        </Modal.Window>
-
-        <Modal.Window name="update">
-          <p>Update user account form</p>
         </Modal.Window>
       </Modal>
     </Table.Row>
