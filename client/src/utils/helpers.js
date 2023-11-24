@@ -36,4 +36,4 @@ export const formatVietnameseCurrency = (value) =>
   );
 
 export const formatDateTime = (dateStr) =>
-  format(parseISO(dateStr), "MMM d, yyyy");
+  format(parseISO(dateStr), "MMM d, yyyy h:mm a");
