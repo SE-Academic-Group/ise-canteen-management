@@ -1,9 +1,11 @@
 import axios from "axios";
 
-import { PAGE_SIZE } from "../utils/constants";
+import { PAGE_SIZE, BACKEND_URL } from "../utils/constants";
+
+const RESOURCE_URL = BACKEND_URL + "/users";
 
 export async function getUsers({ page = 1, filters }) {
-  const url = new URL("http://localhost:3001/users");
+  const url = new URL(RESOURCE_URL);
   url.searchParams.append("_page", page);
   url.searchParams.append("_limit", PAGE_SIZE);
 
@@ -18,13 +20,13 @@ export async function getUsers({ page = 1, filters }) {
 }
 
 export async function deleteUser(id) {
-  await axios.delete(`http://localhost:3001/users/${id}`);
+  await axios.delete(`${RESOURCE_URL}//${id}`);
 }
 
 export async function createEditUser(userData, id) {
   if (id) {
-    await axios.put(`http://localhost:3001/users/${id}`, userData);
+    await axios.put(`${RESOURCE_URL}/${id}`, userData);
   } else {
-    await axios.post("http://localhost:3001/users", userData);
+    await axios.post(RESOURCE_URL, userData);
   }
 }
