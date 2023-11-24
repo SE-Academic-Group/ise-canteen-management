@@ -26,7 +26,7 @@ export const padString = (str, length, char = "0") =>
 
 export const formatVietnamesePhoneNumber = (phoneNumber) => {
   const phone = phoneNumber.toString();
-  const formattedPhone = phone.replace(/(\d{4})(\d{3})(\d{3})/, "$1-$2-$3");
+  const formattedPhone = phone.replace(/(\d{4})(\d{3})(\d{3})/, "$1 $2 $3");
   return formattedPhone;
 };
 
