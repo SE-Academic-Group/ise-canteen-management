@@ -10,7 +10,7 @@ export function useCreateUser() {
   const { mutate: createUser, isLoading: isEditing } = useMutation({
     mutationFn: createEditUser,
     onSuccess: () => {
-      toast.success("User successfully created");
+      toast.success("Tài khoản người dùng đã được tạo thành công!");
 
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USERS] });
     },
