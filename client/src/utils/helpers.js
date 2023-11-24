@@ -32,7 +32,7 @@ export const formatVietnamesePhoneNumber = (phoneNumber) => {
 
 export const formatVietnameseCurrency = (value) =>
   new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(
-    value
+    value ?? 0
   );
 
 export const formatDateTime = (dateStr) =>
