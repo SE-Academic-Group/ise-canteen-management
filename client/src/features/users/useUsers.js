@@ -26,7 +26,7 @@ export function useUsers() {
     data: { data, count } = {},
     error,
   } = useQuery({
-    queryKey: [QUERY_KEYS.USERS, page, filters.length > 0 ? filters : null],
+    queryKey: [QUERY_KEYS.USERS, page, filters],
     queryFn: () => getUsers({ page, filters }),
   });
   // #end-query
@@ -36,21 +36,13 @@ export function useUsers() {
 
   if (page < pageCount)
     queryClient.prefetchQuery({
-      queryKey: [
-        QUERY_KEYS.USERS,
-        page + 1,
-        filters.length > 0 ? filters : null,
-      ],
+      queryKey: [QUERY_KEYS.USERS, page + 1, filters],
       queryFn: () => getUsers({ page: page + 1, filters }),
     });
 
   if (page > 1)
     queryClient.prefetchQuery({
-      queryKey: [
-        QUERY_KEYS.USERS,
-        page - 1,
-        filters.length > 0 ? filters : null,
-      ],
+      queryKey: [QUERY_KEYS.USERS, page - 1, filters],
       queryFn: () => getUsers({ page: page - 1, filters }),
     });
   // #end-prefetch

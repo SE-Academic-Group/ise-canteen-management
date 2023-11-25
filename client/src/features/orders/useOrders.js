@@ -1,7 +1,7 @@
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 
-import { getOrders } from "../../services/apiOrder";
+import { getOrders } from "../../services/apiOrders";
 import { PAGE_SIZE, QUERY_KEYS } from "../../utils/constants";
 
 export function useOrders() {
@@ -36,12 +36,7 @@ export function useOrders() {
     data: { data, count } = {},
     error,
   } = useQuery({
-    queryKey: [
-      QUERY_KEYS.ORDERS,
-      page,
-      filters.length > 0 ? filters : null,
-      sortBy,
-    ],
+    queryKey: [QUERY_KEYS.ORDERS, page, filters, sortBy],
     queryFn: () => getOrders({ page, filters, sortBy }),
   });
   // #end-query
@@ -51,23 +46,13 @@ export function useOrders() {
 
   if (page < pageCount)
     queryClient.prefetchQuery({
-      queryKey: [
-        QUERY_KEYS.ORDERS,
-        page + 1,
-        filters.length > 0 ? filters : null,
-        sortBy,
-      ],
+      queryKey: [QUERY_KEYS.ORDERS, page + 1, filters, sortBy],
       queryFn: () => getOrders({ page: page + 1, filters, sortBy }),
     });
 
   if (page > 1)
     queryClient.prefetchQuery({
-      queryKey: [
-        QUERY_KEYS.ORDERS,
-        page - 1,
-        filters.length > 0 ? filters : null,
-        sortBy,
-      ],
+      queryKey: [QUERY_KEYS.ORDERS, page - 1, filters, sortBy],
       queryFn: () => getOrders({ page: page - 1, filters, sortBy }),
     });
   // #end-prefetch
