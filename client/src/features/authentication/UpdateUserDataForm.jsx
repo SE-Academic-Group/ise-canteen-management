@@ -17,7 +17,7 @@ function UpdateUserDataForm() {
 
   const [fullName, setFullName] = useState(mockUser.fullName);
   const [avatar, setAvatar] = useState(null);
-  const [phone, setPhone] = useState(null);
+  const [phone, setPhone] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
