@@ -324,6 +324,11 @@ fresh@0.5.2:
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
   integrity sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==
 
+full-name-generator@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/full-name-generator/-/full-name-generator-0.1.3.tgz#b560dad715b87ceb8114f191279c9ad603a9343d"
+  integrity sha512-i+HoH3g9MusdFvUg7Eo7FkiUcYUabkmiwCfmsh0YTguN1fq1XP/y4qBz79Lyx6tjV9Wvj1dJTSKz9qp8eNAmqA==
+
 function-bind@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.2.tgz#2c02d864d97f3ea6c8830c464cbd11ab6eab7a1c"
