@@ -1,17 +1,13 @@
-import Heading from "../ui/Heading";
 import OrderTable from "../features/orders/OrderTable";
 import OrderTableOperations from "../features/orders/OrderTableOperations";
 
-import Row from "../ui/Row";
+import BackgroundHeading from "../ui/BackgroundHeading";
 
 function Orders() {
   return (
     <>
-      <Row type="horizontal">
-        <Heading as="h1">Quản lý đơn hàng</Heading>
-        <OrderTableOperations />
-      </Row>
-
+      <BackgroundHeading as="h1">Quản lý đơn hàng</BackgroundHeading>
+      <OrderTableOperations />
       <OrderTable />
     </>
   );

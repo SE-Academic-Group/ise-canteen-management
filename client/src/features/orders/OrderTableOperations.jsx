@@ -1,27 +1,30 @@
 import TableOperations from "../../ui/TableOperations";
 import Filter from "../../ui/Filter";
 import SortBy from "../../ui/SortBy";
+import FlexContainer from "../../ui/FlexContainer";
 
 function OrderTableOperations() {
   return (
-    <TableOperations>
-      <Filter
-        filterField="orderDate"
-        options={[
-          { value: "all", label: "Tất cả" },
-          { value: "today", label: "Hôm nay" },
-        ]}
-      />
+    <TableOperations between>
+      <FlexContainer>
+        <Filter
+          filterField="orderDate"
+          options={[
+            { value: "all", label: "Tất cả" },
+            { value: "today", label: "Hôm nay" },
+          ]}
+        />
 
-      <Filter
-        filterField="orderStatus"
-        options={[
-          { value: "all", label: "Tất cả" },
-          { value: "pending", label: "Chờ" },
-          { value: "completed", label: "Hoàn thành" },
-          { value: "cancelled", label: "Bị hủy" },
-        ]}
-      />
+        <Filter
+          filterField="orderStatus"
+          options={[
+            { value: "all", label: "Tất cả" },
+            { value: "pending", label: "Chờ" },
+            { value: "completed", label: "Hoàn thành" },
+            { value: "cancelled", label: "Bị hủy" },
+          ]}
+        />
+      </FlexContainer>
 
       <SortBy
         options={[

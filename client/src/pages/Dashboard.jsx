@@ -1,15 +1,12 @@
-import DashboardLayout from "../features/dashboard/DashboardLayout";
 import DashboardFilter from "../features/dashboard/DashboardFilter";
-import Heading from "../ui/Heading";
-import Row from "../ui/Row";
+import DashboardLayout from "../features/dashboard/DashboardLayout";
+import BackgroundHeading from "../ui/BackgroundHeading";
 
 function Dashboard() {
   return (
     <>
-      <Row type="horizontal">
-        <Heading as="h1">Tổng quan</Heading>
-        <DashboardFilter />
-      </Row>
+      <BackgroundHeading as="h1">Tổng quan</BackgroundHeading>
+      <DashboardFilter />
 
       <DashboardLayout />
     </>

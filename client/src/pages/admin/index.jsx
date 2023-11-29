@@ -5,7 +5,7 @@
 // 4. Products: list of products, CRUD
 // 5. Categories: list of categories, CRUD
 // 9. Payment: payment for the app, user balance, etc.
-// 10. Warehouse: warehouse management
+// 10. Inventory: inventory management
 // 11. Reports: reports of the app
 // in common
 // 1. Dashboard: stats, charts, etc.
