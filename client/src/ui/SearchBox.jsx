@@ -1,4 +1,5 @@
 import { useSearchParams } from "react-router-dom";
+import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
 
 import Input from "./Input";
@@ -11,6 +12,36 @@ const SearchBoxContainer = styled.form`
   gap: 1px;
 `;
 
+const SearchInputContainer = styled.div`
+  --reset-button-size: 3.6rem;
+
+  position: relative;
+  display: flex;
+`;
+
+const SearchInput = styled(Input)`
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  padding-inline-end: var(--reset-button-size);
+`;
+
+const ResetButton = styled.button`
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  inset-block: 0%;
+  inset-inline-end: 0;
+  width: var(--reset-button-size);
+
+  display: ${({ hidden }) => (hidden ? "none" : "inline-block")};
+
+  &:hover {
+    color: var(--color-red-700);
+    transform: scale(1.25);
+  }
+`;
+
 const SearchButton = styled(Button)`
   display: flex;
   align-items: center;
@@ -18,11 +49,6 @@ const SearchButton = styled(Button)`
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   gap: 0.25rem;
-`;
-
-const SearchInput = styled(Input)`
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
 `;
 
 function SearchBox({ queryName = "q" }) {
@@ -33,11 +59,9 @@ function SearchBox({ queryName = "q" }) {
     setQ(e.target.value);
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    if (q) {
-      searchParams.set("q", q);
+  function attachQueryParams(newQ) {
+    if (newQ) {
+      searchParams.set("q", newQ);
     } else {
       searchParams.delete("q");
     }
@@ -46,9 +70,30 @@ function SearchBox({ queryName = "q" }) {
     setSearchParams(searchParams);
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    attachQueryParams(q);
+  }
+
+  function handleReset() {
+    const newQ = "";
+    setQ(newQ);
+    attachQueryParams(newQ);
+  }
+
   return (
     <SearchBoxContainer onSubmit={handleSubmit}>
-      <SearchInput value={q} onChange={handleChange} />
+      <SearchInputContainer>
+        <SearchInput value={q} onChange={handleChange} />
+        <ResetButton
+          aria-label="Reset search query"
+          onClick={handleReset}
+          hidden={!q}
+          type="reset"
+        >
+          <HiXMark size={20} role="presentation" />
+        </ResetButton>
+      </SearchInputContainer>
       <SearchButton>Tìm kiếm</SearchButton>
     </SearchBoxContainer>
   );
