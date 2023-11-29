@@ -7,7 +7,7 @@ import { QUERY_KEYS } from "../../utils/constants";
 export function useCreateUser() {
   const queryClient = useQueryClient();
 
-  const { mutate: createUser, isLoading: isEditing } = useMutation({
+  const { mutate: createUser, isLoading: isCreating } = useMutation({
     mutationFn: createEditUser,
     onSuccess: () => {
       toast.success("Tài khoản người dùng đã được tạo thành công!");
@@ -17,5 +17,5 @@ export function useCreateUser() {
     onError: (err) => toast.error(err.message),
   });
 
-  return { isEditing, createUser };
+  return { isCreating, createUser };
 }
