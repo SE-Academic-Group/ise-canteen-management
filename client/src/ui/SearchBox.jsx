@@ -42,6 +42,7 @@ function SearchBox({ queryName = "q" }) {
       searchParams.delete("q");
     }
 
+    searchParams.delete("page");
     setSearchParams(searchParams);
   }
 

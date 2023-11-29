@@ -40,7 +40,7 @@ function Filter({ filterField, options }) {
 
   function handleClick(value) {
     searchParams.set(filterField, value);
-    if (searchParams.get("page")) searchParams.set("page", 1);
+    searchParams.delete("page");
 
     setSearchParams(searchParams);
   }
