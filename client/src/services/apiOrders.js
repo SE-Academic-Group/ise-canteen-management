@@ -7,6 +7,7 @@ const RESOURCE_URL = BACKEND_URL + "/orders";
 export async function getOrders({ page = 1, filters = [], sortBy }) {
   sortBy = sortBy || { sort: "orderDate", order: "desc" };
 
+  // TODO: refactor this code (extract to a helper function)
   const url = new URL(RESOURCE_URL);
   url.searchParams.append("_page", page);
   url.searchParams.append("_limit", PAGE_SIZE);

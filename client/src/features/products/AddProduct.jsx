@@ -1,3 +1,4 @@
+import CreateProductForm from "./CreateProductForm";
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
 
@@ -10,7 +11,7 @@ export default function AddProduct() {
         </Modal.Open>
 
         <Modal.Window>
-          <div>create new product</div>
+          <CreateProductForm />
         </Modal.Window>
       </Modal>
     </div>
