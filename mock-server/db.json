@@ -1895,6 +1895,14 @@
       "description": "Cá này ăn ngon nhứt nách",
       "category": "food",
       "id": 8927567463579649
+    },
+    {
+      "image": "https://loremflickr.com/200/128/food?lock=2619023160",
+      "name": "Dưa hấu Long An",
+      "price": 15000,
+      "description": "Dưa hấu Long An, ăn là ghiền",
+      "category": "food",
+      "id": 8927567463579650
     }
   ]
 }

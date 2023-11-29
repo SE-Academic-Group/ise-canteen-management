@@ -17,6 +17,7 @@ import { useMoveBack } from "../../hooks/useMoveBack";
 import { useOrder } from "./useOrder";
 import { useCancelOrder } from "./useCancelOrder";
 import { useCompleteOrder } from "./useCompleteOrder";
+import { statusToVietnamese } from "../../utils/translator";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -44,19 +45,13 @@ function OrderDetail() {
     pending: "silver",
   };
 
-  const vietnameseStatus = {
-    completed: "Đã hoàn thành",
-    cancelled: "Đã hủy",
-    pending: "Đang chờ",
-  };
-
   return (
     <>
       <Row type="horizontal">
         <HeadingGroup>
           <Heading as="h1">Đơn hàng #{orderId}</Heading>
           <Tag type={statusToTagName[orderStatus]}>
-            {vietnameseStatus[orderStatus].replace("-", " ")}
+            {statusToVietnamese(orderStatus).replace("-", " ")}
           </Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>

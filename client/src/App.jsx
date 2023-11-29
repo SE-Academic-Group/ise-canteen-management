@@ -7,18 +7,19 @@ import { DarkModeProvider } from "./context/DarkModeContext";
 
 import GlobalStyles from "./styles/GlobalStyles";
 import PageNotFound from "./pages/PageNotFound";
+import Inventory from "./pages/Inventory";
 import Dashboard from "./pages/Dashboard";
+import Products from "./pages/Products";
 import Settings from "./pages/Settings";
 import Account from "./pages/Account";
-import Users from "./pages/Users";
 import Orders from "./pages/Orders";
+import Users from "./pages/Users";
 import Login from "./pages/Login";
-import ProtectedRoute from "./ui/ProtectedRoute";
-import AppLayout from "./ui/AppLayout";
-import Products from "./pages/Products";
-import Inventory from "./pages/Inventory";
 import Stats from "./pages/Stats";
 import Order from "./pages/Order";
+
+import ProtectedRoute from "./ui/ProtectedRoute";
+import AppLayout from "./ui/AppLayout";
 
 const queryClient = new QueryClient({
   defaultOptions: {

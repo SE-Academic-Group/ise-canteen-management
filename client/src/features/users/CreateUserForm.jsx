@@ -1,16 +1,21 @@
 import { useEffect, useId, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import FormRow from "../../ui/FormRow";
 import Button from "../../ui/Button";
-import Select from "../../ui/Select";
-import Input from "../../ui/Input";
 import Form from "../../ui/Form";
+import FormRow from "../../ui/FormRow";
+import Input from "../../ui/Input";
+import Select from "../../ui/Select";
 
-import { USER_ROLES } from "../../utils/constants";
-
-import { useEditUser } from "./useEditUser";
+import { FORM_RULES, USER_ROLES } from "../../utils/constants";
+import { roleToVietnamese } from "../../utils/translator";
 import { useCreateUser } from "./useCreateUser";
+import { useEditUser } from "./useEditUser";
+
+const selectOptions = USER_ROLES.map((r) => ({
+  value: r,
+  label: roleToVietnamese(r),
+}));
 
 function CreateUserForm({ userToEdit = {}, onCloseModal }) {
   const id = useId();
@@ -63,13 +68,7 @@ function CreateUserForm({ userToEdit = {}, onCloseModal }) {
           type="email"
           id={"email" + id}
           disabled={isWorking}
-          {...register("email", {
-            required: "Email không được để trống",
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: "Email không hợp lệ",
-            },
-          })}
+          {...register("email", FORM_RULES.EMAIL)}
         />
       </FormRow>
 
@@ -78,18 +77,7 @@ function CreateUserForm({ userToEdit = {}, onCloseModal }) {
           type="text"
           id={"name" + id}
           disabled={isWorking}
-          {...register("name", {
-            required: "Tên không được để trống",
-            min: {
-              value: 3,
-              message: "Tên phải có ít nhất 3 ký tự",
-            },
-            pattern: {
-              value:
-                /^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$/gm,
-              message: "Tên không hợp lệ",
-            },
-          })}
+          {...register("name", FORM_RULES.FULL_NAME)}
         />
       </FormRow>
 
@@ -97,10 +85,7 @@ function CreateUserForm({ userToEdit = {}, onCloseModal }) {
         <Select
           id={"role" + id}
           disabled={isWorking}
-          options={USER_ROLES.map((r) => ({
-            value: r,
-            label: r.replace("-", " "),
-          }))}
+          options={selectOptions}
           {...register("role")}
         />
       </FormRow>
@@ -111,21 +96,16 @@ function CreateUserForm({ userToEdit = {}, onCloseModal }) {
           id={"phone" + id}
           disabled={isWorking}
           maxLength={10}
-          {...register("phone", {
-            pattern: {
-              value: /^0[0-9]{9}$/,
-              message: "Số điện thoại không hợp lệ",
-            },
-          })}
+          {...register("phone", FORM_RULES.PHONE)}
         />
       </FormRow>
 
       <FormRow label="Mật khẩu">
-        {showPassword ? (
-          <Input type="text" disabled {...register("password")} />
-        ) : (
-          <Input type="password" disabled {...register("password")} />
-        )}
+        <Input
+          type={showPassword ? "text" : "password"}
+          disabled
+          {...register("password", FORM_RULES.PASSWORD)}
+        />
       </FormRow>
 
       {isEditSession && (

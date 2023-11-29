@@ -13,6 +13,7 @@ import {
   formatVietnameseCurrency,
   padString,
 } from "../../utils/helpers";
+import { orderStatusToVietnamese } from "../../utils/translator";
 import { useCompleteOrder } from "./useCompleteOrder";
 import { useCancelOrder } from "./useCancelOrder";
 
@@ -30,12 +31,6 @@ const statusToTagName = {
   completed: "green",
   cancelled: "red",
   pending: "silver",
-};
-
-const vietnameseStatus = {
-  completed: "Đã hoàn thành",
-  cancelled: "Đã hủy",
-  pending: "Đang chờ",
 };
 
 function OrderRow({
@@ -56,7 +51,7 @@ function OrderRow({
       <span>{formatDateTime(orderDate)}</span>
 
       <Tag type={statusToTagName[orderStatus]}>
-        {vietnameseStatus[orderStatus].replace("-", " ")}
+        {orderStatusToVietnamese(orderStatus)}
       </Tag>
 
       <span>{orderItems.map((i) => i.quantity + " " + i.name).join(", ")}</span>

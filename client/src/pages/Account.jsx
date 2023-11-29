@@ -3,6 +3,7 @@ import styled from "styled-components";
 import DeleteAccountForm from "../features/authentication/DeleteAccountForm";
 import UpdatePasswordForm from "../features/authentication/UpdatePasswordForm";
 import UpdateUserDataForm from "../features/authentication/UpdateUserDataForm";
+import BackgroundHeading from "../ui/BackgroundHeading";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 
@@ -13,7 +14,9 @@ const DangerHeading = styled(Heading)`
 function Account() {
   return (
     <>
-      <Heading as="h1">Cập nhật thông tin tài khoản</Heading>
+      <BackgroundHeading as="h1">
+        Cập nhật thông tin tài khoản
+      </BackgroundHeading>
       <Row>
         <Heading as="h3">Thông tin người dùng</Heading>
         <UpdateUserDataForm />

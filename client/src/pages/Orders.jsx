@@ -1,6 +1,5 @@
 import OrderTable from "../features/orders/OrderTable";
 import OrderTableOperations from "../features/orders/OrderTableOperations";
-
 import BackgroundHeading from "../ui/BackgroundHeading";
 
 function Orders() {

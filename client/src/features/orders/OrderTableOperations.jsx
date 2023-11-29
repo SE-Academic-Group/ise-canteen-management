@@ -1,7 +1,7 @@
 import TableOperations from "../../ui/TableOperations";
+import FlexContainer from "../../ui/FlexContainer";
 import Filter from "../../ui/Filter";
 import SortBy from "../../ui/SortBy";
-import FlexContainer from "../../ui/FlexContainer";
 
 function OrderTableOperations() {
   return (

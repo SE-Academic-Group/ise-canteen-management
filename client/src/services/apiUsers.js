@@ -25,7 +25,7 @@ export async function deleteUser(id) {
 
 export async function createEditUser(userData, id) {
   if (id) {
-    await axios.put(`${RESOURCE_URL}/${id}`, userData);
+    await axios.patch(`${RESOURCE_URL}/${id}`, userData);
   } else {
     await axios.post(RESOURCE_URL, userData);
   }

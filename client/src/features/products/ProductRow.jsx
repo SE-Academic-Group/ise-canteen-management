@@ -8,6 +8,7 @@ import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
 
 import { formatVietnameseCurrency } from "../../utils/helpers";
+import { categoryToVietnamese } from "../../utils/translator";
 import CreateProductForm from "./CreateProductForm";
 import { useDeleteProduct } from "./useDeleteProduct";
 
@@ -54,12 +55,6 @@ const categoryToTagName = {
   other: "grey",
 };
 
-const vietnameseCategory = {
-  food: "Đồ ăn",
-  drink: "Nước uống",
-  other: "Khác",
-};
-
 function ProductRow({ product }) {
   const { id, name, price, description, category, image, ratingAverage } =
     product;
@@ -78,7 +73,7 @@ function ProductRow({ product }) {
       <Description>{description}</Description>
 
       <Tag type={categoryToTagName[category]}>
-        {vietnameseCategory[category].replace("-", " ")}
+        {categoryToVietnamese(category)}
       </Tag>
 
       <Rating>{ratingAverage?.toFixed(1) ?? "__"}</Rating>

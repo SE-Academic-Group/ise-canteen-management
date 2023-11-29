@@ -12,6 +12,7 @@ import {
   formatVietnamesePhoneNumber,
   padString,
 } from "../../utils/helpers";
+import { roleToVietnamese } from "../../utils/translator";
 
 import { useDeleteUser } from "./useDeleteUser";
 import { Fragment } from "react";
@@ -88,13 +89,6 @@ const roleToTagName = {
   cashier: "green",
 };
 
-const vietnameseRoleNames = {
-  admin: "Admin",
-  customer: "Khách hàng",
-  staff: "Nhân viên",
-  cashier: "Thu ngân",
-};
-
 function UserRow({ user, serial }) {
   const { deleteUser, isDeleting } = useDeleteUser();
 
@@ -117,9 +111,7 @@ function UserRow({ user, serial }) {
 
       <Number>{formatVietnamesePhoneNumber(phone)}</Number>
 
-      <Tag type={roleToTagName[role]}>
-        {vietnameseRoleNames[role].replace("-", " ")}
-      </Tag>
+      <Tag type={roleToTagName[role]}>{roleToVietnamese(role)}</Tag>
 
       <Amount>
         {role === "customer" ? (
