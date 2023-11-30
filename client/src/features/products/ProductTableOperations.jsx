@@ -1,24 +1,19 @@
-import styled from "styled-components";
-
-import TableOperations from "../../ui/TableOperations";
+import Filter from "../../ui/Filter";
 import FlexContainer from "../../ui/FlexContainer";
 import SearchBox from "../../ui/SearchBox";
-import Filter from "../../ui/Filter";
 import SortBy from "../../ui/SortBy";
-
-const StyledProductTableOperations = styled(TableOperations)`
-  justify-content: space-between;
-`;
+import TableOperations from "../../ui/TableOperations";
 
 function ProductTableOperations() {
   return (
-    <StyledProductTableOperations>
+    <TableOperations between>
       <Filter
         filterField="category"
         options={[
           { value: "all", label: "Tất cả" },
           { value: "food", label: "Đồ ăn" },
           { value: "drink", label: "Nước uống" },
+          { value: "other", label: "Khác" },
         ]}
       />
 
@@ -39,7 +34,7 @@ function ProductTableOperations() {
 
         <SearchBox />
       </FlexContainer>
-    </StyledProductTableOperations>
+    </TableOperations>
   );
 }
 
