@@ -10,7 +10,9 @@ export default class ProductFactory {
         image: faker.image.food(200, 128, true),
         description: faker.commerce.productDescription(),
         ratingAverage: faker.datatype.float({ min: 3, max: 5, precision: 0.1 }),
-        ...item,
+        name: item.name,
+        price: item.price,
+        category: item.category,
       }
     })
 

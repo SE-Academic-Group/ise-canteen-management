@@ -2,6 +2,8 @@ export function categoryToVietnamese(category) {
   const categoryMap = {
     food: "Đồ ăn",
     drink: "Nước uống",
+    ingredient: "Nguyên liệu",
+    spice: "Gia vị",
     other: "Khác",
   };
   const result = (categoryMap[category] || category).replace(/[_-]/g, " ");
@@ -39,6 +41,22 @@ export function roleToVietnamese(role) {
     customer: "Khách hàng",
   };
   const result = (vietnameseRole[role] || role).replace(/[_-]/g, " ");
+
+  return result;
+}
+
+export function unitToVietnamese(unit) {
+  const vietnameseUnit = {
+    bottle: "Chai",
+    can: "Lon",
+    box: "Thùng",
+    piece: "Cái",
+    kg: "Kg",
+    g: "G",
+    l: "L",
+    ml: "Ml",
+  };
+  const result = (vietnameseUnit[unit] || unit).replace(/[_-]/g, " ");
 
   return result;
 }
