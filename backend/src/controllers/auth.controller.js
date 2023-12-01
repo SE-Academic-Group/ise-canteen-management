@@ -24,10 +24,10 @@ exports.signup = async (req, res, next) => {
 	res.cookie("accessToken", accessToken, accessTokenOptions);
 	res.cookie("refreshToken", refreshToken, refreshTokenOptions);
 
-	res.status(statusCode).json({
+	res.status(201).json({
 		status: "success",
-		accessToken: tokens.accessToken,
-		refreshToken: tokens.refreshToken,
+		accessToken: accessToken,
+		refreshToken: refreshToken,
 		data: {
 			user: user,
 		},
