@@ -24,6 +24,15 @@ export function useInventoryItems() {
   // #end-filter
 
   // TODO: refactor this code (extract to a hook)
+  // #sort
+  const sortField = searchParams.get("sortBy");
+  const sortInfo = sortField?.split("-");
+  const sortBy = sortField
+    ? { sort: sortInfo.at(0), order: sortInfo.at(1) }
+    : null;
+  // #end-sort
+
+  // TODO: refactor this code (extract to a hook)
   // #pagination
   const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
   // #end-pagination
@@ -35,8 +44,8 @@ export function useInventoryItems() {
     data: { data, count } = {},
     error,
   } = useQuery({
-    queryKey: [QUERY_KEYS.INVENTORY_ITEMS, q, page, filters],
-    queryFn: () => getInventoryItems({ page, filters, q }),
+    queryKey: [QUERY_KEYS.INVENTORY_ITEMS, q, page, filters, sortBy],
+    queryFn: () => getInventoryItems({ page, filters, q, sortBy }),
   });
   // #end-query
 
@@ -46,14 +55,14 @@ export function useInventoryItems() {
 
   if (page < pageCount)
     queryClient.prefetchQuery({
-      queryKey: [QUERY_KEYS.INVENTORY_ITEMS, q, page + 1, filters],
-      queryFn: () => getInventoryItems({ page: page + 1, filters, q }),
+      queryKey: [QUERY_KEYS.INVENTORY_ITEMS, q, page + 1, filters, sortBy],
+      queryFn: () => getInventoryItems({ page: page + 1, filters, q, sortBy }),
     });
 
   if (page > 1)
     queryClient.prefetchQuery({
-      queryKey: [QUERY_KEYS.INVENTORY_ITEMS, q, page - 1, filters],
-      queryFn: () => getInventoryItems({ page: page - 1, filters, q }),
+      queryKey: [QUERY_KEYS.INVENTORY_ITEMS, q, page - 1, filters, sortBy],
+      queryFn: () => getInventoryItems({ page: page - 1, filters, q, sortBy }),
     });
   // #end-prefetch
 

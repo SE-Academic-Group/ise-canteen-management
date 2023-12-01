@@ -45,14 +45,18 @@ function OrderDetail() {
     pending: "silver",
   };
 
+  const status = {
+    tag: statusToTagName[orderStatus],
+    name: statusToVietnamese(orderStatus),
+    value: orderStatus,
+  };
+
   return (
     <>
       <Row type="horizontal">
         <HeadingGroup>
           <Heading as="h1">Đơn hàng #{orderId}</Heading>
-          <Tag type={statusToTagName[orderStatus]}>
-            {statusToVietnamese(orderStatus).replace("-", " ")}
-          </Tag>
+          <Tag type={status.tag}>{status.name}</Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>
           <span role="presentation">&larr;</span>

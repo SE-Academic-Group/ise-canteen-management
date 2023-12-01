@@ -1,9 +1,10 @@
 import {
   HiEye,
+  HiTrash,
+  HiPencil,
   HiMiniArrowLeftOnRectangle,
   HiMiniArrowRightOnRectangle,
 } from "react-icons/hi2";
-import styled from "styled-components";
 
 import Menus from "../../ui/Menus";
 import Table from "../../ui/Table";
@@ -12,24 +13,6 @@ import Tag from "../../ui/Tag";
 import { formatVietnameseCurrency } from "../../utils/helpers";
 import { categoryToVietnamese, unitToVietnamese } from "../../utils/translator";
 
-const Name = styled.div`
-  font-weight: 600;
-  color: var(--color-grey-600);
-  word-break: break-all;
-`;
-
-const Amount = styled.div`
-  font-weight: 500;
-`;
-
-const Description = styled.div`
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-break: break-all;
-`;
-
 const categoryToTagName = {
   ingredient: "green",
   spice: "red",
@@ -37,35 +20,44 @@ const categoryToTagName = {
   other: "grey",
 };
 
+function transformItem(item) {
+  const transformed = {
+    ...item,
+    price: formatVietnameseCurrency(item.price),
+    stockAmount: item.stockAmount + " " + unitToVietnamese(item.unit),
+    category: {
+      tag: categoryToTagName[item.category],
+      name: categoryToVietnamese(item.category),
+    },
+  };
+
+  return transformed;
+}
+
 function InventoryItemRow({ item }) {
-  const { id, name, price, description, category, unit, stockAmount } = item;
+  const { id, name, price, description, category, stockAmount } =
+    transformItem(item);
 
   return (
     <Table.Row>
-      <Name>{name}</Name>
-
-      <Amount>{formatVietnameseCurrency(price)}</Amount>
-
-      <Description>{description}</Description>
-
-      <Tag type={categoryToTagName[category]}>
-        {categoryToVietnamese(category)}
-      </Tag>
-
-      <span>
-        {stockAmount} {unitToVietnamese(unit)}
-      </span>
+      <Table.Column.Name>{name}</Table.Column.Name>
+      <Table.Column.Amount>{price}</Table.Column.Amount>
+      <Table.Column.Description>{description}</Table.Column.Description>
+      <Tag type={category.tag}>{category.name}</Tag>
+      <Table.Column.Amount>{stockAmount}</Table.Column.Amount>
 
       <Menus.Menu>
         <Menus.Toggle id={id} />
         <Menus.List id={id}>
           <Menus.Button icon={<HiEye />}>Xem chi tiết</Menus.Button>
+          <Menus.Button icon={<HiPencil />}>Chỉnh sửa</Menus.Button>
           <Menus.Button icon={<HiMiniArrowLeftOnRectangle />}>
             Nhập kho
           </Menus.Button>
           <Menus.Button icon={<HiMiniArrowRightOnRectangle />}>
             Xuất kho
           </Menus.Button>
+          <Menus.Button icon={<HiTrash />}>Xóa thông tin</Menus.Button>
         </Menus.List>
       </Menus.Menu>
     </Table.Row>

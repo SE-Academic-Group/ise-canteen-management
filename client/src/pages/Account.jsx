@@ -1,15 +1,9 @@
-import styled from "styled-components";
-
 import DeleteAccountForm from "../features/authentication/DeleteAccountForm";
 import UpdatePasswordForm from "../features/authentication/UpdatePasswordForm";
 import UpdateUserDataForm from "../features/authentication/UpdateUserDataForm";
 import BackgroundHeading from "../ui/BackgroundHeading";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
-
-const DangerHeading = styled(Heading)`
-  color: var(--color-red-700);
-`;
 
 function Account() {
   return (
@@ -26,7 +20,9 @@ function Account() {
         <UpdatePasswordForm />
       </Row>
       <Row>
-        <DangerHeading as="h3">Vùng nguy hiểm</DangerHeading>
+        <Heading danger as="h3">
+          Vùng nguy hiểm
+        </Heading>
         <DeleteAccountForm />
       </Row>
     </>

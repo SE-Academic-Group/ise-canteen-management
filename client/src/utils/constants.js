@@ -1,5 +1,6 @@
-import { max, min } from "date-fns";
 import {
+  max,
+  min,
   email,
   invalid,
   maxLength,
@@ -23,7 +24,6 @@ export const REGEX_PATTERNS = {
   EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 };
 
-// TODO: Add more rules from existing form (e.g. login, register, etc.)
 export const FORM_RULES = {
   REQUIRED: (field) => {
     return { required: required`${field}` };

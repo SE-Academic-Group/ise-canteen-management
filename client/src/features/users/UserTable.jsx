@@ -16,7 +16,7 @@ export default function UserTable() {
 
   return (
     <Menus>
-      <Table columns="12ch 80px 2fr 16ch 1fr 1.2fr 3.2rem">
+      <Table columns="12ch 80px 1fr 14ch 20ch 12ch 3.2rem">
         <Table.Header>
           <div>STT</div>
           <div>Ảnh</div>
