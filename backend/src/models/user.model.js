@@ -11,9 +11,9 @@ const userSchema = new mongoose.Schema({
 		required: [true, "Hãy nhập email của bạn"],
 		unique: true,
 		validate: {
-			validator: function () {
+			validator: function (email) {
 				const regex = /^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+hcmus\.edu\.vn$/;
-				return regex.test(this.email);
+				return regex.test(email);
 			},
 			message: "Email phải thuộc về trường Đại học Khoa học Tự nhiên TP.HCM",
 		},
@@ -54,9 +54,9 @@ const userSchema = new mongoose.Schema({
 	phone: {
 		type: String,
 		validate: {
-			validator: function () {
+			validator: function (phone) {
 				const regex = /^\d{10}$/;
-				return regex.test(this.phone);
+				return regex.test(phone);
 			},
 			message: "Số điện thoại phải có 10 chữ số",
 		},
