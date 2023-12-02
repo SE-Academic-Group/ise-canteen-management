@@ -1,32 +1,29 @@
-import axios from "axios";
-
-import { PAGE_SIZE, BACKEND_URL } from "../utils/constants";
-
-const RESOURCE_URL = BACKEND_URL + "/users";
+import axiosClient from "../utils/axios";
+import { PAGE_SIZE } from "../utils/constants";
 
 export async function getUsers({ page = 1, filters }) {
-  const url = new URL(RESOURCE_URL);
-  url.searchParams.append("_page", page);
-  url.searchParams.append("_limit", PAGE_SIZE);
+  const searchParams = new URLSearchParams();
+
+  searchParams.append("page", page);
+  searchParams.append("limit", PAGE_SIZE);
 
   filters?.forEach((filter) => {
-    url.searchParams.append(filter.field, filter.value);
+    searchParams.append(filter.field, filter.value);
   });
 
-  const res = await axios(url.toString());
-  const count = res.headers["x-total-count"];
+  const { data } = await axiosClient(`users?${searchParams.toString()}`);
 
-  return { data: res.data, count };
+  return { data: data.data, count: data.result };
 }
 
 export async function deleteUser(id) {
-  await axios.delete(`${RESOURCE_URL}//${id}`);
+  await axiosClient.delete(`users/${id}`);
 }
 
 export async function createEditUser(userData, id) {
   if (id) {
-    await axios.patch(`${RESOURCE_URL}/${id}`, userData);
+    await axiosClient.patch(`users/${id}`, userData);
   } else {
-    await axios.post(RESOURCE_URL, userData);
+    await axiosClient.post(`users`, userData);
   }
 }

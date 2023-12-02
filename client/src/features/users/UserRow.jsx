@@ -31,7 +31,7 @@ function transformUser(user) {
       name: roleToVietnamese(user.role),
       value: user.role,
     },
-    phone: formatVietnamesePhoneNumber(user.phone),
+    phone: user.phone ? formatVietnamesePhoneNumber(user.phone) : "Không có",
     balance: formatVietnameseCurrency(user.balance),
   };
 
@@ -41,7 +41,7 @@ function transformUser(user) {
 function UserRow({ user, serial }) {
   const { deleteUser, isDeleting } = useDeleteUser();
 
-  const { id, name, email, avatar, phone, role, balance, number } =
+  const { _id, name, email, image, phone, role, balance, number } =
     transformUser({
       ...user,
       serial,
@@ -50,8 +50,8 @@ function UserRow({ user, serial }) {
   return (
     <Table.Row>
       <Table.Column.Number>{number}</Table.Column.Number>
-      {avatar ? (
-        <Table.Column.Thumbnail src={avatar} alt={"Avatar of " + name} />
+      {image ? (
+        <Table.Column.Thumbnail src={image} alt={"Avatar of " + name} />
       ) : (
         <Table.Column.NoThumbnail>{name.at(0) ?? "%"}</Table.Column.NoThumbnail>
       )}
@@ -74,8 +74,8 @@ function UserRow({ user, serial }) {
 
       <Modal>
         <Menus.Menu>
-          <Menus.Toggle id={id} />
-          <Menus.List id={id}>
+          <Menus.Toggle id={_id} />
+          <Menus.List id={_id}>
             <Modal.Open opens="update">
               <Menus.Button icon={<HiPencil />}>Cập nhật</Menus.Button>
             </Modal.Open>
@@ -94,7 +94,7 @@ function UserRow({ user, serial }) {
           <ConfirmDelete
             resourceName="tài khoản"
             disabled={isDeleting}
-            onConfirm={() => deleteUser(id)}
+            onConfirm={() => deleteUser(_id)}
           />
         </Modal.Window>
       </Modal>
