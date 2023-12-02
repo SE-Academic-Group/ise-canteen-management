@@ -25,13 +25,13 @@ function Account() {
       </Row>
       <Row>
         <Heading as="h3">Mật khẩu</Heading>
-        <UpdatePasswordForm user={user} />
+        <UpdatePasswordForm />
       </Row>
       <Row>
         <Heading danger as="h3">
           Vùng nguy hiểm
         </Heading>
-        <DeleteAccountForm user={user} />
+        <DeleteAccountForm />
       </Row>
     </>
   );
