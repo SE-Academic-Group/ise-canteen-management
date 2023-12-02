@@ -7,11 +7,6 @@ const AppError = require("../utils/appError");
 const User = require("../models/user.model");
 
 // For admin to manage users
-exports.getMe = (req, res, next) => {
-	req.params.id = req.user.id;
-	next();
-};
-
 exports.createUser = async (req, res, next) => {
 	const newUser = await User(req.body).save({
 		validateBeforeSave: false,
@@ -51,7 +46,7 @@ exports.updateMe = async (req, res, next) => {
 	const allowedFields = ["name", "phone", "image"];
 	for (const key in req.body) {
 		if (!allowedFields.includes(key)) {
-			throw new AppError(`Updating ${key} is not allowed`, 400);
+			throw new AppError(`Người dùng không được cập nhật ${key}.`, 400);
 		}
 	}
 	if (req.file) req.body.image = req.file.filename;
@@ -67,5 +62,19 @@ exports.updateMe = async (req, res, next) => {
 		data: {
 			user,
 		},
+	});
+};
+
+exports.getMe = (req, res, next) => {
+	req.params.id = req.user.id;
+	next();
+};
+
+exports.deleteMe = async (req, res, next) => {
+	await User.findByIdAndUpdate(req.user.id, { active: false });
+
+	res.status(204).json({
+		status: "success",
+		data: null,
 	});
 };

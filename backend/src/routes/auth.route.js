@@ -17,5 +17,6 @@ router.patch(
 	userController.resizeUserPhoto,
 	userController.updateMe
 );
+router.delete("/me", userController.deleteMe);
 
 module.exports = router;

@@ -67,7 +67,10 @@ exports.getOne = (Model, options) => async (req, res, next) => {
 	const doc = await query;
 
 	if (!doc) {
-		throw new AppError(`No document found with ID ${req.params.id}`, 404);
+		throw new AppError(
+			`Không tìm thấy document nào có ID ${req.params.id}`,
+			404
+		);
 	}
 
 	res.status(200).json({
@@ -83,7 +86,10 @@ exports.updateOne = (Model) => async (req, res, next) => {
 	});
 
 	if (!doc) {
-		throw new AppError(`No document found with ID ${req.params.id}`, 404);
+		throw new AppError(
+			`Không tìm thấy document nào có ID ${req.params.id}`,
+			404
+		);
 	}
 
 	res.status(200).json({
@@ -96,7 +102,10 @@ exports.deleteOne = (Model) => async (req, res, next) => {
 	const doc = await Model.findByIdAndDelete(req.params.id);
 
 	if (!doc) {
-		throw new AppError(`No document found with ID ${req.params.id}`, 404);
+		throw new AppError(
+			`Không tìm thấy document nào có ID ${req.params.id}`,
+			404
+		);
 	}
 
 	res.status(204).json({

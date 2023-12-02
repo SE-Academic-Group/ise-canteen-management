@@ -39,12 +39,12 @@ exports.login = async (req, res, next) => {
 
 	// 1) Check if email and password exist
 	if (!email || !password)
-		throw new AppError("Please provide email and password!", 400);
+		throw new AppError("Vui lòng nhập email và mật khẩu.", 400);
 
 	// 2) Check if user exists && password is correct
 	const user = await User.findOne({ email }, "+password");
 	if (!user || !(await user.isCorrectPassword(password)))
-		throw new AppError("Incorrect email or password!", 401);
+		throw new AppError("Email hoặc mật khẩu không đúng.", 401);
 
 	// 3) If everything ok, send tokens to client
 	const { accessToken, accessTokenOptions } = createAccessToken(user, req);
@@ -91,7 +91,7 @@ exports.protect = async (req, res, next) => {
 	// If there is no accessToken and no refreshToken, throw error
 	if (!accessToken && !refreshToken) {
 		throw new AppError(
-			"You are not logged in! Please log in to get access.",
+			"Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tục",
 			401
 		);
 	}
@@ -114,7 +114,10 @@ exports.protect = async (req, res, next) => {
 				err instanceof jwt.JsonWebTokenError ||
 				err instanceof jwt.NotBeforeError
 			) {
-				throw new AppError("Invalid token!", 401);
+				throw new AppError(
+					"Phiên đăng nhập có vấn đề. Vui lòng đăng nhập lại.",
+					401
+				);
 			} else if (err instanceof jwt.TokenExpiredError) {
 				accessTokenExpired = true;
 			} else {
@@ -127,7 +130,7 @@ exports.protect = async (req, res, next) => {
 	if (accessTokenExpired) {
 		if (!refreshToken) {
 			throw new AppError(
-				"You are not logged in! Please log in to get access.",
+				"Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.",
 				401
 			);
 		}
@@ -146,10 +149,13 @@ exports.protect = async (req, res, next) => {
 				err instanceof jwt.JsonWebTokenError ||
 				err instanceof jwt.NotBeforeError
 			) {
-				throw new AppError("Invalid token!", 401);
+				throw new AppError(
+					"Phiên đăng nhập có vấn đề. Vui lòng đăng nhập lại.",
+					401
+				);
 			} else if (err instanceof jwt.TokenExpiredError) {
 				throw new AppError(
-					"You are not logged in! Please log in to get access.",
+					"Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.",
 					401
 				);
 			}
@@ -159,28 +165,35 @@ exports.protect = async (req, res, next) => {
 	// Check if decode is undefined
 	if (!decoded) {
 		throw new AppError(
-			"Your login session has expired. Please log in again.",
+			"Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.",
 			401
 		);
 	}
 
 	// 3) Check if user still exists
-	const currentUser = await User.findById(
-		decoded.id,
-		"+password +passwordChangedAt"
-	);
+
+	// Find user by id and include inactive users
+	const query = User.findById(decoded.id, "+password +passwordChangedAt");
+	query.includeInActive = true;
+	const currentUser = await query;
+
 	if (!currentUser)
-		return next(
-			new AppError(
-				"The user belonging to this token does no longer exist.",
-				401
-			)
+		throw new AppError(
+			"Người dùng này không còn tồn tại. Vui lòng đăng nhập lại.",
+			401
+		);
+
+	if (!currentUser.active)
+		throw new AppError(
+			"Tài khoản của bạn đã bị khóa. Vui lòng liên hệ với quản trị viên để mở lại.",
+			401
 		);
 
 	// 4) Check if user changed password after the token was issued
 	if (currentUser.changedPasswordAfter(decoded.iat))
-		return next(
-			new AppError("User recently changed password! Please log in again.", 401)
+		throw new AppError(
+			"Người dùng đã thay đổi mật khẩu. Vui lòng đăng nhập lại.",
+			401
 		);
 
 	// GRANT ACCESS TO PROTECTED ROUTE
@@ -205,7 +218,7 @@ exports.restrictTo = (...roles) => {
 		// roles ['admin', 'cashier', 'staff', 'customer']
 		if (!roles.includes(req.user.role)) {
 			throw new AppError(
-				"You do not have permission to perform this action",
+				"Người dùng không có quyền để thực hiện hành động này.",
 				403
 			);
 		}

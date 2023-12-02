@@ -33,14 +33,14 @@ exports.deleteMenuHistory = ControllerFactory.deleteOne(MenuHistory);
 exports.updateMenuHistoryRemainingQuantity = async (req, res, next) => {
 	const menuHistory = await MenuHistory.findById(req.params.id);
 	if (!menuHistory) {
-		throw new AppError(`No menu history found with ID ${req.params.id}`, 404);
+		throw new AppError(`Không tìm thấy document có ID ${req.params.id}`, 404);
 	}
 
 	// Update the remaining quantity of all products in the menu
 	menuHistory.menuItems.foreach(async (item) => {
 		const product = await Product.findById(item.id);
 		if (!product) {
-			throw new AppError(`No product found with ID ${item.id}`, 404);
+			throw new AppError(`Không có sản phẩm ${item.id}`, 404);
 		}
 
 		item.remainingQuantity = product.quantity;
