@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Button from "../../ui/Button";
+import CheckBox from "../../ui/CheckBox";
 import Form from "../../ui/Form";
 import FormRowVertical from "../../ui/FormRowVertical";
 import Input from "../../ui/Input";
@@ -8,16 +10,25 @@ import { useLogin } from "./useLogin";
 
 function LoginForm() {
   const { login, isLoading } = useLogin();
+  const [isEmailRemembered, setIsEmailRemembered] = useState(
+    localStorage.getItem("email") ? true : false
+  );
   const { register, handleSubmit, formState } = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: localStorage.getItem("email") ?? "",
+      password: "test1234",
     },
   });
   const { errors } = formState;
 
   function onSubmit({ email, password }) {
     login({ email, password });
+
+    if (isEmailRemembered) {
+      localStorage.setItem("email", email);
+    } else {
+      localStorage.removeItem("email");
+    }
   }
 
   return (
@@ -45,6 +56,17 @@ function LoginForm() {
           })}
         />
       </FormRowVertical>
+
+      <FormRowVertical>
+        <CheckBox
+          id="remember-me"
+          checked={isEmailRemembered}
+          onChange={(e) => setIsEmailRemembered((val) => !val)}
+        >
+          Nhớ email
+        </CheckBox>
+      </FormRowVertical>
+
       <FormRowVertical>
         <Button size="large">
           {isLoading ? <SpinnerMini /> : "Đăng nhập"}
