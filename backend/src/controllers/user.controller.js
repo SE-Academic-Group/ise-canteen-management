@@ -1,10 +1,16 @@
 const ControllerFactory = require("./controller.factory");
 const multerUpload = require("../utils/multerUpload");
 const filterObj = require("../utils/filterObj");
+const sharp = require("sharp");
+const AppError = require("../utils/appError");
 
 const User = require("../models/user.model");
 
 // For admin to manage users
+exports.getMe = (req, res, next) => {
+	req.params.id = req.user.id;
+	next();
+};
 
 exports.createUser = async (req, res, next) => {
 	const newUser = await User(req.body).save({
@@ -42,11 +48,16 @@ exports.resizeUserPhoto = async (req, res, next) => {
 };
 exports.updateMe = async (req, res, next) => {
 	// Filter out unwanted fields names that are not allowed to be updated
-	const filteredBody = filterObj(req.body, "name", "email", "phone");
-	if (req.file) filteredBody.image = req.file.filename;
+	const allowedFields = ["name", "phone", "image"];
+	for (const key in req.body) {
+		if (!allowedFields.includes(key)) {
+			throw new AppError(`Updating ${key} is not allowed`, 400);
+		}
+	}
+	if (req.file) req.body.image = req.file.filename;
 
 	// Update user document
-	const user = await User.findByIdAndUpdate(req.user.id, filteredBody, {
+	const user = await User.findByIdAndUpdate(req.user.id, req.body, {
 		new: true,
 		runValidators: true,
 	});

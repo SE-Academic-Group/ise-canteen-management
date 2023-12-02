@@ -9,8 +9,18 @@ router.use("/:productId/reviews", reviewRouter);
 
 router.get("/", productController.getAllProducts);
 router.get("/:id", productController.getProduct);
-router.post("/", productController.createProduct);
-router.patch("/:id", productController.updateProduct);
+router.post(
+	"/",
+	productController.uploadProductImage,
+	productController.resizeProductImage,
+	productController.createProduct
+);
+router.patch(
+	"/:id",
+	productController.uploadProductImage,
+	productController.resizeProductImage,
+	productController.updateProduct
+);
 router.delete("/:id", productController.deleteProduct);
 
 module.exports = router;

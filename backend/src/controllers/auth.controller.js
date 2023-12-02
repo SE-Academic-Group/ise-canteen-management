@@ -156,6 +156,14 @@ exports.protect = async (req, res, next) => {
 		}
 	}
 
+	// Check if decode is undefined
+	if (!decoded) {
+		throw new AppError(
+			"Your login session has expired. Please log in again.",
+			401
+		);
+	}
+
 	// 3) Check if user still exists
 	const currentUser = await User.findById(
 		decoded.id,
