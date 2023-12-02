@@ -1,29 +1,21 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import { getCurrentUser } from "../../services/apiAuth";
 
 export function useUser() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user") ?? null;
-    const user = storedUser ? JSON.parse(storedUser) : null;
-    setUser(user);
-    setIsLoading(false);
-  }, []);
-
-  function clearUser() {
-    localStorage.removeItem("user");
-  }
-
-  function storeUser(user) {
-    localStorage.setItem("user", JSON.stringify(user));
-  }
-
-  return {
-    user,
+  const {
     isLoading,
-    clearUser,
-    storeUser,
-    isAuthenticated: user != null,
-  };
+    data: user,
+    error,
+  } = useQuery({
+    queryKey: ["user"],
+    queryFn: getCurrentUser,
+    onError: (err) => {
+      navigate("/login", { replace: true });
+    },
+  });
+
+  return { isLoading, user, isAuthenticated: !error && !isLoading };
 }

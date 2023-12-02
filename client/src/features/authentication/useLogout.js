@@ -10,12 +10,12 @@ export function useLogout() {
   const { mutate: logout, isLoading } = useMutation({
     mutationFn: logoutApi,
     onSuccess: () => {
-      toast.success("Đăng xuất thành công");
       queryClient.removeQueries();
       navigate("/login", { replace: true });
     },
     onError: (error) => {
-      toast.error("Có lỗi xảy ra, vui lòng thử lại.");
+      const errMsg = error?.response?.data?.message;
+      toast.error(errMsg || "Có lỗi xảy ra, vui lòng thử lại.");
     },
   });
 

@@ -1,6 +1,4 @@
 import { useForm } from "react-hook-form";
-
-import FocusTrap from "focus-trap-react";
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRowVertical from "../../ui/FormRowVertical";
@@ -23,38 +21,36 @@ function LoginForm() {
   }
 
   return (
-    <FocusTrap>
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <FormRowVertical label="Email" error={errors.email?.message}>
-          <Input
-            type="email"
-            id="email"
-            autoComplete="email"
-            disabled={isLoading}
-            {...register("email", {
-              required: "Email không được để trống",
-            })}
-          />
-        </FormRowVertical>
+    <Form onSubmit={handleSubmit(onSubmit)}>
+      <FormRowVertical label="Email" error={errors.email?.message}>
+        <Input
+          type="email"
+          id="email"
+          autoComplete="email"
+          disabled={isLoading}
+          {...register("email", {
+            required: "Email không được để trống",
+          })}
+        />
+      </FormRowVertical>
 
-        <FormRowVertical label="Mật khẩu" error={errors.password?.message}>
-          <Input
-            type="password"
-            id="password"
-            disabled={isLoading}
-            autoComplete="current-password"
-            {...register("password", {
-              required: "Mật khẩu không được để trống",
-            })}
-          />
-        </FormRowVertical>
-        <FormRowVertical>
-          <Button size="large">
-            {isLoading ? <SpinnerMini /> : "Đăng nhập"}
-          </Button>
-        </FormRowVertical>
-      </Form>
-    </FocusTrap>
+      <FormRowVertical label="Mật khẩu" error={errors.password?.message}>
+        <Input
+          type="password"
+          id="password"
+          disabled={isLoading}
+          autoComplete="current-password"
+          {...register("password", {
+            required: "Mật khẩu không được để trống",
+          })}
+        />
+      </FormRowVertical>
+      <FormRowVertical>
+        <Button size="large">
+          {isLoading ? <SpinnerMini /> : "Đăng nhập"}
+        </Button>
+      </FormRowVertical>
+    </Form>
   );
 }
 

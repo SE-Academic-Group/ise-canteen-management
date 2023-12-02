@@ -11,7 +11,10 @@ export function useUpdateUser() {
       toast.success("Cập nhật thông tin thành công");
       queryClient.setQueryData(["user"], user);
     },
-    onError: () => toast.error("Có lỗi xảy ra, vui lòng thử lại."),
+    onError: (err) => {
+      const errMsg = err?.response?.data?.message;
+      toast.error(errMsg || "Có lỗi xảy ra, vui lòng thử lại.");
+    },
   });
 
   return { updateUser, isUpdating };

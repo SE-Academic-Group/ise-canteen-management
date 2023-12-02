@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BACKEND_URL } from "../utils/constants";
+import FormData from "form-data";
 
 const withCredentialsAxios = axios.create({
   withCredentials: true,
@@ -14,7 +15,7 @@ export async function login({ email, password }) {
     }
   );
 
-  return data.data;
+  return data;
 }
 
 export async function logout() {
@@ -33,7 +34,7 @@ export async function signup({ username, password, email, name }) {
     },
   });
 
-  return data.data;
+  return data;
 }
 
 export async function getCurrentUser() {
@@ -42,11 +43,23 @@ export async function getCurrentUser() {
   return data.data;
 }
 
-export async function updateCurrentUser({ name, phone }) {
-  const { data } = await withCredentialsAxios.patch(`${BACKEND_URL}/users/me`, {
-    name,
-    phone,
-  });
+export async function updateCurrentUser({ name, phone, image }) {
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("phone", phone);
+  formData.append("image", image);
+
+  console.log(formData);
+
+  const { data } = await withCredentialsAxios.patch(
+    `${BACKEND_URL}/auth/me`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 
   return data.data;
 }
