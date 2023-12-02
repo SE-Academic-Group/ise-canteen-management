@@ -3,6 +3,7 @@ const slugify = require("slugify");
 const Product = require("../models/product.model");
 const ControllerFactory = require("./controller.factory");
 const multerUpload = require("../utils/multerUpload");
+const sharp = require("sharp");
 
 // Controllers for product's images upload
 exports.uploadProductImage = multerUpload.upload.single("image");

@@ -15,13 +15,10 @@ router.use("/:userId/payments", paymentRouter);
 router.use("/:userId/reviews", reviewRouter);
 router.use("/:userId/charge-histories", chargeHistoryRouter);
 
-// For admin to manage users
-router.get(
-	"/",
-	authController.protect,
-	authController.restrictTo("admin"),
-	userController.getAllUsers
-);
+// ----- For admin to manage users -----
+router.use(authController.protect, authController.restrictTo("admin"));
+
+router.get("/", userController.getAllUsers);
 router.get("/:id", userController.getUser);
 router.post("/", userController.createUser);
 router.patch("/:id", userController.updateUser);

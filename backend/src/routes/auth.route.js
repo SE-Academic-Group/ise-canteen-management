@@ -9,15 +9,10 @@ router.post("/login", authController.login);
 router.post("/logout", authController.logout);
 router.post("/signup", authController.signup);
 
-router.get(
-	"/me",
-	authController.protect,
-	userController.getMe,
-	userController.getUser
-);
+router.use(authController.protect);
+router.get("/me", userController.getMe, userController.getUser);
 router.patch(
 	"/me",
-	authController.protect,
 	userController.uploadUserPhoto,
 	userController.resizeUserPhoto,
 	userController.updateMe
