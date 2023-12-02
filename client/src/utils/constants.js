@@ -1,5 +1,6 @@
-import { max, min } from "date-fns";
 import {
+  max,
+  min,
   email,
   invalid,
   maxLength,
@@ -18,12 +19,11 @@ export const QUERY_KEYS = {
 };
 
 export const REGEX_PATTERNS = {
-  VIETNAMESE_PHONE_NUMBER: /((09|03|07|08|05)+([0-9]{8})\b)/g,
+  VIETNAMESE_PHONE_NUMBER: /^((09|03|07|08|05)+([0-9]{8}))$/,
   VIETNAMESE_NAME: /^[a-zA-ZÀ-ỹ\s]{1,50}$/,
   EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 };
 
-// TODO: Add more rules from existing form (e.g. login, register, etc.)
 export const FORM_RULES = {
   REQUIRED: (field) => {
     return { required: required`${field}` };
@@ -37,7 +37,7 @@ export const FORM_RULES = {
   },
   FULL_NAME: {
     required: required`tên`,
-    min: {
+    minLength: {
       value: 3,
       message: minLength`tên ${3}`,
     },
@@ -99,6 +99,7 @@ export const FORM_RULES = {
 
 export const USER_ROLES = ["admin", "customer", "staff", "cashier"];
 
-export const BACKEND_URL = "http://localhost:3001";
+export const BACKEND_URL = "http://localhost:6969/api/v1";
+export const IMAGE_URL = "http://localhost:6969";
 
 export const PRODUCT_CATEGORIES = ["food", "drink", "other"];

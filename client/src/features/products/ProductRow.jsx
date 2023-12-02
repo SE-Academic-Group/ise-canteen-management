@@ -1,5 +1,4 @@
 import { HiCheckBadge, HiPencil, HiTrash } from "react-icons/hi2";
-import styled from "styled-components";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Menus from "../../ui/Menus";
@@ -11,43 +10,6 @@ import { formatVietnameseCurrency } from "../../utils/helpers";
 import { categoryToVietnamese } from "../../utils/translator";
 import CreateProductForm from "./CreateProductForm";
 import { useDeleteProduct } from "./useDeleteProduct";
-
-const Name = styled.div`
-  font-weight: 600;
-  color: var(--color-grey-600);
-  word-break: break-all;
-`;
-
-const Amount = styled.div`
-  font-weight: 500;
-`;
-
-const Img = styled.img`
-  display: block;
-  width: 100px;
-  aspect-ratio: 25 / 16;
-  object-fit: cover;
-  object-position: center;
-  background-color: var(--color-grey-200);
-  transform: scale(1.25) translateX(-7px);
-  border-radius: 1px;
-  font-size: 0.8rem;
-  font-style: italic;
-`;
-
-const Description = styled.div`
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-break: break-all;
-`;
-
-const Rating = styled.div`
-  font-size: 1.6rem;
-  font-weight: 600;
-  text-align: center;
-`;
 
 const categoryToTagName = {
   food: "green",
@@ -64,19 +26,18 @@ function ProductRow({ product }) {
 
   return (
     <Table.Row>
-      <Img src={image} width={100} height={64} />
-
-      <Name>{name}</Name>
-
-      <Amount>{formatVietnameseCurrency(price)}</Amount>
-
-      <Description>{description}</Description>
-
+      <Table.Column.Img src={image} width={100} height={64} />
+      <Table.Column.Name>{name}</Table.Column.Name>
+      <Table.Column.Amount>
+        {formatVietnameseCurrency(price)}
+      </Table.Column.Amount>
+      <Table.Column.Description>{description}</Table.Column.Description>
       <Tag type={categoryToTagName[category]}>
         {categoryToVietnamese(category)}
       </Tag>
-
-      <Rating>{ratingAverage?.toFixed(1) ?? "__"}</Rating>
+      <Table.Column.Rating>
+        {ratingAverage?.toFixed(1) ?? "__"}
+      </Table.Column.Rating>
 
       <Modal>
         <Menus.Menu>

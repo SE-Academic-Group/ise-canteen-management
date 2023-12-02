@@ -23,38 +23,32 @@ app.enable("trust proxy");
 
 // CORS
 app.use(
-	cors({
-		withCredentials: true,
-		credentials: true,
-	})
+  cors({
+    credentials: true,
+    origin: "http://localhost:5173",
+  })
 );
 // Implement CORS on all OPTIONS request
 // Browser send OPTIONS req on preflight phase (before non-simple req like PUT,PATCH,DELETE,...)
 // -> inorder to verify that the non-simple req is safe to perform
 // -> we must set CORS on response
-app.options(
-	"*",
-	cors({
-		withCredentials: true,
-		credentials: true,
-	})
-);
+app.options("*", cors());
 
 //////// IMPORTANT : helmet should be used in every Express app
 // Security HTTP headers
 app.use(
-	helmet({
-		crossOriginEmbedderPolicy: false,
-		crossOriginResourcePolicy: {
-			allowOrigins: ["*"],
-		},
-		contentSecurityPolicy: {
-			directives: {
-				defaultSrc: ["*"],
-				scriptSrc: ["* data: 'unsafe-eval' 'unsafe-inline' blob:"],
-			},
-		},
-	})
+  helmet({
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: {
+      policy: "cross-origin",
+    },
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["*"],
+        scriptSrc: ["* data: 'unsafe-eval' 'unsafe-inline' blob:"],
+      },
+    },
+  })
 );
 
 //////// IMPORTANT ////////
@@ -88,19 +82,19 @@ app.use("/api/v1/auth", authRouter);
 
 // Error handler
 app.use((err, req, res, next) => {
-	if (err.isOperational) {
-		res.status(err.statusCode || 500).json({
-			status: err.status || "error",
-			message: err.message,
-		});
-	} else {
-		res.status(500).json({
-			status: "error",
-			message: "Something went wrong! Please contact the admin",
-		});
+  if (err.isOperational) {
+    res.status(err.statusCode || 500).json({
+      status: err.status || "error",
+      message: err.message,
+    });
+  } else {
+    res.status(500).json({
+      status: "error",
+      message: "Something went wrong! Please contact the admin",
+    });
 
-		console.log(err);
-	}
+    console.log(err);
+  }
 });
 
 module.exports = app;

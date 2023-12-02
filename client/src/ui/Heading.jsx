@@ -30,6 +30,12 @@ const Heading = styled.h1`
       text-align: center;
     `}
 
+  ${(props) =>
+    props.danger &&
+    css`
+      color: var(--color-red-700);
+    `}
+
   line-height: 1.4;
 `;
 

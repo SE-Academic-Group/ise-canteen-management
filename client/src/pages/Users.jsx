@@ -1,12 +1,12 @@
 import AddUser from "../features/users/AddUser";
 import UserTable from "../features/users/UserTable";
 import UserTableOperations from "../features/users/UserTableOperations";
-import BackgroundHeading from "../ui/BackgroundHeading";
+import PageHeading from "../ui/PageHeading";
 
 function Users() {
   return (
     <>
-      <BackgroundHeading as="h1">Quản lý người dùng</BackgroundHeading>
+      <PageHeading>Quản lý người dùng</PageHeading>
       <UserTableOperations />
       <UserTable />
       <AddUser />

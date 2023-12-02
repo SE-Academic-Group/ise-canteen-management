@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import SpinnerMini from "../../ui/SpinnerMini";
+import { IMAGE_URL } from "../../utils/constants";
+import { useUser } from "./useUser";
 
 const StyledUserAvatar = styled.div`
   display: flex;
@@ -19,33 +22,17 @@ const Avatar = styled.img`
   outline: 2px solid var(--color-grey-100);
 `;
 
-const MockAvatar = styled.div`
-  display: grid;
-  place-items: center;
-  font-weight: medium;
-  font-size: 1.8rem;
-  color: white;
-  width: 3.6rem;
-  aspect-ratio: 1;
-  background-color: var(--color-brand-500);
-  border-radius: 50%;
-  outline: 2px solid var(--color-grey-100);
-`;
-
 function UserAvatar() {
-  const { fullName } = {
-    fullName: "admin01",
-    avatar: "https://i.pravatar.cc/300",
-  };
+  const { user, isLoading } = useUser();
+
+  if (isLoading) return <SpinnerMini />;
+
+  const { name, image } = user;
 
   return (
     <StyledUserAvatar>
-      {/* <Avatar
-        src={avatar || "default-user.jpg"}
-        alt={`Avatar of ${fullName}`}
-      /> */}
-      <MockAvatar>{fullName.at(0)?.toLocaleUpperCase()}</MockAvatar>
-      <span>@{fullName}</span>
+      <Avatar src={IMAGE_URL + "/" + image} alt={`Avatar of ${name}`} />
+      <span>{name}</span>
     </StyledUserAvatar>
   );
 }

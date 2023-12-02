@@ -1,12 +1,12 @@
 import AddInventoryItem from "../features/inventory/AddInventoryItem";
 import InventoryItemTable from "../features/inventory/InventoryItemTable";
 import InventoryItemTableOperations from "../features/inventory/InventoryItemTableOperations";
-import BackgroundHeading from "../ui/BackgroundHeading";
+import PageHeading from "../ui/PageHeading";
 
 function Inventory() {
   return (
     <>
-      <BackgroundHeading as="h1">Quản lý kho hàng</BackgroundHeading>
+      <PageHeading>Quản lý kho hàng</PageHeading>
       <InventoryItemTableOperations />
       <InventoryItemTable />
       <AddInventoryItem />

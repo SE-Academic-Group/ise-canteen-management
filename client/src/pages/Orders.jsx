@@ -1,11 +1,11 @@
 import OrderTable from "../features/orders/OrderTable";
 import OrderTableOperations from "../features/orders/OrderTableOperations";
-import BackgroundHeading from "../ui/BackgroundHeading";
+import PageHeading from "../ui/PageHeading";
 
 function Orders() {
   return (
     <>
-      <BackgroundHeading as="h1">Quản lý đơn hàng</BackgroundHeading>
+      <PageHeading>Quản lý đơn hàng</PageHeading>
       <OrderTableOperations />
       <OrderTable />
     </>

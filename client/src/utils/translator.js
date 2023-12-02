@@ -1,3 +1,5 @@
+// TODO: Refactor all of these functions to use a single function with a map
+
 export function categoryToVietnamese(category) {
   const categoryMap = {
     food: "Đồ ăn",

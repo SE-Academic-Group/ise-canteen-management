@@ -1,5 +1,4 @@
 import { HiPencil, HiTrash } from "react-icons/hi2";
-import styled from "styled-components";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Menus from "../../ui/Menus";
@@ -13,74 +12,8 @@ import {
   padString,
 } from "../../utils/helpers";
 import { roleToVietnamese } from "../../utils/translator";
-
-import { useDeleteUser } from "./useDeleteUser";
-import { Fragment } from "react";
 import CreateUserForm from "./CreateUserForm";
-
-const Number = styled.div`
-  font-weight: 600;
-  color: var(--color-grey-600);
-`;
-
-const Stacked = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-
-  overflow: hidden;
-
-  & span {
-    display: inline-block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  & span:first-child {
-    font-weight: 500;
-  }
-
-  & span:last-child {
-    color: var(--color-grey-500);
-    font-size: 1.2rem;
-  }
-`;
-
-const Amount = styled.div`
-  font-weight: 500;
-  position: relative;
-`;
-
-const Img = styled.img`
-  display: block;
-  width: 48px;
-  aspect-ratio: 1 / 1;
-  margin-block: 0.8rem;
-  border-radius: 2px;
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1.5) translateX(-7px);
-  background-color: var(--color-grey-200);
-  font-size: 0.8rem;
-  font-style: italic;
-`;
-
-const NoImg = styled.div`
-  display: block;
-  width: 48px;
-  aspect-ratio: 1 / 1;
-  margin-block: 0.8rem;
-  border-radius: 2px;
-  transform: scale(1.5) translateX(-7px);
-  background-color: var(--color-brand-500);
-  color: white;
-  outline: 2px solid var(--color-grey-100);
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+import { useDeleteUser } from "./useDeleteUser";
 
 const roleToTagName = {
   admin: "blue",
@@ -89,40 +22,55 @@ const roleToTagName = {
   cashier: "green",
 };
 
+function transformUser(user) {
+  const transformed = {
+    ...user,
+    number: padString(user.serial, 3),
+    role: {
+      tag: roleToTagName[user.role],
+      name: roleToVietnamese(user.role),
+      value: user.role,
+    },
+    phone: formatVietnamesePhoneNumber(user.phone),
+    balance: formatVietnameseCurrency(user.balance),
+  };
+
+  return transformed;
+}
+
 function UserRow({ user, serial }) {
   const { deleteUser, isDeleting } = useDeleteUser();
 
-  const { id, name, email, avatar, phone, role, balance } = user;
+  const { id, name, email, avatar, phone, role, balance, number } =
+    transformUser({
+      ...user,
+      serial,
+    });
 
   return (
     <Table.Row>
-      <Number>{padString(serial, 3)}</Number>
-
+      <Table.Column.Number>{number}</Table.Column.Number>
       {avatar ? (
-        <Img src={avatar} alt={"Avatar of " + name} />
+        <Table.Column.Thumbnail src={avatar} alt={"Avatar of " + name} />
       ) : (
-        <NoImg>{name.at(0) ?? "%"}</NoImg>
+        <Table.Column.NoThumbnail>{name.at(0) ?? "%"}</Table.Column.NoThumbnail>
       )}
-
-      <Stacked>
+      <Table.Column.Stacked>
         <span>{name}</span>
         <span>{email}</span>
-      </Stacked>
-
-      <Number>{formatVietnamesePhoneNumber(phone)}</Number>
-
-      <Tag type={roleToTagName[role]}>{roleToVietnamese(role)}</Tag>
-
-      <Amount>
-        {role === "customer" ? (
-          formatVietnameseCurrency(balance)
+      </Table.Column.Stacked>
+      <Table.Column.Number>{phone}</Table.Column.Number>
+      <Tag type={role.tag}>{role.name}</Tag>
+      <Table.Column.Amount>
+        {role.value === "customer" ? (
+          balance
         ) : (
-          <Fragment>
+          <>
             <span className="sr-only">No balance</span>
             <span role="presentation">____</span>
-          </Fragment>
+          </>
         )}
-      </Amount>
+      </Table.Column.Amount>
 
       <Modal>
         <Menus.Menu>

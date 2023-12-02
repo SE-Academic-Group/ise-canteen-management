@@ -1,5 +1,6 @@
 import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
+import CreateInventoryItemForm from "./CreateInventoryItemForm";
 
 export default function AddInventoryItem() {
   return (
@@ -10,7 +11,7 @@ export default function AddInventoryItem() {
         </Modal.Open>
 
         <Modal.Window>
-          <div>Them hang</div>
+          <CreateInventoryItemForm />
         </Modal.Window>
       </Modal>
     </div>

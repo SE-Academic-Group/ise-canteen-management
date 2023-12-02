@@ -1,12 +1,12 @@
 import AddProduct from "../features/products/AddProduct";
 import ProductTable from "../features/products/ProductTable";
 import ProductTableOperations from "../features/products/ProductTableOperations";
-import BackgroundHeading from "../ui/BackgroundHeading";
+import PageHeading from "../ui/PageHeading";
 
 function Products() {
   return (
     <>
-      <BackgroundHeading as="h1">Quản lý sản phẩm</BackgroundHeading>
+      <PageHeading>Quản lý sản phẩm</PageHeading>
       <ProductTableOperations />
       <ProductTable />
       <AddProduct />

@@ -1,6 +1,5 @@
-import { HiEye, HiCheckBadge, HiTrash } from "react-icons/hi2";
+import { HiCheckBadge, HiEye, HiTrash } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Menus from "../../ui/Menus";
@@ -14,18 +13,27 @@ import {
   padString,
 } from "../../utils/helpers";
 import { orderStatusToVietnamese } from "../../utils/translator";
-import { useCompleteOrder } from "./useCompleteOrder";
 import { useCancelOrder } from "./useCancelOrder";
+import { useCompleteOrder } from "./useCompleteOrder";
 
-const Serial = styled.div`
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: var(--color-grey-600);
-`;
+function transformOrder(order) {
+  const transformed = {
+    ...order,
+    number: padString(order.serial, 3),
+    orderStatus: {
+      tag: statusToTagName[order.orderStatus],
+      name: orderStatusToVietnamese(order.orderStatus),
+      value: order.orderStatus,
+    },
+    orderDate: formatDateTime(order.orderDate),
+    totalPrice: formatVietnameseCurrency(order.totalPrice),
+    orderItems: order.orderItems
+      .map((item) => item.quantity + " " + item.name)
+      .join(", "),
+  };
 
-const Amount = styled.div`
-  font-weight: 500;
-`;
+  return transformed;
+}
 
 const statusToTagName = {
   completed: "green",
@@ -33,30 +41,26 @@ const statusToTagName = {
   pending: "silver",
 };
 
-function OrderRow({
-  order: { id, user, totalPrice, orderStatus, orderDate, orderItems },
-  serial,
-}) {
+function OrderRow({ order, serial }) {
   const navigate = useNavigate();
   const { isCompleting, completeOrder } = useCompleteOrder();
   const { isCancelling, cancelOrder } = useCancelOrder();
   const isWorking = isCompleting || isCancelling;
 
+  const { id, user, totalPrice, orderStatus, orderDate, orderItems, number } =
+    transformOrder({
+      ...order,
+      serial,
+    });
+
   return (
     <Table.Row>
-      <Serial>{padString(serial, 3)}</Serial>
-
+      <Table.Column.Number>{number}</Table.Column.Number>
       <span>{user.name}</span>
-
-      <span>{formatDateTime(orderDate)}</span>
-
-      <Tag type={statusToTagName[orderStatus]}>
-        {orderStatusToVietnamese(orderStatus)}
-      </Tag>
-
-      <span>{orderItems.map((i) => i.quantity + " " + i.name).join(", ")}</span>
-
-      <Amount>{formatVietnameseCurrency(totalPrice)}</Amount>
+      <span>{orderDate}</span>
+      <Tag type={orderStatus.tag}>{orderStatus.name}</Tag>
+      <Table.Column.Description>{orderItems}</Table.Column.Description>
+      <Table.Column.Amount>{totalPrice}</Table.Column.Amount>
 
       <Modal>
         <Menus.Menu>
@@ -69,7 +73,7 @@ function OrderRow({
               Xem chi tiết
             </Menus.Button>
 
-            {orderStatus === "pending" && (
+            {orderStatus.value === "pending" && (
               <>
                 <Menus.Button
                   icon={<HiCheckBadge />}

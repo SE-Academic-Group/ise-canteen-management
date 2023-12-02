@@ -12,10 +12,10 @@ router.post("/signup", authController.signup);
 router.use(authController.protect);
 router.get("/me", userController.getMe, userController.getUser);
 router.patch(
-	"/me",
-	userController.uploadUserPhoto,
-	userController.resizeUserPhoto,
-	userController.updateMe
+  "/me",
+  userController.uploadUserPhoto,
+  userController.resizeUserPhoto,
+  userController.updateMe
 );
 router.delete("/me", userController.deleteMe);
 

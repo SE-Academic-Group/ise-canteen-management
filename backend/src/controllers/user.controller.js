@@ -1,6 +1,5 @@
 const ControllerFactory = require("./controller.factory");
 const multerUpload = require("../utils/multerUpload");
-const filterObj = require("../utils/filterObj");
 const sharp = require("sharp");
 const AppError = require("../utils/appError");
 
@@ -19,6 +18,7 @@ exports.createUser = async (req, res, next) => {
 		},
 	});
 };
+
 exports.getAllUsers = ControllerFactory.getAll(User);
 exports.getUser = ControllerFactory.getOne(User);
 exports.updateUser = ControllerFactory.updateOne(User);
@@ -26,21 +26,22 @@ exports.deleteUser = ControllerFactory.deleteOne(User);
 
 // ----- For customer to manage their own account -----
 // For uploading user image
-
 exports.uploadUserPhoto = multerUpload.upload.single("image");
 exports.resizeUserPhoto = async (req, res, next) => {
 	if (!req.file) return next();
 
-	req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`;
+	req.file.filename = `images/users/user-${req.user.id}-${Date.now()}.jpeg`;
+	const writtenFilePath = `${__dirname}/../public/${req.file.filename}`;
 
 	await sharp(req.file.buffer)
 		.resize(500, 500)
 		.toFormat("jpeg")
 		.jpeg({ quality: 90 })
-		.toFile(`public/images/users/${req.file.filename}`);
+		.toFile(writtenFilePath);
 
 	return next();
 };
+
 exports.updateMe = async (req, res, next) => {
 	// Filter out unwanted fields names that are not allowed to be updated
 	const allowedFields = ["name", "phone", "image"];
