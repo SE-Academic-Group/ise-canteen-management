@@ -1,6 +1,7 @@
 const express = require("express");
 const userController = require("../controllers/user.controller");
 const authController = require("../controllers/auth.controller");
+
 const orderRouter = require("./order.route");
 const paymentRouter = require("./payment.route");
 const reviewRouter = require("./review.route");
@@ -25,7 +26,12 @@ router.patch(
 );
 
 // For admin to manage users
-router.get("/", userController.getAllUsers);
+router.get(
+	"/",
+	authController.protect,
+	authController.restrictTo("admin"),
+	userController.getAllUsers
+);
 router.get("/:id", userController.getUser);
 router.post("/", userController.createUser);
 router.patch("/:id", userController.updateUser);

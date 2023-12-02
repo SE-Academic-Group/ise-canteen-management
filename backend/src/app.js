@@ -22,12 +22,23 @@ const app = express();
 app.enable("trust proxy");
 
 // CORS
-app.use(cors());
+app.use(
+	cors({
+		withCredentials: true,
+		credentials: true,
+	})
+);
 // Implement CORS on all OPTIONS request
 // Browser send OPTIONS req on preflight phase (before non-simple req like PUT,PATCH,DELETE,...)
 // -> inorder to verify that the non-simple req is safe to perform
 // -> we must set CORS on response
-app.options("*", cors());
+app.options(
+	"*",
+	cors({
+		withCredentials: true,
+		credentials: true,
+	})
+);
 
 //////// IMPORTANT : helmet should be used in every Express app
 // Security HTTP headers
@@ -77,12 +88,19 @@ app.use("/api/v1/auth", authRouter);
 
 // Error handler
 app.use((err, req, res, next) => {
-	console.log(err);
+	if (err.isOperational) {
+		res.status(err.statusCode || 500).json({
+			status: err.status || "error",
+			message: err.message,
+		});
+	} else {
+		res.status(500).json({
+			status: "error",
+			message: "Something went wrong! Please contact the admin",
+		});
 
-	res.status(err.statusCode || 500).json({
-		status: err.status || "error",
-		message: err.message,
-	});
+		console.log(err);
+	}
 });
 
 module.exports = app;
