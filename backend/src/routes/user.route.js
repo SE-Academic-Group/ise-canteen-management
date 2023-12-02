@@ -15,16 +15,6 @@ router.use("/:userId/payments", paymentRouter);
 router.use("/:userId/reviews", reviewRouter);
 router.use("/:userId/charge-histories", chargeHistoryRouter);
 
-// For customer to manage their own account
-router.patch(
-	"/me",
-	authController.protect,
-	authController.restrictTo("customer"),
-	userController.uploadUserPhoto,
-	userController.resizeUserPhoto,
-	userController.updateMe
-);
-
 // For admin to manage users
 router.get(
 	"/",

@@ -22,6 +22,20 @@ exports.resizeProductImage = async (req, res, next) => {
 	return next();
 };
 
+exports.searchProducts = async (req, res, next) => {
+	const { query } = req.query;
+
+	const products = await Product.find({ $text: { $search: query } });
+
+	res.status(200).json({
+		status: "success",
+		results: products.length,
+		data: {
+			products,
+		},
+	});
+};
+
 exports.createProduct = ControllerFactory.createOne(Product);
 exports.getAllProducts = ControllerFactory.getAll(Product);
 exports.getProduct = ControllerFactory.getOne(Product);

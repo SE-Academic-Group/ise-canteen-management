@@ -5,6 +5,10 @@ const filterObj = require("../utils/filterObj");
 const User = require("../models/user.model");
 
 // For admin to manage users
+exports.getMe = (req, res, next) => {
+	req.params.id = req.user.id;
+	next();
+};
 
 exports.createUser = async (req, res, next) => {
 	const newUser = await User(req.body).save({

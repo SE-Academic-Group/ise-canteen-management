@@ -37,6 +37,13 @@ exports.getAll = (Model) => async (req, res, next) => {
 		}
 	});
 
+	// If req.query contains "search", implement full text search
+	if (req.query.search) {
+		// Replace %20 with space
+		req.query.search = req.query.search.replace(/%20/g, " ");
+		filter.name = { $regex: new RegExp(req.query.search, "i") };
+	}
+
 	// EXECUTE QUERY
 	const features = new APIFeatures(Model.find(filter), req.query)
 		.filter()
