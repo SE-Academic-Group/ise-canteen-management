@@ -1,21 +1,22 @@
 import { HiArrowRightOnRectangle } from "react-icons/hi2";
 import ButtonIcon from "../../ui/ButtonIcon";
 import SpinnerMini from "../../ui/SpinnerMini";
+import { useLogout } from "./useLogout";
+import { useUser } from "./useUser";
 
 function Logout() {
-  const isLoading = false;
+  const { isLoading, logout } = useLogout();
+  const { clearUser } = useUser();
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    console.log("logout");
+  function handleLogout() {
+    clearUser();
+    logout();
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <ButtonIcon>
-        {isLoading ? <SpinnerMini /> : <HiArrowRightOnRectangle />}
-      </ButtonIcon>
-    </form>
+    <ButtonIcon onClick={handleLogout}>
+      {isLoading ? <SpinnerMini /> : <HiArrowRightOnRectangle />}
+    </ButtonIcon>
   );
 }
 

@@ -1,52 +1,60 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-import FormRowVertical from "../../ui/FormRowVertical";
-import SpinnerMini from "../../ui/SpinnerMini";
+import FocusTrap from "focus-trap-react";
 import Button from "../../ui/Button";
-import Input from "../../ui/Input";
 import Form from "../../ui/Form";
+import FormRowVertical from "../../ui/FormRowVertical";
+import Input from "../../ui/Input";
+import SpinnerMini from "../../ui/SpinnerMini";
+import { useLogin } from "./useLogin";
 
 function LoginForm() {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+  const { login, isLoading } = useLogin();
+  const { register, handleSubmit, formState } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+  const { errors } = formState;
 
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    if (!userName || !password) return;
-
-    console.log("LoginForm", { userName, password });
+  function onSubmit({ email, password }) {
+    login({ email, password });
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormRowVertical label="Tên tài khoản:">
-        <Input
-          type="text"
-          id="username"
-          autoComplete="username"
-          value={userName}
-          onChange={(e) => setUserName(e.target.value)}
-          disabled={true}
-        />
-      </FormRowVertical>
+    <FocusTrap>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormRowVertical label="Email" error={errors.email?.message}>
+          <Input
+            type="email"
+            id="email"
+            autoComplete="email"
+            disabled={isLoading}
+            {...register("email", {
+              required: "Email không được để trống",
+            })}
+          />
+        </FormRowVertical>
 
-      <FormRowVertical label="Mật khẩu:">
-        <Input
-          type="password"
-          id="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          disabled={true}
-        />
-      </FormRowVertical>
-      <FormRowVertical>
-        <Button size="large" disabled={true}>
-          {!true ? "Đăng nhập" : <SpinnerMini />}
-        </Button>
-      </FormRowVertical>
-    </Form>
+        <FormRowVertical label="Mật khẩu" error={errors.password?.message}>
+          <Input
+            type="password"
+            id="password"
+            disabled={isLoading}
+            autoComplete="current-password"
+            {...register("password", {
+              required: "Mật khẩu không được để trống",
+            })}
+          />
+        </FormRowVertical>
+        <FormRowVertical>
+          <Button size="large">
+            {isLoading ? <SpinnerMini /> : "Đăng nhập"}
+          </Button>
+        </FormRowVertical>
+      </Form>
+    </FocusTrap>
   );
 }
 
