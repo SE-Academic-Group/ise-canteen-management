@@ -1,16 +1,18 @@
-import { useMutation } from "@tanstack/react-query";
-import { signup as signupApi } from "../../services/apiAuth";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
+import { updateCurrentUser } from "../../services/apiAuth";
 
-export function useSignup() {
-  const { mutate: signup, isLoading } = useMutation({
-    mutationFn: signupApi,
-    onSuccess: (user) => {
-      toast.success(
-        "Account successfully created! Please verify the new account from the user's email address."
-      );
+export function useUpdateUser() {
+  const queryClient = useQueryClient();
+
+  const { mutate: updateUser, isLoading: isUpdating } = useMutation({
+    mutationFn: updateCurrentUser,
+    onSuccess: ({ user }) => {
+      toast.success("Cập nhật thông tin thành công");
+      queryClient.setQueryData(["user"], user);
     },
+    onError: () => toast.error("Có lỗi xảy ra, vui lòng thử lại."),
   });
 
-  return { signup, isLoading };
+  return { updateUser, isUpdating };
 }

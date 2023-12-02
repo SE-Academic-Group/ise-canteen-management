@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const BACKEND_URL = "http://localhost:6969/api/v1";
+import { BACKEND_URL } from "../utils/constants";
 
 const withCredentialsAxios = axios.create({
   withCredentials: true,
@@ -32,6 +31,21 @@ export async function signup({ username, password, email, name }) {
       email,
       name,
     },
+  });
+
+  return data.data;
+}
+
+export async function getCurrentUser() {
+  const { data } = await withCredentialsAxios.get(`${BACKEND_URL}/auth/me`);
+
+  return data.data;
+}
+
+export async function updateCurrentUser({ name, phone }) {
+  const { data } = await withCredentialsAxios.patch(`${BACKEND_URL}/users/me`, {
+    name,
+    phone,
   });
 
   return data.data;

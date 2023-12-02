@@ -1,82 +1,63 @@
-import { useState } from "react";
-
-import FileInput from "../../ui/FileInput";
-import FormRow from "../../ui/FormRow";
+import { useForm } from "react-hook-form";
 import Button from "../../ui/Button";
-import Input from "../../ui/Input";
 import Form from "../../ui/Form";
+import FormRow from "../../ui/FormRow";
+import Input from "../../ui/Input";
+import FileInput from "../../ui/FileInput";
+import { FORM_RULES } from "../../utils/constants";
+import { useUpdateUser } from "./useUpdateUser";
 
-function UpdateUserDataForm() {
-  const mockUser = {
-    email: "mockEmail@gmail.com",
-    fullName: "admin01",
-    balance: "7,000,000 vnđ",
-    avatar: null,
-    role: "admin",
+function UpdateUserDataForm({ user }) {
+  const { isUpdating, updateUser } = useUpdateUser();
+  const defaultValues = {
+    name: user.name,
+    phone: user.phone,
   };
+  const { handleSubmit, register, reset, formState } = useForm({
+    defaultValues,
+  });
+  const { errors, isDirty, isSubmitting } = formState;
+  const isCustomer = user.role === "customer";
+  const isWorking = isUpdating || isSubmitting;
 
-  const [fullName, setFullName] = useState(mockUser.fullName);
-  const [avatar, setAvatar] = useState(null);
-  const [phone, setPhone] = useState("");
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!fullName) return;
-
-    console.log("UpdateUserDataForm", { fullName, avatar });
-  }
-
-  function handleCancel() {
-    setFullName(mockUser.fullName);
-    setAvatar(null);
+  function onSubmit(data) {
+    updateUser(data);
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow label="Email">
-        <Input value={mockUser.email} disabled type="email" />
+        <Input value={user.email} disabled type="email" />
       </FormRow>
-
-      {/* This field is for customer only */}
-      <FormRow label="Số dư tài khoản">
-        <Input value={mockUser.balance} disabled />
-      </FormRow>
-
-      <FormRow label="Phần quyền">
-        <Input value={mockUser.role} disabled />
-      </FormRow>
-
-      <FormRow label="Tên tài khoản">
+      <FormRow label="Tên người dùng" error={errors.name?.message}>
         <Input
           type="text"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          id="fullName"
+          disabled={!isCustomer || isWorking}
+          {...register("name", FORM_RULES.FULL_NAME)}
         />
       </FormRow>
-
-      <FormRow label="Số điện thoại">
+      <FormRow label="Số điện thoại" error={errors.phone?.message}>
         <Input
           type="tel"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          id="phone"
+          disabled={!isCustomer || isWorking}
+          maxLength={10}
+          {...register("phone", FORM_RULES.PHONE)}
         />
       </FormRow>
-
       <FormRow label="Ảnh đại diện">
-        <FileInput
-          id="avatar"
-          accept="image/*"
-          onChange={(e) => setAvatar(e.target.files[0])}
-        />
+        <FileInput disabled={isWorking} id="avatar" accept="image/*" />
       </FormRow>
 
       <FormRow hasButton>
-        <Button type="reset" variation="secondary" onClick={handleCancel}>
+        <Button
+          type="button"
+          variation="secondary"
+          disabled={!isDirty || isWorking}
+          onClick={() => reset(defaultValues)}
+        >
           Hủy
         </Button>
-        <Button>Lưu thay đổi</Button>
+        <Button disabled={!isDirty || isWorking}>Lưu thay đổi</Button>
       </FormRow>
     </Form>
   );
