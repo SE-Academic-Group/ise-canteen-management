@@ -49,8 +49,6 @@ export async function updateCurrentUser({ name, phone, image }) {
   formData.append("phone", phone);
   formData.append("image", image);
 
-  console.log(formData);
-
   const { data } = await withCredentialsAxios.patch(
     `${BACKEND_URL}/auth/me`,
     formData,

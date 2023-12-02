@@ -15,6 +15,7 @@ export function useUser() {
     onError: (err) => {
       navigate("/login", { replace: true });
     },
+    retry: false,
   });
 
   return { isLoading, user, isAuthenticated: !error && !isLoading };

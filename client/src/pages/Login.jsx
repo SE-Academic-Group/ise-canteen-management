@@ -1,20 +1,7 @@
 import styled from "styled-components";
 import LoginForm from "../features/authentication/LoginForm";
-import { useUser } from "../features/authentication/useUser";
 import Heading from "../ui/Heading";
 import Logo from "../ui/Logo";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
-import Spinner from "../ui/Spinner";
-
-const FullPage = styled.div`
-  height: 100vh;
-  background-color: var(--color-grey-50);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
 const LoginLayout = styled.main`
   min-height: 100vh;
@@ -27,23 +14,6 @@ const LoginLayout = styled.main`
 `;
 
 function Login() {
-  const navigate = useNavigate();
-  const { isAuthenticated, isLoading } = useUser();
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated, navigate]);
-
-  if (isLoading) {
-    return (
-      <FullPage>
-        <Spinner />
-      </FullPage>
-    );
-  }
-
   return (
     <LoginLayout>
       <Logo />
