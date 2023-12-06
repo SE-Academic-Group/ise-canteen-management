@@ -1,5 +1,8 @@
 let querystring = require("qs");
 let crypto = require("crypto");
+const moment = require("moment");
+
+const User = require("../models/user.model");
 
 const ChargeHistory = require("../models/chargeHistory.model");
 
@@ -19,7 +22,8 @@ exports.createVNPAYCharge = async (req, res, next) => {
 	let ipnUrl = process.env.vnp_IpnUrl;
 	let orderId = req.body.id;
 	let amount = req.body.amount;
-	let bankCode = req.body.bankCode;
+	// let bankCode = req.body.bankCode;
+	let bankCode = null;
 	let locale = "vn";
 	let currCode = "VND";
 	let vnp_Params = {};
@@ -33,7 +37,7 @@ exports.createVNPAYCharge = async (req, res, next) => {
 	vnp_Params["vnp_OrderType"] = "other";
 	vnp_Params["vnp_Amount"] = amount * 100;
 	vnp_Params["vnp_ReturnUrl"] = returnUrl;
-	vnp_Params["vnp_IpnURL"] = ipnUrl;
+	// vnp_Params["vnp_IpnURL"] = ipnUrl;
 	vnp_Params["vnp_IpAddr"] = ipAddr;
 	vnp_Params["vnp_CreateDate"] = createDate;
 	if (bankCode !== null && bankCode !== "") {
@@ -44,11 +48,17 @@ exports.createVNPAYCharge = async (req, res, next) => {
 
 	let signData = querystring.stringify(vnp_Params, { encode: false });
 	let hmac = crypto.createHmac("sha512", secretKey);
-	let signed = hmac.update(Buffer(signData, "utf-8")).digest("hex");
+	let signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
 	vnp_Params["vnp_SecureHash"] = signed;
 	vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
 
-	res.redirect(vnpUrl);
+	// Because redirect to vnpay.vn will keeps the same POST method (which must be GET), we need to change the method to GET before redirecting
+	res.redirect(`/api/v1/charge-histories/vnpay-request?vnp_Url=${vnpUrl}`);
+};
+
+exports.vnpayRequest = async (req, res, next) => {
+	// Redirect to vnpay.vn
+	res.status(200).redirect(req.query.vnp_Url);
 };
 
 exports.vnpayReturn = async (req, res, next) => {
@@ -62,10 +72,10 @@ exports.vnpayReturn = async (req, res, next) => {
 	delete vnp_Params["vnp_SecureHashType"];
 
 	vnp_Params = sortObject(vnp_Params);
-	let secretKey = config.get("vnp_HashSecret");
+	let secretKey = process.env.vnp_HashSecret;
 	let signData = querystring.stringify(vnp_Params, { encode: false });
 	let hmac = crypto.createHmac("sha512", secretKey);
-	let signed = hmac.update(Buffer(signData, "utf-8")).digest("hex");
+	let signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
 
 	let paymentStatus = "0"; // Giả sử '0' là trạng thái khởi tạo giao dịch, chưa có IPN. Trạng thái này được lưu khi yêu cầu thanh toán chuyển hướng sang Cổng thanh toán VNPAY tại đầu khởi tạo đơn hàng.
 	//let paymentStatus = '1'; // Giả sử '1' là trạng thái thành công bạn cập nhật sau IPN được gọi và trả kết quả về nó
@@ -83,9 +93,19 @@ exports.vnpayReturn = async (req, res, next) => {
 						//thanh cong
 						//paymentStatus = '1'
 						// Ở đây cập nhật trạng thái giao dịch thanh toán thành công vào CSDL của bạn
-						await ChargeHistory.findByIdAndUpdate(orderId, {
-							chargeStatus: "success",
+						const chargeHistory = await ChargeHistory.findByIdAndUpdate(
+							orderId,
+							{
+								chargeStatus: "success",
+							},
+							{ new: true }
+						);
+						// Update user's balance
+						const { userId, chargeAmount } = chargeHistory;
+						await User.findByIdAndUpdate(userId, {
+							$inc: { balance: chargeAmount },
 						});
+
 						res.status(200).json({ RspCode: "00", Message: "Success" });
 					} else {
 						//that bai

@@ -10,17 +10,22 @@ exports.deleteChargeHistory = ControllerFactory.deleteOne(ChargeHistory);
 exports.updateChargeHistory = ControllerFactory.updateOne(ChargeHistory);
 
 exports.createChargeHistory = async (req, res, next) => {
-	// Create a new charge history
-	const newCharge = {
+	if (!req.body.chargeAmount || req.body.chargeAmount <= 0) {
+		throw new AppError("Phải cung cấp số tiền nạp hợp lệ.", 400);
+	}
+
+	let newCharge = {
 		chargeAmount: req.body.chargeAmount,
-		chargeDate: Date.now(),
-		chargeStatus: "pending",
 	};
 
 	// Money is charged by admin or cashier
-	if (req.body.role === "cashier" || req.user.role === "admin") {
+	if (req.user.role === "cashier" || req.user.role === "admin") {
+		// Check if email is provided
+		if (!req.body.email) {
+			throw new AppError("Phải cung cấp email người dùng muốn nạp tiền.", 400);
+		}
+
 		// Get the charged user by email from req.body
-		console.log(req.body.email);
 		const user = await User.findOne({ email: req.body.email });
 		if (!user) {
 			throw new AppError(
@@ -33,26 +38,35 @@ exports.createChargeHistory = async (req, res, next) => {
 		newCharge.chargeStatus = "success";
 		newCharge.chargeMethod = "cash";
 	} else {
-		// Money is charged by user
+		// Money is charged by users themselves
 		newCharge.userId = req.user.id;
 		newCharge.chargeMethod = "vnpay";
 	}
-	newCharge.chargeDescription = `Nap tien cho tai khoan ${newCharge.userId} voi so tien ${newCharge.chargeAmount}`;
+	newCharge.chargeDescription = `Nap tien cho tai khoan ${
+		req.body.email || req.user.email
+	} voi so tien ${newCharge.chargeAmount}`;
 
 	// Create a new charge history in database
 	const chargeHistory = await ChargeHistory.create(newCharge);
 
-	if (newCharge.chargeMethod === "vnpay") {
+	// If charge method is cash, increase user's balance
+	if (newCharge.chargeMethod === "cash") {
+		await User.findByIdAndUpdate(
+			newCharge.userId,
+			{ $inc: { balance: newCharge.chargeAmount } },
+			{ new: true }
+		);
+
+		res.status(201).json({
+			status: "success",
+			data: chargeHistory,
+		});
+	} else {
+		// If charge method is vnpay, create a new vnpay charge
 		req.body.id = chargeHistory.id;
 		req.body.amount = chargeHistory.chargeAmount;
-		req.body.bankCode = null;
-		await vnpayController.createVNPAYCharge(req, res, next);
-	} else {
-		res.status(200).json({
-			status: "success",
-			data: {
-				chargeHistory,
-			},
-		});
+		req.body.orderDescription = chargeHistory.chargeDescription;
+
+		next();
 	}
 };

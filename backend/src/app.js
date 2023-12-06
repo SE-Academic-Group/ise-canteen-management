@@ -47,6 +47,8 @@ app.use(
 			directives: {
 				defaultSrc: ["*"],
 				scriptSrc: ["* data: 'unsafe-eval' 'unsafe-inline' blob:"],
+				connectSrc: ["*"],
+				frameSrc: ["*"],
 			},
 		},
 	})
