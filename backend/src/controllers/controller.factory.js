@@ -51,12 +51,11 @@ exports.getAll = (Model) => async (req, res, next) => {
 		.paginate();
 
 	const docs = await features.query;
-	const count = await Model.countDocuments(features.query);
-	// If want to return query statistics:
-	// const docs = await features.query.explain();
+	const count = await Model.countDocuments(features.filterObj);
 
 	// SEND RESPONSE
 	// Set X-Total-Count header
+	res.set("Access-Control-Expose-Headers", "X-Total-Count");
 	res.set("X-Total-Count", count);
 	res.status(200).json({
 		status: "success",
