@@ -14,6 +14,8 @@ export default function UserTable() {
 
   if (!count) return <Empty resourceName="Tài khoản" />;
 
+  console.log(users);
+
   return (
     <Menus>
       <Table columns="12ch 80px 1fr 14ch 20ch 12ch 3.2rem">
@@ -30,7 +32,7 @@ export default function UserTable() {
         <Table.Body
           data={users}
           render={(user, i) => (
-            <UserRow key={user.id} user={user} serial={i + 1} />
+            <UserRow key={user._id} user={user} serial={i + 1} />
           )}
         />
 
