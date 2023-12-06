@@ -1,19 +1,11 @@
 import axiosClient from "../utils/axios";
-import { PAGE_SIZE } from "../utils/constants";
-
+import { buildUrlParams } from "../utils/apiFeatures";
 export async function getUsers({ page = 1, filters }) {
-  const searchParams = new URLSearchParams();
+  const url = buildUrlParams("users", { page, filters });
+  const res = await axiosClient(url);
+  const count = Number(res.headers["x-total-count"]);
 
-  searchParams.append("page", page);
-  searchParams.append("limit", PAGE_SIZE);
-
-  filters?.forEach((filter) => {
-    searchParams.append(filter.field, filter.value);
-  });
-
-  const { data } = await axiosClient(`users?${searchParams.toString()}`);
-
-  return { data: data.data, count: data.result };
+  return { data: res.data.data, count };
 }
 
 export async function deleteUser(id) {
