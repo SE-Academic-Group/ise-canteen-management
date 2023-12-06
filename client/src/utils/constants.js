@@ -51,6 +51,10 @@ export const FORM_RULES = {
       value: REGEX_PATTERNS.VIETNAMESE_PHONE_NUMBER,
       message: invalid`số điện thoại`,
     },
+    maxLength: {
+      value: 10,
+      message: maxLength`số điện thoại ${10}`,
+    },
   },
   PASSWORD: {
     required: required`mật khẩu`,
