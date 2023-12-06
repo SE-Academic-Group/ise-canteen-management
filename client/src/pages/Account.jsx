@@ -1,11 +1,10 @@
-import DeleteAccountForm from "../features/authentication/DeleteAccountForm";
 import UpdatePasswordForm from "../features/authentication/UpdatePasswordForm";
 import UpdateUserDataForm from "../features/authentication/UpdateUserDataForm";
 import { useUser } from "../features/authentication/useUser";
 import BackgroundHeading from "../ui/BackgroundHeading";
 import Heading from "../ui/Heading";
-import Row from "../ui/Row";
 import Spinner from "../ui/Spinner";
+import Row from "../ui/Row";
 
 function Account() {
   const { isLoading, user } = useUser();
@@ -26,12 +25,6 @@ function Account() {
       <Row>
         <Heading as="h3">Mật khẩu</Heading>
         <UpdatePasswordForm />
-      </Row>
-      <Row>
-        <Heading danger as="h3">
-          Vùng nguy hiểm
-        </Heading>
-        <DeleteAccountForm />
       </Row>
     </>
   );
