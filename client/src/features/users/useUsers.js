@@ -1,6 +1,5 @@
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
-
 import { getUsers } from "../../services/apiUsers";
 import { PAGE_SIZE, QUERY_KEYS } from "../../utils/constants";
 
@@ -8,19 +7,15 @@ export function useUsers() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
-  // #filter
   const filterValue = searchParams.get("role");
+  const pageValue = searchParams.get("page") ?? 1;
+  const page = pageValue * 1;
+
   const filters =
     !filterValue || filterValue === "all"
       ? []
       : [{ field: "role", value: filterValue }];
-  // #end-filter
 
-  // #pagination
-  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
-  // #end-pagination
-
-  // #query
   const {
     isLoading,
     data: { data, count } = {},
@@ -29,9 +24,7 @@ export function useUsers() {
     queryKey: [QUERY_KEYS.USERS, page, filters],
     queryFn: () => getUsers({ page, filters }),
   });
-  // #end-query
 
-  // #prefetch
   const pageCount = Math.ceil(count / PAGE_SIZE);
 
   if (page < pageCount)
@@ -45,7 +38,6 @@ export function useUsers() {
       queryKey: [QUERY_KEYS.USERS, page - 1, filters],
       queryFn: () => getUsers({ page: page - 1, filters }),
     });
-  // #end-prefetch
 
   return { isLoading, error, users: data, count };
 }

@@ -31,7 +31,10 @@ function transformUser(user) {
       name: roleToVietnamese(user.role),
       value: user.role,
     },
-    phone: user.phone ? formatVietnamesePhoneNumber(user.phone) : "Không có",
+    image: `https://ui-avatars.com/api/?name=${user.name}&background=random&rounded=true&size=48&font-size=0.33&bold=true&color=fff&length=1`,
+    phone: user.phone
+      ? formatVietnamesePhoneNumber(user.phone)
+      : "____ ___ ___",
     balance: formatVietnameseCurrency(user.balance),
   };
 
