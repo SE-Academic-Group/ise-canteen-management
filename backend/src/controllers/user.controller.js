@@ -21,7 +21,24 @@ exports.createUser = async (req, res, next) => {
 
 exports.getAllUsers = ControllerFactory.getAll(User);
 exports.getUser = ControllerFactory.getOne(User);
-exports.updateUser = ControllerFactory.updateOne(User);
+exports.updateUser = async (req, res, next) => {
+	const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+		new: true,
+		runValidators: false,
+	});
+
+	if (!user) {
+		throw new AppError(
+			`Không tìm thấy người dùng nào có ID ${req.params.id}`,
+			404
+		);
+	}
+
+	res.status(200).json({
+		status: "success",
+		data: user,
+	});
+};
 exports.deleteUser = ControllerFactory.deleteOne(User);
 
 // ----- For customer to manage their own account -----
