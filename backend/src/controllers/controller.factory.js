@@ -57,6 +57,7 @@ exports.getAll = (Model) => async (req, res, next) => {
 
 	// SEND RESPONSE
 	// Set X-Total-Count header
+  res.set("Access-Control-Expose-Headers", "X-Total-Count");
 	res.set("X-Total-Count", count);
 	res.status(200).json({
 		status: "success",
