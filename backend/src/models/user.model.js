@@ -87,17 +87,6 @@ userSchema.pre("save", async function (next) {
 	next();
 });
 
-userSchema.pre(
-	["updateOne", "findByIdAndUpdate", "findOneAndUpdate"],
-	async function (next) {
-		const data = this.getUpdate();
-		if (data.password) {
-			data.password = await bcrypt.hash(data.password, 12);
-		}
-		next();
-	}
-);
-
 // Update passwordChangedAt
 userSchema.pre("save", function (next) {
 	if (!this.isModified("password") || this.isNew) return next();
@@ -111,6 +100,17 @@ userSchema.pre(/^find/, function (next) {
 	if (!this.includeInactive) this.find({ active: { $ne: false } });
 	next();
 });
+
+userSchema.pre(
+	["updateOne", "findByIdAndUpdate", "findOneAndUpdate"],
+	async function (next) {
+		const data = this.getUpdate();
+		if (data.password) {
+			data.password = await bcrypt.hash(data.password, 12);
+		}
+		next();
+	}
+);
 
 ////////// METHODS //////////
 userSchema.methods.isCorrectPassword = async function (inputPassword) {

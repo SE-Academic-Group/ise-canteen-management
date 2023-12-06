@@ -11,15 +11,13 @@ exports.createOne = (Model) => async (req, res, next) => {
 };
 
 exports.getAll = (Model) => async (req, res, next) => {
-	let filter = {};
-
 	// Allow nested routes
-	if (req.params.userId) filter.userId = req.params.userId;
-	if (req.params.productId) filter.productId = req.params.productId;
+	if (req.params.userId) req.query.userId = req.params.userId;
+	if (req.params.productId) req.query.productId = req.params.productId;
 
 	// Allow filtering by today's date
 	// Loops through query string, find any key that has a value of "today"
-	// and add a filter to the filter object
+	// and replace it with an object that specifies the range of today's date
 	Object.keys(req.query).forEach((key) => {
 		if (req.query[key] === "today") {
 			// Filter orders by today's date
@@ -27,13 +25,10 @@ exports.getAll = (Model) => async (req, res, next) => {
 			today.setHours(0, 0, 0, 0);
 			const tomorrow = new Date(today);
 			tomorrow.setDate(tomorrow.getDate() + 1);
-			filter[key] = {
+			req.query[key] = {
 				$gte: today,
 				$lt: tomorrow,
 			};
-
-			// Delete the key from the query string
-			delete req.query[key];
 		}
 	});
 
@@ -41,33 +36,43 @@ exports.getAll = (Model) => async (req, res, next) => {
 	if (req.query.search) {
 		// Replace %20 with space
 		req.query.search = req.query.search.replace(/%20/g, " ");
-		filter.name = { $regex: new RegExp(req.query.search, "i") };
+		// Filter by name start with search string
+		req.query.name = {
+			$regex: `^${req.query.search}`,
+			$options: "i",
+		};
 	}
 
 	// EXECUTE QUERY
-	const features = new APIFeatures(Model.find(filter), req.query)
+	const features = new APIFeatures(Model.find(), req.query)
 		.filter()
 		.sort()
 		.limitFields()
 		.paginate();
+
 	const docs = await features.query;
+	const count = await Model.countDocuments(features.query);
 	// If want to return query statistics:
 	// const docs = await features.query.explain();
 
 	// SEND RESPONSE
+	// Set X-Total-Count header
+	res.set("X-Total-Count", count);
 	res.status(200).json({
 		status: "success",
-		result: docs.length,
 		data: docs,
 	});
 };
 
-exports.getOne = (Model, options) => async (req, res, next) => {
+exports.getOne = (Model) => async (req, res, next) => {
 	let query = Model.findById(req.params.id);
 	const doc = await query;
 
 	if (!doc) {
-		throw new AppError(`No document found with ID ${req.params.id}`, 404);
+		throw new AppError(
+			`Không tìm thấy document nào có ID ${req.params.id}`,
+			404
+		);
 	}
 
 	res.status(200).json({
@@ -83,7 +88,10 @@ exports.updateOne = (Model) => async (req, res, next) => {
 	});
 
 	if (!doc) {
-		throw new AppError(`No document found with ID ${req.params.id}`, 404);
+		throw new AppError(
+			`Không tìm thấy document nào có ID ${req.params.id}`,
+			404
+		);
 	}
 
 	res.status(200).json({
@@ -96,7 +104,10 @@ exports.deleteOne = (Model) => async (req, res, next) => {
 	const doc = await Model.findByIdAndDelete(req.params.id);
 
 	if (!doc) {
-		throw new AppError(`No document found with ID ${req.params.id}`, 404);
+		throw new AppError(
+			`Không tìm thấy document nào có ID ${req.params.id}`,
+			404
+		);
 	}
 
 	res.status(204).json({

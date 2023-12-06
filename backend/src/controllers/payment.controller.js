@@ -7,7 +7,7 @@ exports.getPayment = ControllerFactory.getOne(Payment);
 exports.createPayment = async (req, res, next) => {
 	const order = await Order.findById(req.body.orderId);
 	if (!order)
-		throw new AppError(`No order found with ID ${req.body.orderId}`, 404);
+		throw new AppError(`Không tìm thấy order với ID ${req.body.orderId}`, 404);
 
 	// If order.userId not exists and req.user.role === "cashier" or "admin", then create payment with method = "cash"
 	if (
