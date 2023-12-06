@@ -173,7 +173,10 @@ exports.protect = async (req, res, next) => {
 	// 3) Check if user still exists
 
 	// Find user by id and include inactive users
-	const query = User.findById(decoded.id, "+password +passwordChangedAt");
+	const query = User.findById(
+		decoded.id,
+		"+password +passwordChangedAt +active"
+	);
 	query.includeInActive = true;
 	const currentUser = await query;
 
