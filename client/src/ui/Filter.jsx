@@ -39,9 +39,18 @@ function Filter({ filterField, options }) {
   const currentFilter = searchParams.get(filterField) || options.at(0).value;
 
   function handleClick(value) {
+    if (value === currentFilter) {
+      return;
+    }
+
+    if (value === "all") {
+      searchParams.delete(filterField);
+      setSearchParams(searchParams);
+      return;
+    }
+
     searchParams.set(filterField, value);
     searchParams.delete("page");
-
     setSearchParams(searchParams);
   }
 
