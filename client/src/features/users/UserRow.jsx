@@ -5,6 +5,7 @@ import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
 import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 import {
   formatVietnameseCurrency,
@@ -14,6 +15,7 @@ import {
 import { roleToVietnamese } from "../../utils/translator";
 import CreateUserForm from "./CreateUserForm";
 import { useDeleteUser } from "./useDeleteUser";
+import { useUser } from "../authentication/useUser";
 
 const roleToTagName = {
   admin: "blue",
@@ -43,6 +45,12 @@ function transformUser(user) {
 
 function UserRow({ user, serial }) {
   const { deleteUser, isDeleting } = useDeleteUser();
+  const { user: currentUser, isLoading } = useUser();
+  const isCurrentUser = currentUser._id === user._id;
+
+  if (isLoading) {
+    return <SpinnerMini />;
+  }
 
   const { _id, name, email, image, phone, role, balance, number } =
     transformUser({
@@ -75,32 +83,34 @@ function UserRow({ user, serial }) {
         )}
       </Table.Column.Amount>
 
-      <Modal>
-        <Menus.Menu>
-          <Menus.Toggle id={_id} />
-          <Menus.List id={_id}>
-            <Modal.Open opens="update">
-              <Menus.Button icon={<HiPencil />}>Cập nhật</Menus.Button>
-            </Modal.Open>
+      {!isCurrentUser && (
+        <Modal>
+          <Menus.Menu>
+            <Menus.Toggle id={_id} />
+            <Menus.List id={_id}>
+              <Modal.Open opens="update">
+                <Menus.Button icon={<HiPencil />}>Cập nhật</Menus.Button>
+              </Modal.Open>
 
-            <Modal.Open opens="delete">
-              <Menus.Button icon={<HiTrash />}>Xóa tài khoản</Menus.Button>
-            </Modal.Open>
-          </Menus.List>
-        </Menus.Menu>
+              <Modal.Open opens="delete">
+                <Menus.Button icon={<HiTrash />}>Xóa tài khoản</Menus.Button>
+              </Modal.Open>
+            </Menus.List>
+          </Menus.Menu>
 
-        <Modal.Window name="update">
-          <CreateUserForm userToEdit={user} />
-        </Modal.Window>
+          <Modal.Window name="update">
+            <CreateUserForm userToEdit={user} />
+          </Modal.Window>
 
-        <Modal.Window name="delete">
-          <ConfirmDelete
-            resourceName="tài khoản"
-            disabled={isDeleting}
-            onConfirm={() => deleteUser(_id)}
-          />
-        </Modal.Window>
-      </Modal>
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              resourceName="tài khoản"
+              disabled={isDeleting}
+              onConfirm={() => deleteUser(_id)}
+            />
+          </Modal.Window>
+        </Modal>
+      )}
     </Table.Row>
   );
 }
