@@ -11,6 +11,7 @@ export function useLogout() {
     mutationFn: logoutApi,
     onSuccess: () => {
       queryClient.removeQueries();
+      toast.success("Đã đăng xuất ra khỏi hệ thống.");
       navigate("/login", { replace: true });
     },
     onError: (error) => {
