@@ -1,7 +1,11 @@
 let querystring = require("qs");
 let crypto = require("crypto");
+const moment = require("moment");
+
+const User = require("../models/user.model");
 
 const ChargeHistory = require("../models/chargeHistory.model");
+const AppError = require("../utils/appError");
 
 exports.createVNPAYCharge = async (req, res, next) => {
 	process.env.TZ = "Asia/Ho_Chi_Minh";
@@ -19,7 +23,8 @@ exports.createVNPAYCharge = async (req, res, next) => {
 	let ipnUrl = process.env.vnp_IpnUrl;
 	let orderId = req.body.id;
 	let amount = req.body.amount;
-	let bankCode = req.body.bankCode;
+	// let bankCode = req.body.bankCode;
+	let bankCode = null;
 	let locale = "vn";
 	let currCode = "VND";
 	let vnp_Params = {};
@@ -33,7 +38,7 @@ exports.createVNPAYCharge = async (req, res, next) => {
 	vnp_Params["vnp_OrderType"] = "other";
 	vnp_Params["vnp_Amount"] = amount * 100;
 	vnp_Params["vnp_ReturnUrl"] = returnUrl;
-	vnp_Params["vnp_IpnURL"] = ipnUrl;
+	// vnp_Params["vnp_IpnURL"] = ipnUrl;
 	vnp_Params["vnp_IpAddr"] = ipAddr;
 	vnp_Params["vnp_CreateDate"] = createDate;
 	if (bankCode !== null && bankCode !== "") {
@@ -44,11 +49,15 @@ exports.createVNPAYCharge = async (req, res, next) => {
 
 	let signData = querystring.stringify(vnp_Params, { encode: false });
 	let hmac = crypto.createHmac("sha512", secretKey);
-	let signed = hmac.update(Buffer(signData, "utf-8")).digest("hex");
+	let signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
 	vnp_Params["vnp_SecureHash"] = signed;
 	vnpUrl += "?" + querystring.stringify(vnp_Params, { encode: false });
 
-	res.redirect(vnpUrl);
+	// Redirecting with CSP headers is not allowed, return a 200 response with the redirect URL instead
+	res.status(200).json({
+		status: "success",
+		data: vnpUrl,
+	});
 };
 
 exports.vnpayReturn = async (req, res, next) => {
@@ -62,54 +71,92 @@ exports.vnpayReturn = async (req, res, next) => {
 	delete vnp_Params["vnp_SecureHashType"];
 
 	vnp_Params = sortObject(vnp_Params);
-	let secretKey = config.get("vnp_HashSecret");
+	let secretKey = process.env.vnp_HashSecret;
 	let signData = querystring.stringify(vnp_Params, { encode: false });
 	let hmac = crypto.createHmac("sha512", secretKey);
-	let signed = hmac.update(Buffer(signData, "utf-8")).digest("hex");
+	let signed = hmac.update(Buffer.from(signData, "utf-8")).digest("hex");
 
-	let paymentStatus = "0"; // Giả sử '0' là trạng thái khởi tạo giao dịch, chưa có IPN. Trạng thái này được lưu khi yêu cầu thanh toán chuyển hướng sang Cổng thanh toán VNPAY tại đầu khởi tạo đơn hàng.
-	//let paymentStatus = '1'; // Giả sử '1' là trạng thái thành công bạn cập nhật sau IPN được gọi và trả kết quả về nó
-	//let paymentStatus = '2'; // Giả sử '2' là trạng thái thất bại bạn cập nhật sau IPN được gọi và trả kết quả về nó
+	const chargeHistory = await ChargeHistory.findById(orderId);
 
-	let checkOrderId = true; // Mã đơn hàng "giá trị của vnp_TxnRef" VNPAY phản hồi tồn tại trong CSDL của bạn
-	let checkAmount = true; // Kiểm tra số tiền "giá trị của vnp_Amout/100" trùng khớp với số tiền của đơn hàng trong CSDL của bạn
-	if (secureHash === signed) {
-		//kiểm tra checksum
-		if (checkOrderId) {
-			if (checkAmount) {
-				if (paymentStatus == "0") {
-					//kiểm tra tình trạng giao dịch trước khi cập nhật tình trạng thanh toán
-					if (rspCode == "00") {
-						//thanh cong
-						//paymentStatus = '1'
-						// Ở đây cập nhật trạng thái giao dịch thanh toán thành công vào CSDL của bạn
-						await ChargeHistory.findByIdAndUpdate(orderId, {
-							chargeStatus: "success",
-						});
-						res.status(200).json({ RspCode: "00", Message: "Success" });
-					} else {
-						//that bai
-						//paymentStatus = '2'
-						// Ở đây cập nhật trạng thái giao dịch thanh toán thất bại vào CSDL của bạn
-						await ChargeHistory.findByIdAndUpdate(orderId, {
-							chargeStatus: "failed",
-						});
-						res.status(200).json({ RspCode: "00", Message: "Success" });
-					}
-				} else {
-					res.status(200).json({
-						RspCode: "02",
-						Message: "This order has been updated to the payment status",
-					});
-				}
-			} else {
-				res.status(200).json({ RspCode: "04", Message: "Amount invalid" });
-			}
-		} else {
-			res.status(200).json({ RspCode: "01", Message: "Order not found" });
-		}
+	let checkOrderId = !!chargeHistory; // Mã đơn hàng "giá trị của vnp_TxnRef" VNPAY phản hồi tồn tại trong CSDL của bạn
+	let checkAmount = chargeHistory.chargeAmount === vnp_Params.vnp_Amount / 100; // Kiểm tra số tiền "giá trị của vnp_Amout/100" trùng khớp với số tiền của đơn hàng trong CSDL của bạn
+
+	// 3 belows conditions are never met if using the exact vnpUrl provided by backend.
+	// Just in case, I still keep them here.
+	if (secureHash !== signed) {
+		throw new AppError("Checksum failed", 400);
+	}
+
+	if (!checkOrderId) {
+		throw new AppError("Order not found", 404);
+	}
+
+	if (!checkAmount) {
+		throw new AppError("Amount invalid", 400);
+	}
+
+	// Thanh toán thành công
+	if (rspCode === "00") {
+		// Cập nhật trạng thái giao dịch thanh toán thành công vào CSDL của bạn
+		chargeHistory.chargeStatus = "success";
+		await chargeHistory.save();
+		// Update user's balance
+		const { userId, chargeAmount } = chargeHistory;
+		await User.findByIdAndUpdate(userId, {
+			$inc: { balance: chargeAmount },
+		});
+
+		res.status(200).json({
+			status: "success",
+			data: chargeHistory,
+		});
 	} else {
-		res.status(200).json({ RspCode: "97", Message: "Checksum failed" });
+		// Thanh toán thất bại. Kiểm tra rspCode để biết lý do thất bại
+
+		let errMessage;
+		switch (rspCode) {
+			case "09":
+				errMessage = `Giao dịch không thành công do: Thẻ/Tài khoản của khách hàng chưa đăng ký dịch vụ InternetBanking tại ngân hàng.`;
+				break;
+			case "10":
+				errMessage = `Giao dịch không thành công do: Khách hàng xác thực thông tin thẻ/tài khoản không đúng quá 3 lần`;
+				break;
+			case "11":
+				errMessage = `Giao dịch không thành công do: Đã hết hạn chờ thanh toán. Xin quý khách vui lòng thực hiện lại giao dịch.`;
+				break;
+			case "12":
+				errMessage = `Giao dịch không thành công do: Thẻ/Tài khoản của khách hàng bị khóa.`;
+				break;
+			case "13":
+				errMessage = `Giao dịch không thành công do Quý khách nhập sai mật khẩu xác thực giao dịch (OTP). Xin quý khách vui lòng thực hiện lại giao dịch.`;
+				break;
+			case "24":
+				errMessage = `Giao dịch không thành công do: Khách hàng hủy giao dịch`;
+				break;
+			case "51":
+				errMessage = `Giao dịch không thành công do: Tài khoản của quý khách không đủ số dư để thực hiện giao dịch.`;
+				break;
+			case "65":
+				errMessage = `Giao dịch không thành công do: Tài khoản của Quý khách đã vượt quá hạn mức giao dịch trong ngày.`;
+				break;
+			case "79":
+				errMessage = `	Giao dịch không thành công do: KH nhập sai mật khẩu thanh toán quá số lần quy định. Xin quý khách vui lòng thực hiện lại giao dịch.`;
+				break;
+
+			default:
+				errMessage = `Giao dịch không thành công do: Lỗi không xác định.`;
+				break;
+		}
+
+		// Cập nhật trạng thái giao dịch thanh toán thất bại vào CSDL của bạn
+		chargeHistory.chargeStatus = "failed";
+		chargeHistory.chargeError = errMessage;
+		await chargeHistory.save();
+
+		res.status(200).json({
+			status: "failed",
+			data: chargeHistory,
+		});
 	}
 };
 

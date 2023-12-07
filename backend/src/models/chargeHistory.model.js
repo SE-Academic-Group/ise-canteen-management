@@ -9,6 +9,7 @@ const chargeHistorySchema = new mongoose.Schema({
 	chargeAmount: {
 		type: Number,
 		required: [true, "Giao dịch nạp tiền phải có số tiền"],
+		min: [10000, "Số tiền nạp tối thiểu là 10.000đ"],
 	},
 	chargeDate: {
 		type: Date,
@@ -23,11 +24,13 @@ const chargeHistorySchema = new mongoose.Schema({
 	chargeStatus: {
 		type: String,
 		enum: ["pending", "success", "failed"],
+		default: "pending",
 	},
 	chargeDescription: {
 		type: String,
 		default: "",
 	},
+	chargeError: String,
 });
 
 chargeHistorySchema.index({ userId: 1 });
