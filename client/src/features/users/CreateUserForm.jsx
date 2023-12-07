@@ -79,6 +79,7 @@ function CreateUserForm({ onCloseModal = () => {} }) {
           type="tel"
           id="phone"
           autoComplete="phone"
+          maxLength={10}
           disabled={isCreating}
           {...register("phone", FORM_RULES.PHONE)}
         />

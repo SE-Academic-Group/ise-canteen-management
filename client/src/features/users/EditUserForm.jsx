@@ -1,16 +1,14 @@
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
+import FormHeading from "../../ui/FormHeading";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 
-import FormHeading from "../../ui/FormHeading";
 import { FORM_RULES, USER_ROLES } from "../../utils/constants";
 import { roleToVietnamese } from "../../utils/translator";
-import { useCreateUser } from "./useCreateUser";
 import { useEditUser } from "./useEditUser";
 
 const selectOptions = USER_ROLES.map((r) => ({
@@ -18,58 +16,35 @@ const selectOptions = USER_ROLES.map((r) => ({
   label: roleToVietnamese(r),
 }));
 
-function CreateUserForm({ userToEdit = {}, onCloseModal }) {
-  const [showPassword, setShowPassword] = useState(false);
-  const { isCreating, createUser } = useCreateUser();
+function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {
   const { isEditing, editUser } = useEditUser();
-  const isWorking = isCreating || isEditing;
 
-  const { id: editId, ...editValues } = userToEdit;
-  const isEditSession = Boolean(editId);
+  const { _id: editId, ...editValues } = userToEdit;
 
-  const { register, handleSubmit, reset, formState, setValue } = useForm({
-    defaultValues: isEditSession ? editValues : { role: "customer" },
+  const { register, handleSubmit, reset, formState, watch } = useForm({
+    defaultValues: editValues,
   });
   const { errors } = formState;
 
   function onSubmit(data) {
     function onSuccess(data) {
       reset();
-      onCloseModal && onCloseModal();
+      onCloseModal();
     }
 
-    if (isEditSession) {
-      editUser({ newUserData: data, id: editId }, { onSuccess });
-    } else {
-      createUser(data, { onSuccess });
-    }
+    editUser({ newUserData: data, id: editId }, { onSuccess });
   }
-
-  function generatePassword() {
-    const newPass = Math.random().toString(36).slice(-8);
-    setValue("password", newPass);
-    setShowPassword(true);
-  }
-
-  useEffect(() => {
-    if (!isEditSession) {
-      generatePassword();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
-    <Form
-      onSubmit={handleSubmit(onSubmit)}
-      type={onCloseModal ? "modal" : "regular"}
-    >
-      <FormHeading as="h2">Thêm mới tài khoản</FormHeading>
+    <Form onSubmit={handleSubmit(onSubmit)} type="modal">
+      <FormHeading as="h2">Cập nhật thông tin tài khoản</FormHeading>
 
       <FormRow label="Email" error={errors?.email?.message}>
         <Input
           type="email"
           id="email"
-          disabled={isWorking}
+          autoComplete="email"
+          disabled={isEditing}
           {...register("email", FORM_RULES.EMAIL)}
         />
       </FormRow>
@@ -78,7 +53,8 @@ function CreateUserForm({ userToEdit = {}, onCloseModal }) {
         <Input
           type="text"
           id="name"
-          disabled={isWorking}
+          autoComplete="name"
+          disabled={isEditing}
           {...register("name", FORM_RULES.FULL_NAME)}
         />
       </FormRow>
@@ -86,7 +62,7 @@ function CreateUserForm({ userToEdit = {}, onCloseModal }) {
       <FormRow label="Phân quyền" error={errors?.role?.message}>
         <Select
           id="role"
-          disabled={isWorking}
+          disabled={isEditing}
           options={selectOptions}
           {...register("role")}
         />
@@ -96,47 +72,21 @@ function CreateUserForm({ userToEdit = {}, onCloseModal }) {
         <Input
           type="tel"
           id="phone"
-          disabled={isWorking}
+          autoComplete="phone"
+          disabled={isEditing}
           maxLength={10}
           {...register("phone", FORM_RULES.PHONE)}
         />
       </FormRow>
 
-      <FormRow label="Mật khẩu">
-        <Input
-          type={showPassword ? "text" : "password"}
-          disabled
-          {...register("password", FORM_RULES.PASSWORD)}
-        />
-      </FormRow>
-
-      {isEditSession && (
-        <FormRow>
-          <Button
-            disabled={isWorking}
-            variation="danger"
-            type="button"
-            onClick={generatePassword}
-          >
-            Làm mới mật khẩu
-          </Button>
-        </FormRow>
-      )}
-
       <FormRow>
-        <Button
-          variation="secondary"
-          type="reset"
-          onClick={() => onCloseModal?.()}
-        >
+        <Button variation="secondary" type="reset" onClick={onCloseModal}>
           Hủy
         </Button>
-        <Button disabled={isWorking}>
-          {isEditSession ? "Lưu thay đổi" : "Tạo tài khoản"}
-        </Button>
+        <Button disabled={isEditing}>Lưu thay đổi</Button>
       </FormRow>
     </Form>
   );
 }
 
-export default CreateUserForm;
+export default EditUserForm;

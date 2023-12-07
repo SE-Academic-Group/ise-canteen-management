@@ -13,9 +13,9 @@ import {
   padString,
 } from "../../utils/helpers";
 import { roleToVietnamese } from "../../utils/translator";
-import CreateUserForm from "./CreateUserForm";
 import { useDeleteUser } from "./useDeleteUser";
 import { useUser } from "../authentication/useUser";
+import EditUserForm from "./EditUserForm";
 
 const roleToTagName = {
   admin: "blue",
@@ -36,7 +36,7 @@ function transformUser(user) {
     image: `https://ui-avatars.com/api/?name=${user.name}&background=random&rounded=true&size=48&font-size=0.33&bold=true&color=fff&length=1`,
     phone: user.phone
       ? formatVietnamesePhoneNumber(user.phone)
-      : "____ ___ ___",
+      : "_____ ____ ____",
     balance: formatVietnameseCurrency(user.balance),
   };
 
@@ -78,7 +78,7 @@ function UserRow({ user, serial }) {
         ) : (
           <>
             <span className="sr-only">No balance</span>
-            <span role="presentation">____</span>
+            <span role="presentation">___ ___ __ </span>
           </>
         )}
       </Table.Column.Amount>
@@ -99,7 +99,7 @@ function UserRow({ user, serial }) {
           </Menus.Menu>
 
           <Modal.Window name="update">
-            <CreateUserForm userToEdit={user} />
+            <EditUserForm userToEdit={user} />
           </Modal.Window>
 
           <Modal.Window name="delete">
