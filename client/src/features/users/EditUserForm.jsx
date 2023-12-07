@@ -21,7 +21,7 @@ function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {
 
   const { _id: editId, ...editValues } = userToEdit;
 
-  const { register, handleSubmit, reset, formState, watch } = useForm({
+  const { register, handleSubmit, reset, formState, getValues } = useForm({
     defaultValues: editValues,
   });
   const { errors } = formState;
@@ -44,8 +44,8 @@ function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {
           type="email"
           id="email"
           autoComplete="email"
-          disabled={isEditing}
-          {...register("email", FORM_RULES.EMAIL)}
+          disabled
+          value={getValues("email")}
         />
       </FormRow>
 
