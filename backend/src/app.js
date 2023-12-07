@@ -7,6 +7,8 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const compression = require("compression");
 const cors = require("cors");
+const zod = require("zod");
+const { fromZodError } = require("zod-validation-error");
 
 const productRouter = require("./routes/product.route");
 const userRouter = require("./routes/user.route");
@@ -89,18 +91,44 @@ app.use("/api/v1/charge-histories", chargeHistoryRouter);
 
 // Error handler
 app.use((err, req, res, next) => {
+	// Check if erro is zod's error
+	if (err instanceof zod.ZodError) {
+		const validationErrors = fromZodError(err, {
+			prefix: "Lỗi dữ liệu",
+			includePath: false,
+			unionSeparator: ", hoặc",
+		});
+
+		return res.status(400).json({
+			status: "fail",
+			errors: validationErrors.message,
+		});
+	}
+
+	// Check if error is Mongoose ValidationError
+	if (err.name === "ValidationError") {
+		const validationErrorMessages = Object.values(err.errors).map(
+			(error) => error.message
+		);
+
+		return res.status(400).json({
+			status: "fail",
+			errors: validationErrorMessages.join("; "),
+		});
+	}
+
+	// Check if error is AppError (custom error)
 	if (err.isOperational) {
-		res.status(err.statusCode || 500).json({
+		return res.status(err.statusCode || 500).json({
 			status: err.status || "error",
 			message: err.message,
 		});
 	} else {
-		res.status(500).json({
+		console.log(err);
+		return res.status(500).json({
 			status: "error",
 			message: "Có lỗi xảy ra. Xin hãy liên hệ với admin.",
 		});
-
-		console.log(err);
 	}
 });
 

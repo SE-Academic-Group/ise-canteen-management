@@ -11,12 +11,19 @@ const User = require("../models/user.model");
 
 exports.signup = async (req, res, next) => {
 	const { name, email, password, passwordConfirm } = req.body;
+
+	const existUser = await User.findOne({ email });
+	if (existUser) {
+		console.log(existUser);
+		throw new AppError("Email đã được sử dụng.", 400);
+	}
+
 	const user = await User.create({
 		name,
 		email,
 		password,
 		passwordConfirm,
-	});
+	}).select("-password -passwordChangedAt -active");
 
 	const { accessToken, accessTokenOptions } = createAccessToken(user, req);
 	const { refreshToken, refreshTokenOptions } = createRefreshToken(user, req);
@@ -37,14 +44,16 @@ exports.signup = async (req, res, next) => {
 exports.login = async (req, res, next) => {
 	const { email, password } = req.body;
 
-	// 1) Check if email and password exist
-	if (!email || !password)
-		throw new AppError("Vui lòng nhập email và mật khẩu.", 400);
-
 	// 2) Check if user exists && password is correct
-	const user = await User.findOne({ email }, "+password");
+	const user = await User.findOne({ email }, "+password +active");
 	if (!user || !(await user.isCorrectPassword(password)))
 		throw new AppError("Email hoặc mật khẩu không đúng.", 401);
+
+	if (!user.active)
+		throw new AppError(
+			"Tài khoản của bạn đã bị khóa. Vui lòng liên hệ với quản trị viên để mở lại.",
+			401
+		);
 
 	// 3) If everything ok, send tokens to client
 	const { accessToken, accessTokenOptions } = createAccessToken(user, req);

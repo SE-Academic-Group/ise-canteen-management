@@ -10,28 +10,27 @@ exports.deleteChargeHistory = ControllerFactory.deleteOne(ChargeHistory);
 exports.updateChargeHistory = ControllerFactory.updateOne(ChargeHistory);
 
 exports.createChargeHistory = async (req, res, next) => {
-	if (!req.body.chargeAmount || req.body.chargeAmount <= 0) {
-		throw new AppError("Phải cung cấp số tiền nạp hợp lệ.", 400);
-	}
+	const { chargeAmount, email } = req.body;
 
 	let newCharge = {
-		chargeAmount: req.body.chargeAmount,
+		chargeAmount,
+		chargeStatus: "pending",
+		chargeMethod: "",
+		chargeDescription: "",
+		userId: "",
 	};
 
 	// Money is charged by admin or cashier
 	if (req.user.role === "cashier" || req.user.role === "admin") {
 		// Check if email is provided
-		if (!req.body.email) {
+		if (!email) {
 			throw new AppError("Phải cung cấp email người dùng muốn nạp tiền.", 400);
 		}
 
 		// Get the charged user by email from req.body
-		const user = await User.findOne({ email: req.body.email });
+		const user = await User.findOne({ email });
 		if (!user) {
-			throw new AppError(
-				`Không có người dùng với email ${req.body.email}`,
-				404
-			);
+			throw new AppError(`Không có người dùng với email ${email}`, 404);
 		}
 
 		newCharge.userId = user.id;
@@ -43,8 +42,8 @@ exports.createChargeHistory = async (req, res, next) => {
 		newCharge.chargeMethod = "vnpay";
 	}
 	newCharge.chargeDescription = `Nap tien cho tai khoan ${
-		req.body.email || req.user.email
-	} voi so tien ${newCharge.chargeAmount}`;
+		email || req.user.email
+	} voi so tien ${chargeAmount}`;
 
 	// Create a new charge history in database
 	const chargeHistory = await ChargeHistory.create(newCharge);
