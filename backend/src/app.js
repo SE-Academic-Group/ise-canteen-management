@@ -22,7 +22,7 @@ const app = express();
 // Trust proxy
 app.enable("trust proxy");
 
-// CORS
+// CORS;
 app.use(
 	cors({
 		credentials: true,
@@ -46,9 +46,12 @@ app.use(
 		contentSecurityPolicy: {
 			directives: {
 				defaultSrc: ["*"],
-				scriptSrc: ["* data: 'unsafe-eval' 'unsafe-inline' blob:"],
-				connectSrc: ["*"],
-				frameSrc: ["*"],
+				scriptSrc: [
+					"* data: 'unsafe-eval' 'unsafe-inline' blob: https://sandbox.vnpayment.vn",
+				],
+				connectSrc: ["*", "https://sandbox.vnpayment.vn"],
+				frameSrc: ["*", "https://sandbox.vnpayment.vn"],
+				navigateTo: ["*"],
 			},
 		},
 	})
@@ -94,7 +97,7 @@ app.use((err, req, res, next) => {
 	} else {
 		res.status(500).json({
 			status: "error",
-			message: "Something went wrong! Please contact the admin",
+			message: "Có lỗi xảy ra. Xin hãy liên hệ với admin.",
 		});
 
 		console.log(err);

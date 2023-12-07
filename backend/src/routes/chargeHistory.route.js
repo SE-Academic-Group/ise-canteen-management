@@ -6,7 +6,6 @@ const vnpayController = require("../controllers/vnpay.controller");
 const router = express.Router({ mergeParams: true });
 
 router.get("/vnpay-return", vnpayController.vnpayReturn);
-router.get("/vnpay-request", vnpayController.vnpayRequest);
 
 router.use(authController.protect);
 

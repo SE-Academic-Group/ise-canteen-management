@@ -30,6 +30,7 @@ const chargeHistorySchema = new mongoose.Schema({
 		type: String,
 		default: "",
 	},
+	chargeError: String,
 });
 
 chargeHistorySchema.index({ userId: 1 });
