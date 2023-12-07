@@ -45,6 +45,7 @@ function Filter({ filterField, options }) {
 
     if (value === "all") {
       searchParams.delete(filterField);
+      searchParams.delete("page");
       setSearchParams(searchParams);
       return;
     }
