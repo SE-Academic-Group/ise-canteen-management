@@ -47,8 +47,8 @@ exports.uploadUserPhoto = multerUpload.upload.single("image");
 exports.resizeUserPhoto = async (req, res, next) => {
 	if (!req.file) return next();
 
-	req.file.filename = `images/users/user-${req.user.id}-${Date.now()}.jpeg`;
-	const writtenFilePath = `${__dirname}/../public/${req.file.filename}`;
+	req.file.filename = `/images/users/user-${req.user.id}-${Date.now()}.jpeg`;
+	const writtenFilePath = `${__dirname}/../public${req.file.filename}`;
 
 	await sharp(req.file.buffer)
 		.resize(500, 500)
@@ -61,6 +61,7 @@ exports.resizeUserPhoto = async (req, res, next) => {
 
 exports.updateMe = async (req, res, next) => {
 	// Filter out unwanted fields names that are not allowed to be updated
+	console.log(req.body);
 	const allowedFields = ["name", "phone", "image"];
 	for (const key in req.body) {
 		if (!allowedFields.includes(key)) {
