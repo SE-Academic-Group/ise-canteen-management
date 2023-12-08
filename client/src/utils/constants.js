@@ -15,6 +15,7 @@ export const QUERY_KEYS = {
   ORDERS: "orders",
   ORDER: "order",
   PRODUCTS: "products",
+  PRODUCT: "product",
   INVENTORY_ITEMS: "inventoryItems",
 };
 
@@ -106,4 +107,4 @@ export const USER_ROLES = ["admin", "customer", "staff", "cashier"];
 export const BACKEND_URL = "http://localhost:6969/api/v1";
 export const IMAGE_URL = "http://localhost:6969";
 
-export const PRODUCT_CATEGORIES = ["food", "drink", "other"];
+export const PRODUCT_CATEGORIES = ["food", "beverage", "other"];

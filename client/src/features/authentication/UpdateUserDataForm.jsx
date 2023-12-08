@@ -1,12 +1,14 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+
 import Button from "../../ui/Button";
+import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
-import FileInput from "../../ui/FileInput";
+
 import { FORM_RULES } from "../../utils/constants";
 import { useUpdateUser } from "./useUpdateUser";
-import { useState } from "react";
 
 function UpdateUserDataForm({ user }) {
   const [image, setImage] = useState(null);
@@ -19,7 +21,6 @@ function UpdateUserDataForm({ user }) {
     defaultValues,
   });
   const { errors, isSubmitting } = formState;
-  const isCustomer = user.role === "customer";
   const isWorking = isUpdating || isSubmitting;
 
   function onSubmit(data) {
@@ -38,7 +39,7 @@ function UpdateUserDataForm({ user }) {
         <Input
           type="text"
           id="name"
-          disabled={!isCustomer || isWorking}
+          disabled={isWorking}
           {...register("name", FORM_RULES.FULL_NAME)}
         />
       </FormRow>
@@ -46,9 +47,10 @@ function UpdateUserDataForm({ user }) {
         <Input
           type="tel"
           id="tel"
-          disabled={!isCustomer || isWorking}
-          maxLength={10}
+          autoComplete="phone"
+          disabled={isWorking}
           {...register("phone", FORM_RULES.PHONE)}
+          maxLength={10}
         />
       </FormRow>
       <FormRow label="Ảnh đại diện">
@@ -66,7 +68,7 @@ function UpdateUserDataForm({ user }) {
         <Button
           type="button"
           variation="secondary"
-          disabled={!isWorking}
+          disabled={!isSubmitting}
           onClick={() => reset(defaultValues)}
         >
           Hủy

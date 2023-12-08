@@ -1,21 +1,9 @@
-import axiosClient from "../utils/axios";
-import { buildUrlParams } from "../utils/apiFeatures";
-export async function getUsers({ page = 1, filters }) {
-  const url = buildUrlParams("users", { page, filters });
-  const res = await axiosClient(url);
-  const count = Number(res.headers["x-total-count"]);
+import {
+  createEditItemFactory,
+  deleteItemFactory,
+  getItemsFactory,
+} from "../utils/apiItemsFactory";
 
-  return { data: res.data.data, count };
-}
-
-export async function deleteUser(id) {
-  await axiosClient.delete(`users/${id}`);
-}
-
-export async function createEditUser(userData, id) {
-  if (id) {
-    await axiosClient.patch(`users/${id}`, userData);
-  } else {
-    await axiosClient.post(`users`, userData);
-  }
-}
+export const getUsers = getItemsFactory("users");
+export const deleteUser = deleteItemFactory("users");
+export const createEditUser = createEditItemFactory("users");

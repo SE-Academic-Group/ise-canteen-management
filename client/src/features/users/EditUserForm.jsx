@@ -22,7 +22,12 @@ function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {
   const { _id: editId, ...editValues } = userToEdit;
 
   const { register, handleSubmit, reset, formState, getValues } = useForm({
-    defaultValues: editValues,
+    defaultValues: {
+      email: editValues.email,
+      name: editValues.name,
+      phone: editValues.phone,
+      role: editValues.role,
+    },
   });
   const { errors } = formState;
 
