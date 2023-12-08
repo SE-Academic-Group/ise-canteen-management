@@ -13,12 +13,14 @@ router.post(
 	"/",
 	productController.uploadProductImage,
 	productController.resizeProductImage,
+	productController.setImagePath,
 	productController.createProduct
 );
 router.patch(
 	"/:id",
 	productController.uploadProductImage,
 	productController.resizeProductImage,
+	productController.setImagePath,
 	productController.updateProduct
 );
 router.delete("/:id", productController.deleteProduct);
