@@ -5,10 +5,11 @@ import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
 import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
+import EditProductForm from "./EditProductForm";
 
 import { formatVietnameseCurrency } from "../../utils/helpers";
+import { IMAGE_URL } from "../../utils/constants";
 import { categoryToVietnamese } from "../../utils/translator";
-import CreateProductForm from "./CreateProductForm";
 import { useDeleteProduct } from "./useDeleteProduct";
 
 const categoryToTagName = {
@@ -26,7 +27,7 @@ function ProductRow({ product }) {
 
   return (
     <Table.Row>
-      <Table.Column.Img src={image} width={100} height={64} />
+      <Table.Column.Img src={IMAGE_URL + image} width={100} height={100} />
       <Table.Column.Name>{name}</Table.Column.Name>
       <Table.Column.Amount>
         {formatVietnameseCurrency(price)}
@@ -58,7 +59,7 @@ function ProductRow({ product }) {
         </Menus.Menu>
 
         <Modal.Window name="edit">
-          <CreateProductForm productToEdit={product} />
+          <EditProductForm productToEdit={product} />
         </Modal.Window>
 
         <Modal.Window name="delete">

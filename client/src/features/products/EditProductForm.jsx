@@ -12,11 +12,13 @@ import TextArea from "../../ui/TextArea";
 import { FORM_RULES, PRODUCT_CATEGORIES } from "../../utils/constants";
 import { categoryToVietnamese } from "../../utils/translator";
 import { useEditProduct } from "./useEditProduct";
+import { useState } from "react";
 
 function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
+  const [image, setImage] = useState(null);
   const { isEditing, editProduct } = useEditProduct();
 
-  const { id: editId, ...editValues } = productToEdit;
+  const { _id: editId, ...editValues } = productToEdit;
 
   const { register, handleSubmit, reset, formState } = useForm({
     defaultValues: editValues,
@@ -29,7 +31,10 @@ function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
       onCloseModal();
     }
 
-    editProduct({ newProductData: data, id: editId }, { onSuccess });
+    editProduct(
+      { newProductData: { ...data, image }, id: editId },
+      { onSuccess }
+    );
   }
 
   return (
@@ -75,10 +80,13 @@ function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
         />
       </FormRow>
 
-      {/* TODO: Upload image */}
-      {/* TODO: Preview current image if this is a edit session */}
       <FormRow label="Ảnh sản phẩm">
-        <FileInput id="avatar" accept="image/*" />
+        <FileInput
+          id="avatar"
+          accept="image/*"
+          disabled={isEditing}
+          onChange={(e) => setImage(e.target.files[0])}
+        />
       </FormRow>
 
       <FormRow>
