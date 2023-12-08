@@ -20,7 +20,7 @@ function ProductTableOperations() {
       <FlexContainer>
         <SortBy
           options={[
-            { value: "id-asc", label: "Sắp xếp mặc định" },
+            { value: "default", label: "Sắp xếp mặc định" },
             {
               value: "ratingAverage-desc",
               label: "Sắp xết theo đanh giá (cao)",
