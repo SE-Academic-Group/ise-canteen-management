@@ -13,12 +13,12 @@ import { useDeleteProduct } from "./useDeleteProduct";
 
 const categoryToTagName = {
   food: "green",
-  drink: "blue",
+  beverage: "blue",
   other: "grey",
 };
 
 function ProductRow({ product }) {
-  const { id, name, price, description, category, image, ratingAverage } =
+  const { _id, name, price, description, category, image, ratingAverage } =
     product;
   const { isDeleting, deleteProduct } = useDeleteProduct();
   const isAddingToMenu = false;
@@ -41,8 +41,8 @@ function ProductRow({ product }) {
 
       <Modal>
         <Menus.Menu>
-          <Menus.Toggle id={id} />
-          <Menus.List id={id}>
+          <Menus.Toggle id={_id} />
+          <Menus.List id={_id}>
             <Menus.Button icon={<HiCheckBadge />}>
               Thêm vào thực đơn
             </Menus.Button>
@@ -65,7 +65,7 @@ function ProductRow({ product }) {
           <ConfirmDelete
             resourceName="sản phẩm"
             disabled={isWorking}
-            onConfirm={() => deleteProduct(id)}
+            onConfirm={() => deleteProduct(_id)}
           />
         </Modal.Window>
       </Modal>

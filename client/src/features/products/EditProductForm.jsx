@@ -11,20 +11,15 @@ import TextArea from "../../ui/TextArea";
 
 import { FORM_RULES, PRODUCT_CATEGORIES } from "../../utils/constants";
 import { categoryToVietnamese } from "../../utils/translator";
-import { useCreateProduct } from "./useCreateProduct";
-import { useState } from "react";
+import { useEditProduct } from "./useEditProduct";
 
-function CreateProductForm({ onCloseModal = () => {} }) {
-  const [image, setImage] = useState(null);
-  const { isCreating, createProduct } = useCreateProduct();
+function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
+  const { isEditing, editProduct } = useEditProduct();
+
+  const { id: editId, ...editValues } = productToEdit;
 
   const { register, handleSubmit, reset, formState } = useForm({
-    defaultValues: {
-      name: "",
-      price: "",
-      description: "",
-      category: "food",
-    },
+    defaultValues: editValues,
   });
   const { errors } = formState;
 
@@ -34,66 +29,66 @@ function CreateProductForm({ onCloseModal = () => {} }) {
       onCloseModal();
     }
 
-    createProduct({ ...data, image }, { onSuccess });
+    editProduct({ newProductData: data, id: editId }, { onSuccess });
   }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)} type="modal">
-      <FormHeading as="h2">Thêm mới sản phẩm</FormHeading>
+      <FormHeading as="h2">Cập nhật thông tin sản phẩm</FormHeading>
 
       <FormRow label={"Tên sản phẩm"} error={errors.name?.message}>
         <Input
           type="text"
-          disabled={isCreating}
+          disabled={isEditing}
           id="name"
           {...register("name", FORM_RULES.PRODUCT_NAME)}
         />
       </FormRow>
+
       <FormRow label={"Giá tiền"} error={errors.price?.message}>
         <Input
           type="number"
           step={1000}
-          disabled={isCreating}
+          disabled={isEditing}
           id="price"
           {...register("price", FORM_RULES.PRICE)}
         />
       </FormRow>
+
       <FormRow label={"Mô tả"} error={errors.description?.message}>
         <TextArea
-          disabled={isCreating}
+          disabled={isEditing}
           id="description"
           {...register("description", FORM_RULES.DESCRIPTION)}
         />
       </FormRow>
+
       <FormRow label={"Phân loại"} error={errors.category?.message}>
         <Select
           options={PRODUCT_CATEGORIES.map((category) => ({
             value: category,
             label: categoryToVietnamese(category),
           }))}
-          disabled={isCreating}
+          disabled={isEditing}
           id="category"
           {...register("category", FORM_RULES.REQUIRED("phân loại"))}
         />
       </FormRow>
+
+      {/* TODO: Upload image */}
+      {/* TODO: Preview current image if this is a edit session */}
       <FormRow label="Ảnh sản phẩm">
-        <FileInput
-          disabled={isCreating}
-          id="avatar"
-          accept="image/*"
-          onChange={(e) => setImage(e.target.files[0])}
-          required
-        />
+        <FileInput id="avatar" accept="image/*" />
       </FormRow>
 
       <FormRow>
         <Button variation="secondary" type="reset" onClick={onCloseModal}>
           Hủy
         </Button>
-        <Button disabled={isCreating}>Tạo sản phẩm</Button>
+        <Button disabled={isEditing}>Lưu thay đổi</Button>
       </FormRow>
     </Form>
   );
 }
 
-export default CreateProductForm;
+export default EditProductForm;

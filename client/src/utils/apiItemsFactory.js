@@ -1,4 +1,5 @@
 import axiosClient from "./axios";
+import FormData from "form-data";
 import { buildUrlParams } from "./apiFeatures";
 
 export function getItemsFactory(name) {
@@ -18,11 +19,31 @@ export function deleteItemFactory(name) {
 }
 
 export function createEditItemFactory(name) {
-  return async function (itemData, id) {
+  return async function (data, id) {
+    const { image, ...fields } = data;
+    let postData = fields;
+    let config = {};
+
+    if (image) {
+      const formData = new FormData();
+
+      formData.append("image", image);
+      Object.keys(fields).forEach((key) => {
+        formData.append(key, fields[key]);
+      });
+
+      postData = formData;
+      config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+    }
+
     if (id) {
-      await axiosClient.patch(`${name}/${id}`, itemData);
+      await axiosClient.patch(`${name}/${id}`, postData, config);
     } else {
-      await axiosClient.post(`${name}`, itemData);
+      await axiosClient.post(`${name}`, postData, config);
     }
   };
 }

@@ -8,25 +8,29 @@ export function useProducts() {
   const { page, q, filters, sortBy } = useApiParams({
     filterFields: ["category"],
   });
+
+  const queryKey = [QUERY_KEYS.PRODUCTS, q ?? "", page, filters, sortBy ?? []];
+  const queryOptions = { page, q, filters, sortBy };
+
   const {
     isLoading,
     error,
     data: { data, count },
   } = useQueryFetch({
-    fn: () => getProducts({ page, q, filters, sortBy }),
-    key: [QUERY_KEYS.PRODUCTS, q ?? "", page, filters, sortBy ?? []],
+    fn: () => getProducts(queryOptions),
+    key: queryKey,
   });
 
-  const pageCount = Math.ceil(count / PAGE_SIZE);
+  const noPages = Math.ceil(count / PAGE_SIZE);
 
   useQueryPrefetch({
-    fn: () => getProducts({ page: page + 1, q, filters, sortBy }),
-    key: [QUERY_KEYS.PRODUCTS, q ?? "", page + 1, filters, sortBy ?? []],
-    when: page < pageCount,
+    fn: () => getProducts({ ...queryOptions, page: page + 1 }),
+    key: queryKey.with(2, page + 1),
+    when: page < noPages,
   });
   useQueryPrefetch({
-    fn: () => getProducts({ page: page - 1, q, filters, sortBy }),
-    key: [QUERY_KEYS.PRODUCTS, q ?? "", page - 1, filters, sortBy ?? []],
+    fn: () => getProducts({ ...queryOptions, page: page - 1 }),
+    key: queryKey.with(2, page - 1),
     when: page > 1,
   });
 

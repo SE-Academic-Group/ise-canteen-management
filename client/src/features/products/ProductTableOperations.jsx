@@ -12,7 +12,7 @@ function ProductTableOperations() {
         options={[
           { value: "all", label: "Tất cả" },
           { value: "food", label: "Đồ ăn" },
-          { value: "drink", label: "Nước uống" },
+          { value: "beverage", label: "Nước uống" },
           { value: "other", label: "Khác" },
         ]}
       />

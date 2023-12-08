@@ -1,13 +1,13 @@
 import { useSearchParams } from "react-router-dom";
 
-export function useApiParams({ filterFields }) {
+export function useApiParams({ filterFields = [] }) {
   const [searchParams] = useSearchParams();
 
   // Pagination
   const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
 
   // Search
-  const q = searchParams.get("q");
+  const q = searchParams.get("q") ?? "";
 
   // Filters
   const filters = filterFields
@@ -22,7 +22,7 @@ export function useApiParams({ filterFields }) {
   const sortInfo = sortField?.split("-");
   const sortBy = sortField
     ? { sort: sortInfo.at(0), order: sortInfo.at(1) }
-    : null;
+    : [];
 
   return { page, q, filters, sortBy };
 }
