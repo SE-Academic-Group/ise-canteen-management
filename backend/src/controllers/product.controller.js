@@ -6,19 +6,28 @@ const multerUpload = require("../utils/multerUpload");
 const sharp = require("sharp");
 
 // Controllers for product's images upload
+exports.setImagePath = (req, res, next) => {
+	if (!req.file) return next();
+
+	req.body.image = req.file.filename;
+
+	return next();
+};
 exports.uploadProductImage = multerUpload.upload.single("image");
 exports.resizeProductImage = async (req, res, next) => {
 	if (!req.file) return next();
 
-	req.file.filename = `product-${
+	req.file.filename = `/images/products/product-${
 		req.params.id || slugify(req.body.name, { locale: "vi", lower: true })
 	}-${Date.now()}.jpeg`;
+
+	const writtenFilePath = `${__dirname}/../public${req.file.filename}`;
 
 	await sharp(req.file.buffer)
 		.resize(500, 500)
 		.toFormat("jpeg")
 		.jpeg({ quality: 90 })
-		.toFile(`public/images/products/${req.file.filename}`);
+		.toFile(writtenFilePath);
 
 	return next();
 };
