@@ -97,3 +97,17 @@ exports.deleteMe = async (req, res, next) => {
 		data: null,
 	});
 };
+
+exports.searchUsers = async (req, res, next) => {
+	// Search users by name
+	let { email } = req.query;
+
+	// Use regex for search (case-insensitive)
+	const filter = email ? { email: { $regex: `${email}`, $options: "i" } } : {};
+	const users = await User.find(filter);
+
+	res.status(200).json({
+		status: "success",
+		data: users,
+	});
+};
