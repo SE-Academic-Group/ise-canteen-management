@@ -1,4 +1,4 @@
-import { HiCheckBadge, HiPencil, HiTrash } from "react-icons/hi2";
+import { HiCheckBadge, HiPencil, HiTrash, HiEye } from "react-icons/hi2";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Menus from "../../ui/Menus";
@@ -11,6 +11,7 @@ import { formatVietnameseCurrency } from "../../utils/helpers";
 import { IMAGE_URL } from "../../utils/constants";
 import { categoryToVietnamese } from "../../utils/translator";
 import { useDeleteProduct } from "./useDeleteProduct";
+import { useNavigate } from "react-router-dom";
 
 const categoryToTagName = {
   food: "green",
@@ -19,6 +20,7 @@ const categoryToTagName = {
 };
 
 function ProductRow({ product }) {
+  const navigate = useNavigate();
   const { _id, name, price, description, category, image, ratingAverage } =
     product;
   const { isDeleting, deleteProduct } = useDeleteProduct();
@@ -44,6 +46,13 @@ function ProductRow({ product }) {
         <Menus.Menu>
           <Menus.Toggle id={_id} />
           <Menus.List id={_id}>
+            <Menus.Button
+              icon={<HiEye />}
+              onClick={() => navigate(`/products/${_id}`)}
+            >
+              Xem chi tiết
+            </Menus.Button>
+
             <Menus.Button icon={<HiCheckBadge />}>
               Thêm vào thực đơn
             </Menus.Button>

@@ -12,6 +12,13 @@ export function getItemsFactory(name) {
   };
 }
 
+export function getItemFactory(name) {
+  return async function (id) {
+    const res = await axiosClient(`${name}/${id}`);
+    return res.data.data;
+  };
+}
+
 export function deleteItemFactory(name) {
   return async function (id) {
     await axiosClient.delete(`${name}/${id}`);
