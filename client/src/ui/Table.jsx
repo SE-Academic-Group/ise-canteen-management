@@ -141,7 +141,10 @@ const Number = styled.span`
 const Img = styled.img`
   display: block;
   width: 100px;
-  aspect-ratio: 25 / 16;
+  margin: 0.4rem;
+  border-radius: 2px;
+  border: 1px solid var(--color-grey-200);
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   object-position: center;
   background-color: var(--color-grey-200);
