@@ -10,7 +10,7 @@ exports.createOne = (Model) => async (req, res, next) => {
 	});
 };
 
-exports.getAll = (Model) => async (req, res, next) => {
+exports.getAll = (Model, options) => async (req, res, next) => {
 	// Allow nested routes
 	if (req.params.userId) req.query.userId = req.params.userId;
 	if (req.params.productId) req.query.productId = req.params.productId;
@@ -32,23 +32,22 @@ exports.getAll = (Model) => async (req, res, next) => {
 		}
 	});
 
-	// If req.query contains "search", implement full text search
-	if (req.query.search) {
-		// Replace %20 with space
-		req.query.search = req.query.search.replace(/%20/g, " ");
-		// Filter by name start with search string
-		req.query.name = {
-			$regex: `^${req.query.search}`,
-			$options: "i",
-		};
-	}
-
 	// EXECUTE QUERY
 	const features = new APIFeatures(Model.find(), req.query)
 		.filter()
 		.sort()
 		.limitFields()
 		.paginate();
+
+	// Populate options
+	if (options && options.populate) {
+		if (Array.isArray(options.populate)) {
+			options.populate.forEach((option) => features.query.populate(option));
+		} else {
+			features.query.populate(options.populate);
+		}
+	}
+
 	const docs = await features.query;
 	const count = await Model.countDocuments(features.filterObj);
 
