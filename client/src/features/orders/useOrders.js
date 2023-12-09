@@ -1,51 +1,34 @@
-import { useQueryClient, useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
-
+import { useQueryFetch } from "../../hooks/useQueryFetch";
+import { useQueryPrefetch } from "../../hooks/useQueryPrefetch";
+import { useApiParams } from "../../hooks/useApiParams";
 import { getOrders } from "../../services/apiOrders";
-import { PAGE_SIZE, QUERY_KEYS } from "../../utils/constants";
+import { QUERY_KEYS, PAGE_SIZE } from "../../utils/constants";
 
 export function useOrders() {
-  const queryClient = useQueryClient();
-  const [searchParams] = useSearchParams();
-
-  const filterFields = ["orderStatus", "orderDate"];
-  const filters = filterFields
-    .map((field) => {
-      const value = searchParams.get(field);
-      return { field, value };
-    })
-    .filter((filter) => filter.value !== null && filter.value !== "all");
-
-  const sortField = searchParams.get("sortBy");
-  const sortInfo = sortField?.split("-");
-  const sortBy = sortField
-    ? { sort: sortInfo.at(0), order: sortInfo.at(1) }
-    : null;
-
-  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
+  const { page } = useApiParams();
+  const queryKey = [QUERY_KEYS.ORDERS, page];
+  const queryOptions = { page };
 
   const {
     isLoading,
-    data: { data, count } = {},
     error,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.ORDERS, page, filters, sortBy],
-    queryFn: () => getOrders({ page, filters, sortBy }),
+    data: { data, count },
+  } = useQueryFetch({
+    fn: () => getOrders(queryOptions),
+    key: queryKey,
   });
 
-  const pageCount = Math.ceil(count / PAGE_SIZE);
-
-  if (page < pageCount)
-    queryClient.prefetchQuery({
-      queryKey: [QUERY_KEYS.ORDERS, page + 1, filters, sortBy],
-      queryFn: () => getOrders({ page: page + 1, filters, sortBy }),
-    });
-
-  if (page > 1)
-    queryClient.prefetchQuery({
-      queryKey: [QUERY_KEYS.ORDERS, page - 1, filters, sortBy],
-      queryFn: () => getOrders({ page: page - 1, filters, sortBy }),
-    });
+  const noPage = Math.ceil(count / PAGE_SIZE);
+  useQueryPrefetch({
+    fn: () => getOrders({ ...queryOptions, page: page + 1 }),
+    key: queryKey.with(1, page + 1),
+    when: page < noPage,
+  });
+  useQueryFetch({
+    fn: () => getOrders({ ...queryOptions, page: page - 1 }),
+    key: queryKey.with(1, page - 1),
+    when: page > 1,
+  });
 
   return { isLoading, error, orders: data, count };
 }
