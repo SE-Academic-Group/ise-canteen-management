@@ -15,8 +15,16 @@ class APIFeatures {
 		// 1B) Advanced filtering
 		let queryStr = JSON.stringify(queryObj);
 		queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-
 		queryObj = JSON.parse(queryStr);
+
+		// Implement search
+		if (queryObj.q) {
+			const searchField = queryObj["search-field"] || "name";
+			queryObj[searchField] = { $regex: `${queryObj.q}`, $options: "i" };
+			delete queryObj.q;
+			delete queryObj["search-field"];
+		}
+
 		this.query = this.query.find(queryObj);
 		this.filterObj = queryObj;
 		return this;
