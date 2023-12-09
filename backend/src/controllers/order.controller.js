@@ -33,4 +33,6 @@ exports.deleteOrder = ControllerFactory.deleteOne(Order);
 
 exports.setUserIds = (req, res, next) => {
 	if (!req.body.userId) req.body.userId = req.user?.id;
+
+	next();
 };
