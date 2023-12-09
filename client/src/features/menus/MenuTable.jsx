@@ -16,7 +16,7 @@ export default function MenuTable() {
 
   return (
     <Menus>
-      <Table columns="100px 20ch 10ch 3fr 12ch 10ch 3.2rem">
+      <Table columns="10ch 20ch 1fr 18ch 3.2rem">
         <Table.Header>
           <div>STT</div>
           <div>Ngày </div>
@@ -27,7 +27,9 @@ export default function MenuTable() {
 
         <Table.Body
           data={menuHistories}
-          render={(history) => <MenuRow key={history._id} history={history} />}
+          render={(history, i) => (
+            <MenuRow key={history._id} history={history} number={i + 1} />
+          )}
         />
 
         <Table.Footer>

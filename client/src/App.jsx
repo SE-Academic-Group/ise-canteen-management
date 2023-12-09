@@ -19,6 +19,7 @@ import Login from "./pages/Login";
 import Stats from "./pages/Stats";
 import Order from "./pages/Order";
 import Menus from "./pages/Menus";
+import Menu from "./pages/Menu";
 
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
@@ -58,6 +59,7 @@ function App() {
               <Route path="products" element={<Products />} />
               <Route path="products/:productId" element={<Product />} />
               <Route path="menus" element={<Menus />} />
+              <Route path="menus/:menuId" element={<Menu />} />
               <Route path="inventory" element={<Inventory />} />
               <Route path="stats" element={<Stats />} />
               <Route path="settings" element={<Settings />} />

@@ -7,8 +7,8 @@ import { PAGE_SIZE, QUERY_KEYS } from "../../utils/constants";
 export function useMenuHistories() {
   const { page } = useApiParams();
 
-  const queryKey = [QUERY_KEYS.PRODUCTS, page];
-  const queryOptions = { page };
+  const queryKey = [QUERY_KEYS.MENUS, page];
+  const queryOptions = { page, sortBy: { sort: "menuDate", order: "desc" } };
 
   const {
     isLoading,
