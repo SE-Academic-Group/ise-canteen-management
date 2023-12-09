@@ -17,7 +17,7 @@ import { useMoveBack } from "../../hooks/useMoveBack";
 import { useOrder } from "./useOrder";
 import { useCancelOrder } from "./useCancelOrder";
 import { useCompleteOrder } from "./useCompleteOrder";
-import { orderStatusToVietnamese } from "../../utils/translator";
+import { TRANSLATOR_KEYS, translator } from "../../utils/translator";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -47,7 +47,7 @@ function OrderDetail() {
 
   const status = {
     tag: statusToTagName[orderStatus],
-    name: orderStatusToVietnamese(orderStatus),
+    name: translator(TRANSLATOR_KEYS.ORDER_STATUS, orderStatus),
     value: orderStatus,
   };
 
