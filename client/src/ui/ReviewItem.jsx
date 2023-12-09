@@ -7,23 +7,30 @@ import {
 import DataItem from "./DataItem";
 
 const StyledReviewItem = styled.article`
-  background-color: var(--color-grey-200);
+  background-color: var(--color-grey-0);
   padding: 1.2rem;
   border-radius: var(--border-radius-md);
   font-size: 1.4rem;
 `;
 
-function ReviewItem() {
+function ReviewItem({ review }) {
+  const {
+    review: content,
+    rating,
+    createdAt,
+    userId: { name },
+  } = review;
+
   return (
     <StyledReviewItem>
       <DataItem icon={<MdOutlineDriveFileRenameOutline />} label="Từ">
-        Nguyen Van A, 20/10/2021 20:20
+        {name}, {new Date(createdAt).toLocaleString("vi-VN")}
       </DataItem>
       <DataItem icon={<MdStarBorderPurple500 />} label="Đánh giá">
-        5 sao
+        {rating} sao
       </DataItem>
       <DataItem icon={<MdOutlineDescription />} label="Nội dung">
-        Sản phẩm rất tốt
+        {content}
       </DataItem>
     </StyledReviewItem>
   );

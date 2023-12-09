@@ -12,7 +12,7 @@ import {
   formatVietnameseCurrency,
   padString,
 } from "../../utils/helpers";
-import { orderStatusToVietnamese } from "../../utils/translator";
+import { TRANSLATOR_KEYS, translator } from "../../utils/translator";
 import { useCancelOrder } from "./useCancelOrder";
 import { useCompleteOrder } from "./useCompleteOrder";
 
@@ -22,7 +22,7 @@ function transformOrder(order) {
     number: padString(order.serial, 3),
     orderStatus: {
       tag: statusToTagName[order.orderStatus],
-      name: orderStatusToVietnamese(order.orderStatus),
+      name: translator(TRANSLATOR_KEYS.ORDER_STATUS, order.orderStatus),
       value: order.orderStatus,
     },
     orderDate: formatDateTime(order.orderDate),

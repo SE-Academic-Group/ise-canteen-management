@@ -17,6 +17,7 @@ export const QUERY_KEYS = {
   PRODUCTS: "products",
   PRODUCT: "product",
   INVENTORY_ITEMS: "inventoryItems",
+  PRODUCT_REVIEWS: "productReviews",
 };
 
 export const REGEX_PATTERNS = {

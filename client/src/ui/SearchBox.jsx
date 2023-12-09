@@ -56,6 +56,9 @@ function SearchBox({ queryName = "q" }) {
   const [q, setQ] = useState(() => searchParams.get(queryName) || "");
 
   function handleChange(e) {
+    if (e.target.value === q) return;
+    if (e.target.value === "") return handleReset();
+
     setQ(e.target.value);
   }
 

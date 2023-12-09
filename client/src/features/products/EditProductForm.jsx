@@ -10,7 +10,7 @@ import Select from "../../ui/Select";
 import TextArea from "../../ui/TextArea";
 
 import { FORM_RULES, PRODUCT_CATEGORIES } from "../../utils/constants";
-import { categoryToVietnamese } from "../../utils/translator";
+import { TRANSLATOR_KEYS, translator } from "../../utils/translator";
 import { useEditProduct } from "./useEditProduct";
 import { useState } from "react";
 
@@ -72,7 +72,7 @@ function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
         <Select
           options={PRODUCT_CATEGORIES.map((category) => ({
             value: category,
-            label: categoryToVietnamese(category),
+            label: translator(TRANSLATOR_KEYS.CATEGORY, category),
           }))}
           disabled={isEditing}
           id="category"

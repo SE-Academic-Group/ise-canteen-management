@@ -3,8 +3,8 @@ import FormData from "form-data";
 import { buildUrlParams } from "./apiFeatures";
 
 export function getItemsFactory(name) {
-  return async function ({ page = 1, filters, sortBy }) {
-    const url = buildUrlParams(name, { page, filters, sortBy });
+  return async function ({ page = 1, filters, sortBy, q }) {
+    const url = buildUrlParams(name, { page, filters, sortBy, q });
     const res = await axiosClient(url);
     const count = Number(res.headers["x-total-count"]);
 

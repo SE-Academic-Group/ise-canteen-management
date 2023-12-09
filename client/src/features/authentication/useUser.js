@@ -1,9 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../../services/apiAuth";
 
 export function useUser() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const {
     isLoading,
@@ -14,6 +15,7 @@ export function useUser() {
     queryFn: getCurrentUser,
     onError: (err) => {
       navigate("/login", { replace: true });
+      queryClient.removeQueries();
     },
     retry: false,
   });

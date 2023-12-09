@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 
-export function useApiParams({ filterFields = [] }) {
+export function useApiParams({ filterFields = [] } = {}) {
   const [searchParams] = useSearchParams();
 
   // Pagination

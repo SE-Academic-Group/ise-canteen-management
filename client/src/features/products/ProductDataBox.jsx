@@ -4,17 +4,17 @@ import {
   MdOutlineDescription,
   MdOutlineDriveFileRenameOutline,
   MdOutlineStarBorderPurple500,
+  MdNotes,
 } from "react-icons/md";
 import styled from "styled-components";
 
 import DataItem from "../../ui/DataItem";
 import Heading from "../../ui/Heading";
+import ProductReviewsBox from "./ProductReviewsBox";
 
 import { IMAGE_URL } from "../../utils/constants";
 import { formatVietnameseCurrency } from "../../utils/helpers";
 import { categoryToVietnamese } from "../../utils/translator";
-import StyledReviewsBox from "../../ui/ReviewsBox";
-import ReviewItem from "../../ui/ReviewItem";
 
 const StyledProductDataBox = styled.section`
   background-color: var(--color-grey-0);
@@ -43,6 +43,7 @@ const Layout = styled.div`
   grid-template-columns: var(--_image-size) 1fr;
   gap: 3.2rem;
   margin-block-end: 1.6rem;
+  align-items: center;
 `;
 
 const Img = styled.img`
@@ -70,7 +71,15 @@ const Price = styled.div`
 `;
 
 function ProductDataBox({ product }) {
-  const { name, price, category, ratingAverage, image, description } = product;
+  const {
+    _id: productId,
+    name,
+    price,
+    category,
+    ratingAverage,
+    image,
+    description,
+  } = product;
 
   return (
     <StyledProductDataBox>
@@ -100,7 +109,7 @@ function ProductDataBox({ product }) {
               {description}
             </DataItem>
             <DataItem icon={<MdOutlineStarBorderPurple500 />} label="Đánh giá">
-              {ratingAverage}
+              {ratingAverage ?? "Chưa có đánh giá"}
             </DataItem>
             <DataItem icon={<MdOutlineCategory />} label="Phân loại">
               {categoryToVietnamese(category)}
@@ -108,20 +117,17 @@ function ProductDataBox({ product }) {
             <DataItem icon={<HiOutlineCurrencyDollar />} label="Giá tiền">
               {formatVietnameseCurrency(price)}
             </DataItem>
+
+            {category === "food" && (
+              <DataItem icon={<MdNotes />} label="Lưu ý">
+                Nếu món ăn là cơm phần, thì cơm sẽ được mặc định và có thể dùng
+                cơm thêm.
+              </DataItem>
+            )}
           </section>
         </Layout>
 
-        <StyledReviewsBox>
-          <ReviewItem />
-          <ReviewItem />
-          <ReviewItem />
-          <ReviewItem />
-          <ReviewItem />
-          <ReviewItem />
-          <ReviewItem />
-          <ReviewItem />
-          <ReviewItem />
-        </StyledReviewsBox>
+        <ProductReviewsBox productId={productId} />
 
         <Price>
           <DataItem icon={<HiOutlineCurrencyDollar />} label="Giá tiền">

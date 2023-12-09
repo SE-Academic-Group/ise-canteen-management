@@ -12,7 +12,7 @@ import {
   formatVietnamesePhoneNumber,
   padString,
 } from "../../utils/helpers";
-import { roleToVietnamese } from "../../utils/translator";
+import { translator, TRANSLATOR_KEYS } from "../../utils/translator";
 import { useDeleteUser } from "./useDeleteUser";
 import { useUser } from "../authentication/useUser";
 import EditUserForm from "./EditUserForm";
@@ -30,7 +30,7 @@ function transformUser(user) {
     number: padString(user.serial, 3),
     role: {
       tag: roleToTagName[user.role],
-      name: roleToVietnamese(user.role),
+      name: translator(TRANSLATOR_KEYS.ROLE, user.role),
       value: user.role,
     },
     image: `https://ui-avatars.com/api/?name=${user.name}&background=random&rounded=true&size=48&font-size=0.33&bold=true&color=fff&length=1`,

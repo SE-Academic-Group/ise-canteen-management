@@ -11,7 +11,7 @@ import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
 
 import { formatVietnameseCurrency } from "../../utils/helpers";
-import { categoryToVietnamese, unitToVietnamese } from "../../utils/translator";
+import { TRANSLATOR_KEYS, translator } from "../../utils/translator";
 
 const categoryToTagName = {
   ingredient: "green",
@@ -24,10 +24,11 @@ function transformItem(item) {
   const transformed = {
     ...item,
     price: formatVietnameseCurrency(item.price),
-    stockAmount: item.stockAmount + " " + unitToVietnamese(item.unit),
+    stockAmount:
+      item.stockAmount + " " + translator(TRANSLATOR_KEYS.UNIT, item.unit),
     category: {
       tag: categoryToTagName[item.category],
-      name: categoryToVietnamese(item.category),
+      name: translator(TRANSLATOR_KEYS.CATEGORY, item.category),
     },
   };
 
