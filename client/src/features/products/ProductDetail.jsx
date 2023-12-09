@@ -12,7 +12,7 @@ import Empty from "../../ui/Empty";
 import Modal from "../../ui/Modal";
 import Tag from "../../ui/Tag";
 import Row from "../../ui/Row";
-import { categoryToVietnamese } from "../../utils/translator";
+import { translator, TRANSLATOR_KEYS } from "../../utils/translator";
 import ProductDataBox from "./ProductDataBox";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
@@ -45,7 +45,7 @@ function ProductDetail() {
 
   const categoryTag = {
     tag: categoryToTagName[category],
-    name: categoryToVietnamese(category),
+    name: translator(TRANSLATOR_KEYS.CATEGORY, category),
     value: category,
   };
 

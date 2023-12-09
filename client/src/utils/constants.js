@@ -18,6 +18,8 @@ export const QUERY_KEYS = {
   PRODUCT: "product",
   INVENTORY_ITEMS: "inventoryItems",
   PRODUCT_REVIEWS: "productReviews",
+  MENUS: "menus",
+  MENU: "menu",
 };
 
 export const REGEX_PATTERNS = {

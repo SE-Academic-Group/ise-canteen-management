@@ -10,6 +10,7 @@ import {
   HiOutlineCog8Tooth,
   HiOutlineUserGroup,
 } from "react-icons/hi2";
+import { BiFoodMenu } from "react-icons/bi";
 
 const Nav = styled.nav`
   block-size: 100%;
@@ -90,6 +91,12 @@ function MainNav() {
           <StyledNavLink to="/products">
             <HiOutlineCube />
             <span>Sản phẩm</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/menus">
+            <BiFoodMenu />
+            <span>Thực đơn</span>
           </StyledNavLink>
         </li>
         <li>

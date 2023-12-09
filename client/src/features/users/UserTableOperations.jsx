@@ -4,7 +4,7 @@ import SearchBox from "../../ui/SearchBox";
 
 function UserTableOperations() {
   return (
-    <TableOperations>
+    <TableOperations between>
       <Filter
         filterField="role"
         options={[

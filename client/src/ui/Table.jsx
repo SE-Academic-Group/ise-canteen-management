@@ -1,5 +1,12 @@
 import { createContext, useContext } from "react";
 import styled from "styled-components";
+import {
+  formatDate,
+  formatDateTime,
+  formatVietnameseCurrency,
+  formatVietnamesePhoneNumber,
+  padString,
+} from "../utils/helpers";
 
 const StyledTable = styled.div`
   font-size: 1.4rem;
@@ -67,7 +74,7 @@ const Name = styled.span`
   word-break: break-all;
 `;
 
-const Amount = styled.span`
+const StyledAmount = styled.span`
   font-weight: 500;
 `;
 
@@ -79,7 +86,7 @@ const Description = styled.p`
   word-break: break-all;
 `;
 
-const Thumbnail = styled.img`
+const StyledThumbnail = styled.img`
   display: block;
   width: 48px;
   aspect-ratio: 1 / 1;
@@ -196,6 +203,34 @@ function Body({ data, render }) {
   return <StyledBody>{data.map(render)}</StyledBody>;
 }
 
+function Amount({ children }) {
+  return <StyledAmount>{formatVietnameseCurrency(children)}</StyledAmount>;
+}
+
+function Phone({ children }) {
+  return <Text>{formatVietnamesePhoneNumber(children)}</Text>;
+}
+
+function Date({ children }) {
+  return <Text>{formatDate(children)}</Text>;
+}
+
+function DateTime({ children }) {
+  return <Text>{formatDateTime(children, true)}</Text>;
+}
+
+function Serial({ children }) {
+  return <Text>{padString(children, 3)}</Text>;
+}
+
+function Thumbnail({ src, alt, placeholder }) {
+  if (!src) {
+    return <NoThumbnail>{placeholder}</NoThumbnail>;
+  }
+
+  return <StyledThumbnail src={src} alt={alt} />;
+}
+
 Table.Header = Header;
 Table.Body = Body;
 Table.Row = Row;
@@ -211,6 +246,10 @@ Table.Column = {
   Text,
   Rating,
   Img,
+  Phone,
+  Date,
+  DateTime,
+  Serial,
 };
 
 export default Table;
