@@ -1,7 +1,7 @@
 import { PAGE_SIZE } from "./constants";
 
 export function buildUrlParams(resource, options) {
-  const { page, limit = PAGE_SIZE, filters, sortBy } = options;
+  const { page, limit = PAGE_SIZE, filters, sortBy, q } = options;
 
   const searchParams = new URLSearchParams();
 
@@ -16,6 +16,8 @@ export function buildUrlParams(resource, options) {
     const prefix = sortBy.order === "asc" ? "" : "-";
     searchParams.append("sort", `${prefix}${sortBy.sort}`);
   }
+
+  q && searchParams.append("q", q);
 
   return resource + "?" + searchParams.toString();
 }

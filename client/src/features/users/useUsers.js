@@ -5,9 +5,9 @@ import { getUsers } from "../../services/apiUsers";
 import { PAGE_SIZE, QUERY_KEYS } from "../../utils/constants";
 
 export function useUsers() {
-  const { page, filters } = useApiParams({ filterFields: ["role"] });
-  const queryKey = [QUERY_KEYS.USERS, page, filters];
-  const queryOptions = { page, filters };
+  const { page, filters, q } = useApiParams({ filterFields: ["role"] });
+  const queryKey = [QUERY_KEYS.USERS, page, filters, q];
+  const queryOptions = { page, filters, q };
 
   const {
     isLoading,
