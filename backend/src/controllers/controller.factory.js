@@ -48,7 +48,8 @@ exports.getAll = (Model, options) => async (req, res, next) => {
 		}
 	}
 
-	const docs = await features.query;
+	// Added .lean() to improve performance
+	const docs = await features.query.lean();
 	const count = await Model.countDocuments(features.filterObj);
 
 	// SEND RESPONSE
@@ -62,13 +63,13 @@ exports.getAll = (Model, options) => async (req, res, next) => {
 };
 
 exports.getOne = (Model) => async (req, res, next) => {
-	let query = Model.findById(req.params.id);
-	const doc = await query;
+	const doc = await Model.findById(req.params.id).lean();
 
 	if (!doc) {
 		throw new AppError(
-			`Không tìm thấy document nào có ID ${req.params.id}`,
-			404
+			404,
+			"NOT_FOUND",
+			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`
 		);
 	}
 
@@ -86,8 +87,9 @@ exports.updateOne = (Model) => async (req, res, next) => {
 
 	if (!doc) {
 		throw new AppError(
-			`Không tìm thấy document nào có ID ${req.params.id}`,
-			404
+			404,
+			"NOT_FOUND",
+			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`
 		);
 	}
 
@@ -103,8 +105,9 @@ exports.deleteOne = (Model) => async (req, res, next) => {
 
 	if (!doc) {
 		throw new AppError(
-			`Không tìm thấy document nào có ID ${req.params.id}`,
-			404
+			404,
+			"NOT_FOUND",
+			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`
 		);
 	}
 

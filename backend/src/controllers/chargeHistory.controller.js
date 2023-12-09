@@ -24,13 +24,25 @@ exports.createChargeHistory = async (req, res, next) => {
 	if (req.user.role === "cashier" || req.user.role === "admin") {
 		// Check if email is provided
 		if (!email) {
-			throw new AppError("Phải cung cấp email người dùng muốn nạp tiền.", 400);
+			throw new AppError(
+				400,
+				"INVALID_ARGUMENTS",
+				"Phải có email của người được nạp tiền.",
+				{
+					field: "email",
+					message: "Phải có email của người được nạp tiền.",
+				}
+			);
 		}
 
 		// Get the charged user by email from req.body
 		const user = await User.findOne({ email });
 		if (!user) {
-			throw new AppError(`Không có người dùng với email ${email}`, 404);
+			throw new AppError(
+				404,
+				"NOT_FOUND",
+				`Không tìm thấy người dùng với email ${email}.`
+			);
 		}
 
 		newCharge.userId = user.id;

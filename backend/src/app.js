@@ -18,6 +18,7 @@ const inventoryItemRouter = require("./routes/inventoryItem.route");
 const menuHistoryRouter = require("./routes/menuHistory.route");
 const authRouter = require("./routes/auth.route");
 const chargeHistoryRouter = require("./routes/chargeHistory.route");
+const todayMenuRouter = require("./routes/todayMenu.route");
 
 const app = express();
 
@@ -88,6 +89,7 @@ app.use("/api/v1/inventory-items", inventoryItemRouter);
 app.use("/api/v1/menu-histories", menuHistoryRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/charge-histories", chargeHistoryRouter);
+app.use("/api/v1/today-menu", todayMenuRouter);
 
 // Error handler
 app.use((err, req, res, next) => {
@@ -101,7 +103,9 @@ app.use((err, req, res, next) => {
 
 		return res.status(400).json({
 			status: "fail",
-			errors: validationErrors.message,
+			message: validationErrors.join("; "),
+			reasonPhrase: "INVALID_ARGUMENTS",
+			metadata: {},
 		});
 	}
 
@@ -120,14 +124,17 @@ app.use((err, req, res, next) => {
 	// Check if error is AppError (custom error)
 	if (err.isOperational) {
 		return res.status(err.statusCode || 500).json({
-			status: err.status || "error",
+			status: err.status,
 			message: err.message,
+			reasonPhrase: err.reasonPhrase,
+			metadata: err.metadata,
 		});
 	} else {
 		console.log(err);
 		return res.status(500).json({
 			status: "error",
 			message: "Có lỗi xảy ra. Xin hãy liên hệ với admin.",
+			reasonPhrase: "INTERNAL_SERVER_ERROR",
 		});
 	}
 });

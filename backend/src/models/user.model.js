@@ -117,8 +117,14 @@ userSchema.methods.isCorrectPassword = async function (inputPassword) {
 	return await bcrypt.compare(inputPassword, this.password);
 };
 
+userSchema.methods.updatePassword = async function (newPassword) {
+	this.password = await bcrypt.hash(newPassword, 12);
+	this.passwordChangedAt = Date.now() - 1000;
+	await this.save();
+};
+
 // Check if the password is changed after the token was issued
-userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+userSchema.methods.isChangedPasswordAfter = function (JWTTimestamp) {
 	// Password has been changed after user being created
 	if (this.passwordChangedAt) {
 		const passwordChangeTime = parseInt(

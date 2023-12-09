@@ -84,15 +84,15 @@ exports.vnpayReturn = async (req, res, next) => {
 	// 3 belows conditions are never met if using the exact vnpUrl provided by backend.
 	// Just in case, I still keep them here.
 	if (secureHash !== signed) {
-		throw new AppError("Checksum failed", 400);
+		throw new AppError(400, "INVALID_ARGUMENTS", "Invalid signature");
 	}
 
 	if (!checkOrderId) {
-		throw new AppError("Order not found", 404);
+		throw new AppError(400, "INVALID_ARGUMENTS", "Invalid order ID");
 	}
 
 	if (!checkAmount) {
-		throw new AppError("Amount invalid", 400);
+		throw new AppError(400, "INVALID_ARGUMENTS", "Invalid amount");
 	}
 
 	// Thanh toán thành công

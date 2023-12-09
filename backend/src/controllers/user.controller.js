@@ -29,8 +29,9 @@ exports.updateUser = async (req, res, next) => {
 
 	if (!user) {
 		throw new AppError(
-			`Không tìm thấy người dùng nào có ID ${req.params.id}`,
-			404
+			404,
+			"NOT_FOUND",
+			`Không tìm thấy người dùng với ID ${req.params.id}.`
 		);
 	}
 
@@ -60,14 +61,6 @@ exports.resizeUserPhoto = async (req, res, next) => {
 };
 
 exports.updateMe = async (req, res, next) => {
-	// Filter out unwanted fields names that are not allowed to be updated
-	console.log(req.body);
-	const allowedFields = ["name", "phone", "image"];
-	for (const key in req.body) {
-		if (!allowedFields.includes(key)) {
-			throw new AppError(`Người dùng không được cập nhật ${key}.`, 400);
-		}
-	}
 	if (req.file) req.body.image = req.file.filename;
 
 	// Update user document

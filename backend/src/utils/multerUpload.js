@@ -8,7 +8,14 @@ const multerFilter = (req, file, cb) => {
 	if (file.mimetype.startsWith("image")) {
 		cb(null, true);
 	} else {
-		cb(new AppError("Vui lòng upload file có định dạng ảnh.", 400), false);
+		cb(
+			new AppError(
+				400,
+				"INVALID_ARGUMENTS",
+				"Vui lòng upload file có định dạng ảnh"
+			),
+			false
+		);
 	}
 };
 

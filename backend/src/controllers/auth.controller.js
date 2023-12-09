@@ -14,8 +14,10 @@ exports.signup = async (req, res, next) => {
 
 	const existUser = await User.findOne({ email });
 	if (existUser) {
-		console.log(existUser);
-		throw new AppError("Email đã được sử dụng.", 400);
+		throw new AppError(400, "DUPLICATE_KEYS", "Email đã tồn tại.", {
+			field: "email",
+			message: "Email đã tồn tại.",
+		});
 	}
 
 	const user = await User.create({
@@ -47,12 +49,17 @@ exports.login = async (req, res, next) => {
 	// 2) Check if user exists && password is correct
 	const user = await User.findOne({ email }, "+password +active");
 	if (!user || !(await user.isCorrectPassword(password)))
-		throw new AppError("Email hoặc mật khẩu không đúng.", 401);
+		throw new AppError(
+			401,
+			"INVALID_CREDENTIALS",
+			"Email hoặc mật khẩu không đúng."
+		);
 
 	if (!user.active)
 		throw new AppError(
-			"Tài khoản của bạn đã bị khóa. Vui lòng liên hệ với quản trị viên để mở lại.",
-			401
+			401,
+			"ACCOUNT_DISABLED",
+			"Tài khoản của bạn đã bị khóa. Vui lòng liên hệ với quản trị viên để mở lại."
 		);
 
 	// 3) If everything ok, send tokens to client
@@ -83,6 +90,50 @@ exports.logout = (req, res, next) => {
 	res.status(200).json({ status: "success" });
 };
 
+exports.updatePassword = async (req, res, next) => {
+	const { oldPassword, newPassword, newPasswordConfirm } = req.body;
+
+	// 1) Get user from collection
+	const user = await User.findById(req.user.id).select("+password");
+
+	// 2) Check if POSTed current password is correct
+	if (!(await user.isCorrectPassword(oldPassword))) {
+		throw new AppError(
+			401,
+			"INVALID_CREDENTIALS",
+			"Mật khẩu hiện tại không đúng."
+		);
+	}
+
+	// 3) Check if new password and confirm password are the same
+	if (newPassword !== newPasswordConfirm) {
+		throw new AppError(
+			400,
+			"INVALID_ARGUMENTS",
+			"Mật khẩu nhập lại không khớp.",
+			{
+				newPasswordConfirm: "Mật khẩu nhập lại không khớp.",
+			}
+		);
+	}
+
+	// 3) If so, update password
+	await user.updatePassword(newPassword);
+
+	// 4) Log user in, send JWT
+	const { accessToken, accessTokenOptions } = createAccessToken(user, req);
+	const { refreshToken, refreshTokenOptions } = createRefreshToken(user, req);
+
+	res.cookie("accessToken", accessToken, accessTokenOptions);
+	res.cookie("refreshToken", refreshToken, refreshTokenOptions);
+
+	res.status(200).json({
+		status: "success",
+		accessToken,
+		refreshToken,
+	});
+};
+
 exports.protect = async (req, res, next) => {
 	// 1) Getting tokens
 	let accessToken;
@@ -100,8 +151,9 @@ exports.protect = async (req, res, next) => {
 	// If there is no accessToken and no refreshToken, throw error
 	if (!accessToken && !refreshToken) {
 		throw new AppError(
-			"Bạn chưa đăng nhập. Vui lòng đăng nhập để tiếp tục",
-			401
+			401,
+			"SESSION_EXPIRED",
+			"Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại."
 		);
 	}
 
@@ -124,8 +176,9 @@ exports.protect = async (req, res, next) => {
 				err instanceof jwt.NotBeforeError
 			) {
 				throw new AppError(
-					"Phiên đăng nhập có vấn đề. Vui lòng đăng nhập lại.",
-					401
+					401,
+					"INVALID_TOKENS",
+					"Phiên đăng nhập có vấn đề. Vui lòng đăng nhập lại."
 				);
 			} else if (err instanceof jwt.TokenExpiredError) {
 				accessTokenExpired = true;
@@ -139,8 +192,9 @@ exports.protect = async (req, res, next) => {
 	if (accessTokenExpired) {
 		if (!refreshToken) {
 			throw new AppError(
-				"Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.",
-				401
+				401,
+				"SESSION_EXPIRED",
+				"Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại."
 			);
 		}
 
@@ -159,13 +213,15 @@ exports.protect = async (req, res, next) => {
 				err instanceof jwt.NotBeforeError
 			) {
 				throw new AppError(
-					"Phiên đăng nhập có vấn đề. Vui lòng đăng nhập lại.",
-					401
+					401,
+					"INVALID_TOKENS",
+					"Phiên đăng nhập có vấn đề. Vui lòng đăng nhập lại."
 				);
 			} else if (err instanceof jwt.TokenExpiredError) {
 				throw new AppError(
-					"Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.",
-					401
+					401,
+					"SESSION_EXPIRED",
+					"Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại."
 				);
 			}
 		}
@@ -174,8 +230,9 @@ exports.protect = async (req, res, next) => {
 	// Check if decode is undefined
 	if (!decoded) {
 		throw new AppError(
-			"Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại.",
-			401
+			401,
+			"INVALID_TOKENS",
+			"Phiên đăng nhập có vấn đề. Vui lòng đăng nhập lại."
 		);
 	}
 
@@ -190,22 +247,21 @@ exports.protect = async (req, res, next) => {
 	const currentUser = await query;
 
 	if (!currentUser)
-		throw new AppError(
-			"Người dùng này không còn tồn tại. Vui lòng đăng nhập lại.",
-			401
-		);
+		throw new AppError(404, "NOT_FOUND", "Người dùng không tồn tại.");
 
 	if (!currentUser.active)
 		throw new AppError(
-			"Tài khoản của bạn đã bị khóa. Vui lòng liên hệ với quản trị viên để mở lại.",
-			401
+			401,
+			"ACCOUNT_DISABLED",
+			"Tài khoản của bạn đã bị khóa. Vui lòng liên hệ với quản trị viên để mở lại."
 		);
 
 	// 4) Check if user changed password after the token was issued
-	if (currentUser.changedPasswordAfter(decoded.iat))
+	if (currentUser.isChangedPasswordAfter(decoded.iat))
 		throw new AppError(
-			"Người dùng đã thay đổi mật khẩu. Vui lòng đăng nhập lại.",
-			401
+			401,
+			"SESSION_EXPIRED",
+			"Người dùng đã thay đổi mật khẩu. Vui lòng đăng nhập lại."
 		);
 
 	// GRANT ACCESS TO PROTECTED ROUTE
@@ -230,8 +286,9 @@ exports.restrictTo = (...roles) => {
 		// roles ['admin', 'cashier', 'staff', 'customer']
 		if (!roles.includes(req.user.role)) {
 			throw new AppError(
-				"Người dùng không có quyền để thực hiện hành động này.",
-				403
+				403,
+				"ACCESS_DENIED",
+				"Người dùng không có quyền truy cập vào tài nguyên này."
 			);
 		}
 

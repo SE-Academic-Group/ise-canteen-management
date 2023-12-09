@@ -5,6 +5,7 @@ const userController = require("../controllers/user.controller");
 const validateRequest = require("../middlewares/validateRequest");
 const loginSchema = require("../schemas/auth/login.schema");
 const signupSchema = require("../schemas/auth/signup.schema");
+const updateMeSchema = require("../schemas/auth/updateMe.schema");
 
 const router = express.Router();
 
@@ -16,10 +17,13 @@ router.use(authController.protect);
 router.get("/me", userController.getMe, userController.getUser);
 router.patch(
 	"/me",
+	validateRequest(updateMeSchema),
 	userController.uploadUserPhoto,
 	userController.resizeUserPhoto,
 	userController.updateMe
 );
 router.delete("/me", userController.deleteMe);
+
+router.patch("/update-password", authController.updatePassword);
 
 module.exports = router;
