@@ -33,6 +33,10 @@ export function formatDateTime(dateStr) {
   return format(parseISO(dateStr), "MMM d, yyyy h:mm a");
 }
 
+export function formatDate(dateStr) {
+  return format(parseISO(dateStr), "MMM d, yyyy");
+}
+
 export function toTitleCase(value) {
   var i, j, str, lowers, uppers;
   str = value.replace(/([^\W_]+[^\s-]*) */g, function (txt) {
