@@ -18,6 +18,7 @@ import Users from "./pages/Users";
 import Login from "./pages/Login";
 import Stats from "./pages/Stats";
 import Order from "./pages/Order";
+import Menus from "./pages/Menus";
 
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
@@ -56,6 +57,7 @@ function App() {
               <Route path="users" element={<Users />} />
               <Route path="products" element={<Products />} />
               <Route path="products/:productId" element={<Product />} />
+              <Route path="menus" element={<Menus />} />
               <Route path="inventory" element={<Inventory />} />
               <Route path="stats" element={<Stats />} />
               <Route path="settings" element={<Settings />} />
