@@ -4,12 +4,13 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 
 import { DarkModeProvider } from "./context/DarkModeContext";
-
 import GlobalStyles from "./styles/GlobalStyles";
+
 import PageNotFound from "./pages/PageNotFound";
 import Inventory from "./pages/Inventory";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
+import Product from "./pages/Product";
 import Settings from "./pages/Settings";
 import Account from "./pages/Account";
 import Orders from "./pages/Orders";
@@ -54,6 +55,7 @@ function App() {
               <Route path="orders/:orderId" element={<Order />} />
               <Route path="users" element={<Users />} />
               <Route path="products" element={<Products />} />
+              <Route path="products/:productId" element={<Product />} />
               <Route path="inventory" element={<Inventory />} />
               <Route path="stats" element={<Stats />} />
               <Route path="settings" element={<Settings />} />

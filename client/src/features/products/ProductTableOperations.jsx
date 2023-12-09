@@ -12,7 +12,7 @@ function ProductTableOperations() {
         options={[
           { value: "all", label: "Tất cả" },
           { value: "food", label: "Đồ ăn" },
-          { value: "drink", label: "Nước uống" },
+          { value: "beverage", label: "Nước uống" },
           { value: "other", label: "Khác" },
         ]}
       />
@@ -20,7 +20,7 @@ function ProductTableOperations() {
       <FlexContainer>
         <SortBy
           options={[
-            { value: "id-asc", label: "Sắp xếp mặc định" },
+            { value: "default", label: "Sắp xếp mặc định" },
             {
               value: "ratingAverage-desc",
               label: "Sắp xết theo đanh giá (cao)",

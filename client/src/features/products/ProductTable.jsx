@@ -29,8 +29,8 @@ export default function ProductTable() {
 
         <Table.Body
           data={products}
-          render={(product, i) => (
-            <ProductRow key={product.id} product={product} />
+          render={(product) => (
+            <ProductRow key={product._id} product={product} />
           )}
         />
 

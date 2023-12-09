@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
+import { useQueryFetch } from "../../hooks/useQueryFetch";
 import { getOrder } from "../../services/apiOrders";
 import { QUERY_KEYS } from "../../utils/constants";
 
@@ -11,10 +11,9 @@ export function useOrder() {
     isLoading,
     data: order,
     error,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.ORDER, orderId],
-    queryFn: () => getOrder(orderId),
-    retry: false,
+  } = useQueryFetch({
+    fn: () => getOrder(orderId),
+    key: [QUERY_KEYS.ORDER, orderId],
   });
 
   return { isLoading, error, order };

@@ -3,7 +3,7 @@
 export function categoryToVietnamese(category) {
   const categoryMap = {
     food: "Đồ ăn",
-    drink: "Nước uống",
+    beverage: "Nước uống",
     ingredient: "Nguyên liệu",
     spice: "Gia vị",
     other: "Khác",

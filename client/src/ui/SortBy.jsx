@@ -6,7 +6,14 @@ function SortBy({ options }) {
   const sortBy = searchParams.get("sortBy") || "";
 
   function handleChange(e) {
-    searchParams.set("sortBy", e.target.value);
+    const value = e.target.value;
+
+    if (value === "default") {
+      searchParams.delete("sortBy");
+    } else {
+      searchParams.set("sortBy", e.target.value);
+    }
+
     setSearchParams(searchParams);
   }
 
