@@ -18,6 +18,10 @@ const Label = styled.span`
     height: 2rem;
     color: var(--color-brand-600);
   }
+
+  & span {
+    text-wrap: nowrap;
+  }
 `;
 
 function DataItem({ icon, label, children }) {
