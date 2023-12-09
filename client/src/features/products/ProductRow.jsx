@@ -31,9 +31,7 @@ function ProductRow({ product }) {
     <Table.Row>
       <Table.Column.Img src={IMAGE_URL + image} width={100} height={100} />
       <Table.Column.Name>{name}</Table.Column.Name>
-      <Table.Column.Amount>
-        {formatVietnameseCurrency(price)}
-      </Table.Column.Amount>
+      <Table.Column.Amount>{price}</Table.Column.Amount>
       <Table.Column.Description>{description}</Table.Column.Description>
       <Tag type={categoryToTagName[category]}>
         {categoryToVietnamese(category)}

@@ -17,16 +17,24 @@ export function padString(str, length, char = "0") {
 }
 
 export function formatVietnamesePhoneNumber(phoneNumber) {
+  if (!phoneNumber) {
+    return "___ ___ ___";
+  }
+
   const phone = phoneNumber.toString();
   const formattedPhone = phone.replace(/(\d{4})(\d{3})(\d{3})/, "$1 $2 $3");
   return formattedPhone;
 }
 
 export function formatVietnameseCurrency(value) {
+  if (value !== 0 && !value) {
+    return "___ ___ ___";
+  }
+
   return new Intl.NumberFormat("vi-VN", {
     style: "currency",
     currency: "VND",
-  }).format(value ?? 0);
+  }).format(value);
 }
 
 export function formatDateTime(dateStr) {

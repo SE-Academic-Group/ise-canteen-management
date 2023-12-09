@@ -3,19 +3,14 @@ import { HiPencil, HiTrash } from "react-icons/hi2";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
+import SpinnerMini from "../../ui/SpinnerMini";
 import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
-import SpinnerMini from "../../ui/SpinnerMini";
 
-import {
-  formatVietnameseCurrency,
-  formatVietnamesePhoneNumber,
-  padString,
-} from "../../utils/helpers";
-import { translator, TRANSLATOR_KEYS } from "../../utils/translator";
-import { useDeleteUser } from "./useDeleteUser";
+import { TRANSLATOR_KEYS, translator } from "../../utils/translator";
 import { useUser } from "../authentication/useUser";
 import EditUserForm from "./EditUserForm";
+import { useDeleteUser } from "./useDeleteUser";
 
 const roleToTagName = {
   admin: "blue",
@@ -27,17 +22,12 @@ const roleToTagName = {
 function transformUser(user) {
   const transformed = {
     ...user,
-    number: padString(user.serial, 3),
     role: {
       tag: roleToTagName[user.role],
       name: translator(TRANSLATOR_KEYS.ROLE, user.role),
       value: user.role,
     },
     image: `https://ui-avatars.com/api/?name=${user.name}&background=random&rounded=true&size=48&font-size=0.33&bold=true&color=fff&length=1`,
-    phone: user.phone
-      ? formatVietnamesePhoneNumber(user.phone)
-      : "_____ ____ ____",
-    balance: formatVietnameseCurrency(user.balance),
   };
 
   return transformed;
@@ -52,36 +42,30 @@ function UserRow({ user, serial }) {
     return <SpinnerMini />;
   }
 
-  const { _id, name, email, image, phone, role, balance, number } =
-    transformUser({
-      ...user,
-      serial,
-    });
+  const { _id, name, email, image, phone, role, balance } = transformUser(user);
 
   return (
     <Table.Row>
-      <Table.Column.Number>{number}</Table.Column.Number>
-      {image ? (
-        <Table.Column.Thumbnail src={image} alt={"Avatar of " + name} />
-      ) : (
-        <Table.Column.NoThumbnail>{name.at(0) ?? "%"}</Table.Column.NoThumbnail>
-      )}
+      <Table.Column.Serial>{serial}</Table.Column.Serial>
+      <Table.Column.Thumbnail
+        src={image}
+        alt={"Avatar of " + name}
+        placeholder={name.at(0) ?? "%"}
+      />
       <Table.Column.Stacked>
         <span>{name}</span>
         <span>{email}</span>
       </Table.Column.Stacked>
-      <Table.Column.Number>{phone}</Table.Column.Number>
+      <Table.Column.Phone>{phone}</Table.Column.Phone>
       <Tag type={role.tag}>{role.name}</Tag>
-      <Table.Column.Amount>
-        {role.value === "customer" ? (
-          balance
-        ) : (
-          <>
-            <span className="sr-only">No balance</span>
-            <span role="presentation">___ ___ __ </span>
-          </>
-        )}
-      </Table.Column.Amount>
+      {role.value === "customer" ? (
+        <Table.Column.Amount>{balance}</Table.Column.Amount>
+      ) : (
+        <>
+          <span className="sr-only">No balance</span>
+          <span role="presentation">___ ___ __ </span>
+        </>
+      )}
 
       {!isCurrentUser && (
         <Modal>
