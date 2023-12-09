@@ -7,9 +7,6 @@ const router = express.Router();
 // Reviews belong to a product
 router.use("/:productId/reviews", reviewRouter);
 
-// Search products by name from query string (case-insensitive, match from beginning)
-router.get("/search", productController.searchProducts);
-
 router.get("/", productController.getAllProducts);
 router.get("/:id", productController.getProduct);
 router.post(

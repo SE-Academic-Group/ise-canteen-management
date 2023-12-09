@@ -37,20 +37,3 @@ exports.getAllProducts = ControllerFactory.getAll(Product);
 exports.getProduct = ControllerFactory.getOne(Product);
 exports.updateProduct = ControllerFactory.updateOne(Product);
 exports.deleteProduct = ControllerFactory.deleteOne(Product);
-
-exports.searchProducts = async (req, res, next) => {
-	// Search products by name
-	let { name } = req.query;
-
-	// Replace all %20 with spaces
-	name = name.replace(/%20/g, " ");
-
-	// Use regex for search (case-insensitive)
-	const filter = name ? { name: { $regex: `${name}`, $options: "i" } } : {};
-	const products = await Product.find(filter);
-
-	res.status(200).json({
-		status: "success",
-		data: products,
-	});
-};

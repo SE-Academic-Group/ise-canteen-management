@@ -20,7 +20,6 @@ router.use(authController.protect);
 // ----- For Cashier and Admin to look up users -----
 router.use(authController.restrictTo("cashier", "admin"));
 
-router.get("/search", userController.searchUsers);
 router.get("/", userController.getAllUsers);
 router.get("/:id", userController.getUser);
 
