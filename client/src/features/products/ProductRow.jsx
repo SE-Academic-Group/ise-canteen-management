@@ -7,7 +7,6 @@ import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
 import EditProductForm from "./EditProductForm";
 
-import { formatVietnameseCurrency } from "../../utils/helpers";
 import { IMAGE_URL } from "../../utils/constants";
 import { categoryToVietnamese } from "../../utils/translator";
 import { useDeleteProduct } from "./useDeleteProduct";
