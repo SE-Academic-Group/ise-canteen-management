@@ -1,43 +1,35 @@
-import { useQueryClient, useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { useApiParams } from "../../hooks/useApiParams";
+import { useQueryFetch } from "../../hooks/useQueryFetch";
+import { useQueryPrefetch } from "../../hooks/useQueryPrefetch";
 import { getUsers } from "../../services/apiUsers";
 import { PAGE_SIZE, QUERY_KEYS } from "../../utils/constants";
 
 export function useUsers() {
-  const queryClient = useQueryClient();
-  const [searchParams] = useSearchParams();
-
-  const filterValue = searchParams.get("role");
-  const pageValue = searchParams.get("page") ?? 1;
-  const page = pageValue * 1;
-
-  const filters =
-    !filterValue || filterValue === "all"
-      ? []
-      : [{ field: "role", value: filterValue }];
+  const { page, filters } = useApiParams({ filterFields: ["role"] });
+  const queryKey = [QUERY_KEYS.USERS, page, filters];
+  const queryOptions = { page, filters };
 
   const {
     isLoading,
-    data: { data, count } = {},
     error,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.USERS, page, filters],
-    queryFn: () => getUsers({ page, filters }),
+    data: { data, count },
+  } = useQueryFetch({
+    fn: () => getUsers(queryOptions),
+    key: queryKey,
   });
 
-  const pageCount = Math.ceil(count / PAGE_SIZE);
+  const noPage = Math.ceil(count / PAGE_SIZE);
 
-  if (page < pageCount)
-    queryClient.prefetchQuery({
-      queryKey: [QUERY_KEYS.USERS, page + 1, filters],
-      queryFn: () => getUsers({ page: page + 1, filters }),
-    });
-
-  if (page > 1)
-    queryClient.prefetchQuery({
-      queryKey: [QUERY_KEYS.USERS, page - 1, filters],
-      queryFn: () => getUsers({ page: page - 1, filters }),
-    });
+  useQueryPrefetch({
+    fn: () => getUsers({ ...queryOptions, page: page + 1 }),
+    key: queryKey.with(1, page + 1),
+    when: page < noPage,
+  });
+  useQueryPrefetch({
+    fn: () => getUsers({ ...queryOptions, page: page - 1 }),
+    key: queryKey.with(1, page - 1),
+    when: page > 1,
+  });
 
   return { isLoading, error, users: data, count };
 }
