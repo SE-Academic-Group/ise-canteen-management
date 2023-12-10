@@ -62,8 +62,16 @@ exports.getAll = (Model, options) => async (req, res, next) => {
 	});
 };
 
-exports.getOne = (Model) => async (req, res, next) => {
-	const doc = await Model.findById(req.params.id).lean();
+exports.getOne = (Model, options) => async (req, res, next) => {
+	const query = Model.findById(req.params.id).lean();
+	if (options && options.populate) {
+		if (Array.isArray(options.populate)) {
+			options.populate.forEach((option) => query.populate(option));
+		} else {
+			query.populate(options.populate);
+		}
+	}
+	const doc = await query;
 
 	if (!doc) {
 		throw new AppError(

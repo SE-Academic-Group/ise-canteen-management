@@ -6,10 +6,15 @@ const AppError = require("../utils/appError");
 exports.getAllMenuHistory = ControllerFactory.getAll(MenuHistory, {
 	populate: {
 		path: "menuItems.productId",
-		select: "name",
+		select: "name image",
 	},
 });
-exports.getMenuHistory = ControllerFactory.getOne(MenuHistory);
+exports.getMenuHistory = ControllerFactory.getOne(MenuHistory, {
+	populate: {
+		path: "menuItems.productId",
+		select: "name image",
+	},
+});
 exports.createMenuHistory = ControllerFactory.createOne(MenuHistory);
 exports.updateMenuHistory = ControllerFactory.updateOne(MenuHistory);
 exports.deleteMenuHistory = ControllerFactory.deleteOne(MenuHistory);
