@@ -26,7 +26,7 @@ const Layout = styled.div`
   width: 100%;
 `;
 
-function SearchCustomer() {
+function SearchCustomer({ currentCustomer, handleSelectCustomer }) {
   const { customers, isLoading } = useCustomers();
 
   return (
@@ -39,7 +39,12 @@ function SearchCustomer() {
         ) : (
           <Layout>
             {customers.map((customer) => (
-              <CustomerBox key={customer._id} customer={customer} />
+              <CustomerBox
+                key={customer._id}
+                customer={customer}
+                active={currentCustomer?._id === customer._id}
+                onClick={() => handleSelectCustomer(customer)}
+              />
             ))}
           </Layout>
         )}
