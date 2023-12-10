@@ -1,8 +1,8 @@
 import {
   createEditItemFactory,
   deleteItemFactory,
-  getItemsFactory,
   getItemFactory,
+  getItemsFactory,
 } from "../utils/apiItemsFactory";
 
 export const getMenuHistories = getItemsFactory("menu-histories");
