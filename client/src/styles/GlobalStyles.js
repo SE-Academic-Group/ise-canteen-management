@@ -194,6 +194,30 @@ img {
   white-space: nowrap;
   border-width: 0;
 }
+
+
+.custom-scrollbar {
+  --sb-track-color: var(--color-grey-300);
+  --sb-thumb-color: var(--color-brand-500);
+  --sb-size: 8px;
+
+  scrollbar-color: var(--sb-thumb-color)
+                   var(--sb-track-color);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: var(--sb-size)
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 2px;
+}
 `;
 
 export default GlobalStyles;
