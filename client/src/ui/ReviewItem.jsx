@@ -14,17 +14,12 @@ const StyledReviewItem = styled.article`
 `;
 
 function ReviewItem({ review }) {
-  const {
-    review: content,
-    rating,
-    createdAt,
-    userId: { name },
-  } = review;
+  const { review: content, rating, createdAt, userId } = review;
 
   return (
     <StyledReviewItem>
       <DataItem icon={<MdOutlineDriveFileRenameOutline />} label="Từ">
-        {name}, {new Date(createdAt).toLocaleString("vi-VN")}
+        {userId?.name ?? "Khách"}, {new Date(createdAt).toLocaleString("vi-VN")}
       </DataItem>
       <DataItem icon={<MdStarBorderPurple500 />} label="Đánh giá">
         {rating} sao
