@@ -5,6 +5,7 @@ function Menus() {
   return (
     <>
       <PageHeading>Quản lý thực đơn</PageHeading>
+      <div>today menu</div>
       <MenuTable />
     </>
   );
