@@ -1,4 +1,5 @@
 import { format, parseISO } from "date-fns";
+import { IMAGE_URL } from "./constants";
 
 export function getToday(options = {}) {
   const today = new Date();
@@ -99,4 +100,8 @@ export function generatePasswordFromEmail(email) {
   const emailParts = email.split("@");
   const generatedPassword = emailParts[0];
   return generatedPassword;
+}
+
+export function getImageUrl(path) {
+  return IMAGE_URL + path;
 }

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { getImageUrl } from "../../utils/helpers";
 
 const Container = styled.article`
   border: 1px solid var(--color-grey-300);
@@ -8,9 +9,15 @@ const Container = styled.article`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  text-align: center;
 
   & > *:not(:last-child) {
     margin-bottom: 0.4rem;
+  }
+
+  & p {
+    margin-block-end: 0.4rem;
   }
 `;
 
@@ -22,9 +29,7 @@ const Image = styled.img`
 `;
 
 const Name = styled.h4`
-  font-size: 1.8rem;
   font-weight: 500;
-  text-align: center;
   text-wrap: balance;
   padding-inline: 0.4rem;
 `;
@@ -38,17 +43,22 @@ function MenuItem({ menuItem = {} }) {
   const { productId, totalQuantity, remainQuantity } = menuItem;
   const soldQuantity = totalQuantity - remainQuantity;
 
+  if (!productId) {
+    return null;
+  }
+
+  const { name, image } = productId;
+
   return (
     <Container>
-      <Image
-        src="http://localhost:6969/images/products/banh-mi-pate.jpg"
-        alt="banh-mi-pate"
-      />
-      <Name>name of the product</Name>
-      <p>
-        Đã bán: {soldQuantity} / {totalQuantity}
-      </p>
-      <Link href={`/products/${productId}`}>Chi tiết sản phẩm</Link>
+      <Image src={getImageUrl(image)} alt="banh-mi-pate" />
+      <Name>{name}</Name>
+      <div>
+        <p>
+          Đã bán: {soldQuantity} / {totalQuantity}
+        </p>
+        <Link href={`/products/${productId._id}`}>Chi tiết sản phẩm</Link>
+      </div>
     </Container>
   );
 }
