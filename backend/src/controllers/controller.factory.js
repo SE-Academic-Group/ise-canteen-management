@@ -11,9 +11,15 @@ exports.createOne = (Model) => async (req, res, next) => {
 };
 
 exports.getAll = (Model, options) => async (req, res, next) => {
-	// Allow nested routes
-	if (req.params.userId) req.query.userId = req.params.userId;
-	if (req.params.productId) req.query.productId = req.params.productId;
+	// // Allow nested routes
+	// CURRENTLY COMMENTED OUT FOR REFACORING (add those id to query manually in route)
+	if (options && options.allowNested) {
+		for (const key in options.allowNested) {
+			if (req.params[key]) {
+				req.query[key] = req.params[key];
+			}
+		}
+	}
 
 	// Allow filtering by today's date
 	// Loops through query string, find any key that has a value of "today"

@@ -10,6 +10,9 @@ const cors = require("cors");
 const zod = require("zod");
 const { fromZodError } = require("zod-validation-error");
 
+// Import utils
+const convertToReadableMetadata = require("./utils/convertToReadableMetadata");
+
 const productRouter = require("./routes/product.route");
 const userRouter = require("./routes/user.route");
 const reviewRouter = require("./routes/review.route");
@@ -19,6 +22,8 @@ const menuHistoryRouter = require("./routes/menuHistory.route");
 const authRouter = require("./routes/auth.route");
 const chargeHistoryRouter = require("./routes/chargeHistory.route");
 const todayMenuRouter = require("./routes/todayMenu.route");
+const inventoryExportRouter = require("./routes/inventoryExport.route");
+const inventoryImportRouter = require("./routes/inventoryImport.route");
 
 const app = express();
 
@@ -90,6 +95,8 @@ app.use("/api/v1/menu-histories", menuHistoryRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/charge-histories", chargeHistoryRouter);
 app.use("/api/v1/today-menu", todayMenuRouter);
+app.use("/api/v1/inventory-exports", inventoryExportRouter);
+app.use("/api/v1/inventory-imports", inventoryImportRouter);
 
 // Error handler
 app.use((err, req, res, next) => {
@@ -103,9 +110,9 @@ app.use((err, req, res, next) => {
 
 		return res.status(400).json({
 			status: "fail",
-			message: validationErrors.join("; "),
+			message: validationErrors.message,
 			reasonPhrase: "INVALID_ARGUMENTS",
-			metadata: {},
+			metadata: convertToReadableMetadata(validationErrors.details),
 		});
 	}
 

@@ -4,7 +4,10 @@ const vnpayController = require("./vnpay.controller");
 const User = require("../models/user.model");
 const AppError = require("../utils/appError");
 
-exports.getAllChargeHistories = ControllerFactory.getAll(ChargeHistory);
+exports.getAllChargeHistories = ControllerFactory.getAll(ChargeHistory, {
+	populate: [{ path: "userId", select: "name email" }],
+	allowNested: ["userId"],
+});
 exports.getChargeHistory = ControllerFactory.getOne(ChargeHistory);
 exports.deleteChargeHistory = ControllerFactory.deleteOne(ChargeHistory);
 exports.updateChargeHistory = ControllerFactory.updateOne(ChargeHistory);

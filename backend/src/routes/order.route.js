@@ -1,15 +1,27 @@
 const express = require("express");
 const orderController = require("../controllers/order.controller");
 const authController = require("../controllers/auth.controller");
+const {
+	validateRequest,
+	validateRequestId,
+} = require("../middlewares/validateRequest");
+const createOrderSchema = require("../schemas/order/createOrder.schema");
 
 const router = express.Router({ mergeParams: true });
 
 router.use(authController.protect);
 
 router.get("/", orderController.getAllOrders);
-router.get("/:id", orderController.getOrder);
-router.post("/", orderController.setUserIds, orderController.createOrder);
-router.patch("/:id", orderController.updateOrder);
-router.delete("/:id", orderController.deleteOrder);
+router.post(
+	"/",
+	validateRequest(createOrderSchema),
+	orderController.createOrder
+);
+
+router
+	.route("/:id", validateRequestId("id"))
+	.get(orderController.getOrder)
+	.patch(orderController.updateOrder)
+	.delete(orderController.deleteOrder);
 
 module.exports = router;

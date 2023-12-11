@@ -148,6 +148,8 @@ exports.protect = async (req, res, next) => {
 	}
 	refreshToken = req.cookies.refreshToken;
 
+	console.log({ accessToken, refreshToken });
+
 	// If there is no accessToken and no refreshToken, throw error
 	if (!accessToken && !refreshToken) {
 		throw new AppError(
@@ -170,8 +172,10 @@ exports.protect = async (req, res, next) => {
 				process.env.ACCESS_SECRET
 			);
 		} catch (err) {
-			// If accessToken is expired (jwt.TokenExpiredError), skip this block and verify refreshToken
-			if (
+			// If accessToken is expired (jwt.TokenExpiredError), skip the error and verify refreshToken
+			if (err instanceof jwt.TokenExpiredError) {
+				accessTokenExpired = true;
+			} else if (
 				err instanceof jwt.JsonWebTokenError ||
 				err instanceof jwt.NotBeforeError
 			) {
@@ -180,8 +184,6 @@ exports.protect = async (req, res, next) => {
 					"INVALID_TOKENS",
 					"Phiên đăng nhập có vấn đề. Vui lòng đăng nhập lại."
 				);
-			} else if (err instanceof jwt.TokenExpiredError) {
-				accessTokenExpired = true;
 			} else {
 				throw err;
 			}

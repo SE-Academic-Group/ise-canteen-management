@@ -1,33 +1,38 @@
 const slugify = require("slugify");
 const mongoose = require("mongoose");
 
-const productSchema = new mongoose.Schema({
-	name: {
-		type: String,
-		required: [true, "Hãy nhập tên sản phẩm"],
-		unique: true,
+const productSchema = new mongoose.Schema(
+	{
+		name: {
+			type: String,
+			required: [true, "Hãy nhập tên sản phẩm"],
+			unique: true,
+		},
+		price: {
+			type: Number,
+			required: [true, "Hãy nhập giá sản phẩm"],
+		},
+		category: {
+			type: String,
+			required: true,
+		},
+		image: {
+			type: String,
+			required: true,
+		},
+		quantity: {
+			type: Number,
+			default: 0,
+		},
+		description: String,
+		ratingAverage: {
+			type: Number,
+		},
 	},
-	price: {
-		type: Number,
-		required: [true, "Hãy nhập giá sản phẩm"],
-	},
-	category: {
-		type: String,
-		required: true,
-	},
-	image: {
-		type: String,
-		required: true,
-	},
-	quantity: {
-		type: Number,
-		default: 0,
-	},
-	description: String,
-	ratingAverage: {
-		type: Number,
-	},
-});
+	{
+		toJSON: { virtuals: true, versionKey: false },
+	}
+);
 
 productSchema.index({ name: 1 });
 

@@ -3,11 +3,7 @@ const reviewController = require("../controllers/review.controller");
 
 const router = express.Router({ mergeParams: true });
 
-router.get(
-	"/",
-	reviewController.setProductOnQuery,
-	reviewController.getAllReviews
-);
+router.get("/", reviewController.getAllReviews);
 router.get("/:id", reviewController.getReview);
 router.post(
 	"/",
