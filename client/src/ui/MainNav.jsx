@@ -10,6 +10,7 @@ import {
   HiOutlineCog8Tooth,
   HiOutlineUserGroup,
 } from "react-icons/hi2";
+import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { BiFoodMenu } from "react-icons/bi";
 
 const Nav = styled.nav`
@@ -79,6 +80,12 @@ function MainNav() {
           <StyledNavLink to="/users">
             <HiOutlineUserGroup />
             <span>Người dùng</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/deposit">
+            <FaMoneyCheckDollar />
+            <span>Nạp tiền</span>
           </StyledNavLink>
         </li>
         <li>

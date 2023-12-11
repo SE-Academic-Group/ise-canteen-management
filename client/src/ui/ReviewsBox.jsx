@@ -7,7 +7,9 @@ const StyledReviewsBox = styled.section`
   border-radius: var(--border-radius-md);
 `;
 
-const Layout = styled.div`
+const Layout = styled.div.attrs({
+  className: "custom-scrollbar",
+})`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.6rem;
