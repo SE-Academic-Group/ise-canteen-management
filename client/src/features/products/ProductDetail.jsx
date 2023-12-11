@@ -33,13 +33,13 @@ const categoryToTagName = {
 function ProductDetail() {
   const moveBack = useMoveBack();
   const navigate = useNavigate();
-  const { product, isLoading } = useProduct();
+  const { product, isLoading, error } = useProduct();
   const { isDeleting, deleteProduct } = useDeleteProduct();
   const isWorking = isDeleting;
 
   if (isLoading) return <Spinner />;
 
-  if (!product) return <Empty resourceName="Sản phẩm" />;
+  if (!product || error) return <Empty resourceName="Sản phẩm" />;
 
   const { category, _id: productId } = product;
 

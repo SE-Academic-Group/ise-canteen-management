@@ -16,7 +16,7 @@ function ProductReviewsBox({ productId }) {
       {count === 0 ? (
         <p>Chưa có đánh giá cho sản phẩm này</p>
       ) : (
-        reviews.map((review) => <ReviewItem key={review.id} review={review} />)
+        reviews.map((review) => <ReviewItem key={review._id} review={review} />)
       )}
     </ReviewsBox>
   );

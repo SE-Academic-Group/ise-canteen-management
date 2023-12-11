@@ -11,7 +11,9 @@ const StyledAppLayout = styled.div`
   position: relative;
 `;
 
-const Main = styled.main`
+const Main = styled.main.attrs({
+  className: "custom-scrollbar",
+})`
   background-color: var(--color-grey-50);
   padding: 4rem 4.8rem 6.4rem;
   overflow-y: auto;
