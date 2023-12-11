@@ -4,11 +4,17 @@ import toast from "react-hot-toast";
 
 export function useDeposit() {
   const { mutate: createDeposit, isLoading: isCreating } = useMutation({
-    mutationFn: createDepositApi,
-    onSuccess: () => {
-      toast.success("Nạp tiền vào tài khoản thành công!");
+    mutationFn: (data) => {
+      toast.promise(createDepositApi(data), {
+        loading: "Đang nạp tiền...",
+        success: "Nạp tiền vào tài khoản thành công!",
+        error: "Có lỗi xảy ra!",
+      });
     },
-    onError: (err) => toast.error(err.message ?? "Có lỗi xảy ra!"),
+    // onSuccess: () => {
+    //   toast.success("Nạp tiền vào tài khoản thành công!");
+    // },
+    // onError: (err) => toast.error(err.message ?? "Có lỗi xảy ra!"),
   });
 
   return { createDeposit, isCreating };

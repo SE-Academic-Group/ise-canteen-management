@@ -29,7 +29,14 @@ const StepHeading = styled(Heading)`
   text-align: center;
 `;
 
-function DepositForm({ customer = {}, amount }) {
+const SuccessText = styled.span`
+  color: var(--color-green-700);
+  font-weight: 500;
+`;
+
+function DepositForm({ customer, amount }) {
+  if (!customer || !amount) return null;
+
   return (
     <>
       <StepHeading as="h2">Kết quả nạp tiền</StepHeading>
@@ -44,8 +51,17 @@ function DepositForm({ customer = {}, amount }) {
             <span>{customer?.email}</span>
           </p>
           <p>
+            <span>Số dư cũ: </span>
+            <span>{formatVietnameseCurrency(customer.balance)}</span>
+          </p>
+          <p>
             <span>Số tiền nạp: </span>
-            <span>{formatVietnameseCurrency(amount)}</span>
+            <SuccessText>{formatVietnameseCurrency(amount)}</SuccessText>
+          </p>
+          <hr />
+          <p>
+            <span>Số dư mới: </span>
+            <span>{formatVietnameseCurrency(amount + customer?.balance)}</span>
           </p>
         </Card>
       </Layout>

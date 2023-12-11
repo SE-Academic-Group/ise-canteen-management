@@ -9,7 +9,6 @@ import { useState } from "react";
 import Modal from "../../ui/Modal";
 import ConfirmAction from "../../ui/ConfirmAction";
 import { useDeposit } from "./useDeposit";
-import Spinner from "../../ui/Spinner";
 
 const Container = styled.div`
   padding: 3.2rem;
@@ -26,6 +25,7 @@ function DepositSteps() {
   const [step, setStep] = useState(0);
   const [customer, setCustomer] = useState(null);
   const [amount, setAmount] = useState(10000);
+  const [isSessionDone, setIsSessionDone] = useState(false);
   const { isCreating, createDeposit } = useDeposit();
   const length = 3;
   const disabled = (step === 0 && !customer) || (step === 1 && !amount);
@@ -71,9 +71,14 @@ function DepositSteps() {
     setStep(0);
     setCustomer(null);
     setAmount(10000);
+    setIsSessionDone(false);
   }
 
   function handleCreateDeposit() {
+    function onSuccess() {
+      setIsSessionDone(true);
+    }
+
     if (customer && amount) {
       createDeposit(
         {
@@ -81,7 +86,7 @@ function DepositSteps() {
           chargeAmount: amount,
         },
         {
-          onSuccess: handleReset,
+          onSuccess,
         }
       );
     }
@@ -107,10 +112,6 @@ function DepositSteps() {
         <HideComponent hidden={step !== 2}>
           <DepositForm customer={customer} amount={amount} />
         </HideComponent>
-
-        <HideComponent hidden={!isCreating}>
-          <Spinner />
-        </HideComponent>
       </Container>
       <ButtonGroup>
         <Button variation="secondary" onClick={prevStep} disabled={step === 0}>
@@ -126,9 +127,9 @@ function DepositSteps() {
         {step === length - 1 ? (
           <Modal>
             <Modal.Open>
-              <Button variation="primary" disabled={isCreating}>
-                Hoàn tất
-              </Button>
+              <HideComponent hidden={isSessionDone}>
+                <Button disabled={isCreating && !isCreating}>Hoàn tất</Button>
+              </HideComponent>
             </Modal.Open>
 
             <Modal.Window>
