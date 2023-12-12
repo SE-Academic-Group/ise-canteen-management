@@ -4,7 +4,9 @@ import {
   createEditItemFactory,
 } from "../utils/apiItemsFactory";
 
-export const getOrders = getItemsFactory("orders");
-export const getOrder = getItemFactory("orders");
-export const createOrder = createEditItemFactory("orders");
-export const updateOrder = createEditItemFactory("orders");
+const RESOURCE_NAME = "orders";
+
+export const getOrders = getItemsFactory(RESOURCE_NAME);
+export const getOrder = getItemFactory(RESOURCE_NAME);
+export const createOrder = createEditItemFactory(RESOURCE_NAME);
+export const updateOrder = createEditItemFactory(RESOURCE_NAME);

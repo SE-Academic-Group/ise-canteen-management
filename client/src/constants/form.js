@@ -6,28 +6,10 @@ import {
   maxLength,
   minLength,
   required,
-} from "./form-message-builders";
+} from "../utils/formMessageBuilders";
+import * as REGEX_PATTERNS from "./regex";
 
-export const PAGE_SIZE = 10;
-
-export const QUERY_KEYS = {
-  USERS: "users",
-  ORDERS: "orders",
-  ORDER: "order",
-  PRODUCTS: "products",
-  PRODUCT: "product",
-  INVENTORY_ITEMS: "inventoryItems",
-  PRODUCT_REVIEWS: "productReviews",
-  MENUS: "menus",
-  MENU: "menu",
-};
-
-export const REGEX_PATTERNS = {
-  VIETNAMESE_PHONE_NUMBER: /^((09|03|07|08|05)+([0-9]{8}))$/,
-  VIETNAMESE_NAME: /^[a-zA-ZÀ-ỹ\s]{1,50}$/,
-  EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-};
-
+// TODO: Refactor this to be more readable
 export const FORM_RULES = {
   REQUIRED: (field) => {
     return { required: required`${field}` };
@@ -103,11 +85,11 @@ export const FORM_RULES = {
       message: maxLength`Mô tả ${256}`,
     },
   },
+  STOCK_AMOUNT: {
+    min: {
+      value: 0,
+      message: min`Số lượng ${0}`,
+    },
+    required: required`Số lượng`,
+  },
 };
-
-export const USER_ROLES = ["admin", "customer", "staff", "cashier"];
-
-export const BACKEND_URL = "http://localhost:6969/api/v1";
-export const IMAGE_URL = "http://localhost:6969";
-
-export const PRODUCT_CATEGORIES = ["food", "beverage", "other"];

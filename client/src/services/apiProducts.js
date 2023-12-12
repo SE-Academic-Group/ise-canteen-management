@@ -5,11 +5,13 @@ import {
   getItemFactory,
 } from "../utils/apiItemsFactory";
 
-export const getProducts = getItemsFactory("products");
-export const deleteProduct = deleteItemFactory("products");
-export const createEditProduct = createEditItemFactory("products");
-export const getProduct = getItemFactory("products");
+const RESOURCE_NAME = "products";
+
+export const getProducts = getItemsFactory(RESOURCE_NAME);
+export const deleteProduct = deleteItemFactory(RESOURCE_NAME);
+export const createEditProduct = createEditItemFactory(RESOURCE_NAME);
+export const getProduct = getItemFactory(RESOURCE_NAME);
 
 export function getProductReviews(productId, queryOptions = {}) {
-  return getItemsFactory(`products/${productId}/reviews`)(queryOptions);
+  return getItemsFactory(`${RESOURCE_NAME}/${productId}/reviews`)(queryOptions);
 }

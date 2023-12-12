@@ -1,8 +1,8 @@
 import styled from "styled-components";
+import { useUser } from "./useUser";
 import SpinnerMini from "../../ui/SpinnerMini";
 import Tag from "../../ui/Tag";
-import { translator, TRANSLATOR_KEYS } from "../../utils/translator";
-import { useUser } from "./useUser";
+import { translator } from "../../utils/translator";
 
 const StyledUserAvatar = styled.div`
   display: flex;
@@ -35,7 +35,7 @@ function UserAvatar() {
     <StyledUserAvatar>
       <Avatar src={image} alt={`Avatar of ${name}`} />
       <span>{name}</span>
-      <Tag type="brand">{translator(TRANSLATOR_KEYS.ROLE, role)}</Tag>
+      <Tag type="brand">{translator("role", role)}</Tag>
     </StyledUserAvatar>
   );
 }

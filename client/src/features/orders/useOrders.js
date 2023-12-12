@@ -2,7 +2,8 @@ import { useQueryFetch } from "../../hooks/useQueryFetch";
 import { useQueryPrefetch } from "../../hooks/useQueryPrefetch";
 import { useApiParams } from "../../hooks/useApiParams";
 import { getOrders } from "../../services/apiOrders";
-import { QUERY_KEYS, PAGE_SIZE } from "../../utils/constants";
+import { PAGE_SIZE } from "../../constants/api";
+import { QUERY_KEYS } from "../../constants/keys";
 
 export function useOrders() {
   const { page } = useApiParams();

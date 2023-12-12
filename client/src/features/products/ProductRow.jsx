@@ -1,4 +1,7 @@
-import { HiCheckBadge, HiPencil, HiTrash, HiEye } from "react-icons/hi2";
+import { HiCheckBadge, HiEye, HiPencil, HiTrash } from "react-icons/hi2";
+
+import { useNavigate } from "react-router-dom";
+import { useDeleteProduct } from "./useDeleteProduct";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Menus from "../../ui/Menus";
@@ -7,10 +10,7 @@ import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
 import EditProductForm from "./EditProductForm";
 
-import { IMAGE_URL } from "../../utils/constants";
-import { categoryToVietnamese } from "../../utils/translator";
-import { useDeleteProduct } from "./useDeleteProduct";
-import { useNavigate } from "react-router-dom";
+import { translator } from "../../utils/translator";
 
 const categoryToTagName = {
   food: "green",
@@ -28,13 +28,14 @@ function ProductRow({ product }) {
 
   return (
     <Table.Row>
-      <Table.Column.Img src={IMAGE_URL + image} width={100} height={100} />
+      <Table.Column.Img src={image} width={100} height={100} />
       <Table.Column.Name>{name}</Table.Column.Name>
       <Table.Column.Amount>{price}</Table.Column.Amount>
       <Table.Column.Description>{description}</Table.Column.Description>
       <Tag type={categoryToTagName[category]}>
-        {categoryToVietnamese(category)}
+        {translator("category", category)}
       </Tag>
+      {/* TODO: Abstract the formatting logic */}
       <Table.Column.Rating>
         {ratingAverage?.toFixed(1) ?? "__"}
       </Table.Column.Rating>

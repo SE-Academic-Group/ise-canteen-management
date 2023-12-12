@@ -1,6 +1,6 @@
 import TableOperations from "../../ui/TableOperations";
-import Filter from "../../ui/Filter";
 import SearchBox from "../../ui/SearchBox";
+import Filter from "../../ui/Filter";
 
 function UserTableOperations() {
   return (

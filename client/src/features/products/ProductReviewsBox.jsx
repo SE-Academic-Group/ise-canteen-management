@@ -1,8 +1,9 @@
-import Empty from "../../ui/Empty";
+import { useProductReviews } from "./useProductReviews";
+
 import ReviewItem from "../../ui/ReviewItem";
 import ReviewsBox from "../../ui/ReviewsBox";
 import Spinner from "../../ui/Spinner";
-import { useProductReviews } from "./useProductReviews";
+import Empty from "../../ui/Empty";
 
 function ProductReviewsBox({ productId }) {
   const { isLoading, reviews, count } = useProductReviews(productId);

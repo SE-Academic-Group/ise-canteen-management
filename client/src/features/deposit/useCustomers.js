@@ -1,7 +1,7 @@
 import { useApiParams } from "../../hooks/useApiParams";
 import { useQueryFetch } from "../../hooks/useQueryFetch";
 import { getUsers } from "../../services/apiUsers";
-import { QUERY_KEYS } from "../../utils/constants";
+import { QUERY_KEYS } from "../../constants/keys";
 
 export function useCustomers() {
   const { q } = useApiParams();

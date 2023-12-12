@@ -1,14 +1,14 @@
 import styled from "styled-components";
+import { useState } from "react";
+import { useDeposit } from "./useDeposit";
 
-import SearchCustomer from "./SearchCustomer";
-import Button from "../../ui/Button";
+import ConfirmAction from "../../ui/ConfirmAction";
 import ButtonGroup from "../../ui/ButtonGroup";
 import DepositAmount from "./DepositAmount";
 import DepositForm from "./DepositForm";
-import { useState } from "react";
+import Button from "../../ui/Button";
 import Modal from "../../ui/Modal";
-import ConfirmAction from "../../ui/ConfirmAction";
-import { useDeposit } from "./useDeposit";
+import SearchCustomer from "./SearchCustomer";
 
 const Container = styled.div`
   padding: 3.2rem;

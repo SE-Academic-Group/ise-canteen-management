@@ -1,18 +1,18 @@
-import { useForm } from "react-hook-form";
-
-import Button from "../../ui/Button";
-import FileInput from "../../ui/FileInput";
-import Form from "../../ui/Form";
-import FormHeading from "../../ui/FormHeading";
-import FormRow from "../../ui/FormRow";
-import Input from "../../ui/Input";
-import Select from "../../ui/Select";
-import TextArea from "../../ui/TextArea";
-
-import { FORM_RULES, PRODUCT_CATEGORIES } from "../../utils/constants";
-import { TRANSLATOR_KEYS, translator } from "../../utils/translator";
-import { useCreateProduct } from "./useCreateProduct";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useCreateProduct } from "./useCreateProduct";
+
+import FormHeading from "../../ui/FormHeading";
+import FileInput from "../../ui/FileInput";
+import TextArea from "../../ui/TextArea";
+import FormRow from "../../ui/FormRow";
+import Button from "../../ui/Button";
+import Select from "../../ui/Select";
+import Input from "../../ui/Input";
+import Form from "../../ui/Form";
+
+import { FORM_RULES } from "../../constants/form";
+import { CATEGORY_OPTIONS } from "../../constants/options";
 
 function CreateProductForm({ onCloseModal = () => {} }) {
   const [image, setImage] = useState(null);
@@ -67,10 +67,7 @@ function CreateProductForm({ onCloseModal = () => {} }) {
       </FormRow>
       <FormRow label={"Phân loại"} error={errors.category?.message}>
         <Select
-          options={PRODUCT_CATEGORIES.map((category) => ({
-            value: category,
-            label: translator(TRANSLATOR_KEYS.CATEGORY, category),
-          }))}
+          options={CATEGORY_OPTIONS}
           disabled={isCreating}
           id="category"
           {...register("category", FORM_RULES.REQUIRED("phân loại"))}

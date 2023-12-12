@@ -4,6 +4,8 @@ import {
   getItemsFactory,
 } from "../utils/apiItemsFactory";
 
-export const getUsers = getItemsFactory("users");
-export const deleteUser = deleteItemFactory("users");
-export const createEditUser = createEditItemFactory("users");
+const RESOURCE_NAME = "users";
+
+export const getUsers = getItemsFactory(RESOURCE_NAME);
+export const deleteUser = deleteItemFactory(RESOURCE_NAME);
+export const createEditUser = createEditItemFactory(RESOURCE_NAME);

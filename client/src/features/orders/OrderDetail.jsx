@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useMoveBack } from "../../hooks/useMoveBack";
+import { useCompleteOrder } from "./useCompleteOrder";
+import { useCancelOrder } from "./useCancelOrder";
+import { useOrder } from "./useOrder";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import ButtonGroup from "../../ui/ButtonGroup";
@@ -13,11 +17,7 @@ import Tag from "../../ui/Tag";
 import Row from "../../ui/Row";
 import OrderDataBox from "./OrderDataBox";
 
-import { useMoveBack } from "../../hooks/useMoveBack";
-import { useOrder } from "./useOrder";
-import { useCancelOrder } from "./useCancelOrder";
-import { useCompleteOrder } from "./useCompleteOrder";
-import { TRANSLATOR_KEYS, translator } from "../../utils/translator";
+import { translator } from "../../utils/translator";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -47,7 +47,7 @@ function OrderDetail() {
 
   const status = {
     tag: statusToTagName[orderStatus],
-    name: translator(TRANSLATOR_KEYS.ORDER_STATUS, orderStatus),
+    name: translator("order_status", orderStatus),
     value: orderStatus,
   };
 

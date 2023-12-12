@@ -1,14 +1,15 @@
+import { useMenuHistory } from "./useMenuHistory";
+import { useMoveBack } from "../../hooks/useMoveBack";
+
 import ButtonText from "../../ui/ButtonText";
 import Heading from "../../ui/Heading";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
 import Row from "../../ui/Row";
 
-import { useMenuHistory } from "./useMenuHistory";
 import ButtonGroup from "../../ui/ButtonGroup";
 import MenuDataBox from "./MenuDataBox";
 import Button from "../../ui/Button";
-import { useMoveBack } from "../../hooks/useMoveBack";
 
 function MenuDetail() {
   const moveBack = useMoveBack();
