@@ -12,6 +12,7 @@ import {
 } from "react-icons/hi2";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { BiFoodMenu } from "react-icons/bi";
+import { useUser } from "../features/authentication/useUser";
 
 const Nav = styled.nav`
   block-size: 100%;
@@ -67,6 +68,12 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 function MainNav() {
+  const { user, isLoading } = useUser();
+
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <Nav>
       <NavList>
