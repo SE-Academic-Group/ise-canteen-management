@@ -205,7 +205,18 @@ function Body({ data, render }) {
 }
 
 function Amount({ children }) {
-  return <StyledAmount>{formatVietnameseCurrency(children)}</StyledAmount>;
+  return (
+    <StyledAmount>
+      {children ? (
+        formatVietnameseCurrency(children)
+      ) : (
+        <>
+          <span className="sr-only">No amount</span>
+          <span role="presentation">___ ___ __ </span>
+        </>
+      )}
+    </StyledAmount>
+  );
 }
 
 function Phone({ children }) {
@@ -226,7 +237,7 @@ function Serial({ children }) {
 
 function Thumbnail({ src, alt, placeholder }) {
   if (!src) {
-    return <NoThumbnail>{placeholder}</NoThumbnail>;
+    return <NoThumbnail>{placeholder ?? alt.at(0) ?? "%"}</NoThumbnail>;
   }
 
   return <StyledThumbnail src={src} alt={alt} />;

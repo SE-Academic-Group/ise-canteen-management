@@ -180,3 +180,33 @@ export function buildOptions(object) {
     return { value: o.en, label: o.vi };
   });
 }
+
+/**
+ * Builds tag options based on the provided object.
+ * Each tag option consists of a type, value, and label.
+ * The type is selected from a predefined list of colors.
+ * The value and label are extracted from the object's properties.
+ * The tag options are returned as an object with lowercase keys.
+ *
+ * @param {Object} object - The object containing the properties to build tag options from.
+ * @returns {Object} - The tag options object with lowercase keys.
+ */
+export function buildTagOptions(object) {
+  const AVAILABLE_COLORS = ["grey", "blue", "green", "silver", "indigo", "red"];
+  const length = AVAILABLE_COLORS.length;
+  let idx = 0;
+  let tagObj = {};
+
+  Object.keys(object).forEach((k) => {
+    const word = object[k];
+    const tag = {
+      type: AVAILABLE_COLORS[idx++ % length],
+      value: word.en,
+      label: word.vi,
+    };
+
+    tagObj[k.toString().toLowerCase()] = tag;
+  });
+
+  return tagObj;
+}
