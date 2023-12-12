@@ -14,8 +14,10 @@ import EditInventoryItemForm from "./EditInventoryItemForm";
 
 import { translator } from "../../utils/translator";
 import { CATEGORY_TAGS } from "../../constants/tags";
+import { useDeleteInventoryItem } from "./useDeleteInventoryItem";
 
 function InventoryItemRow({ item }) {
+  const { isDeleting, deleteInventoryItem } = useDeleteInventoryItem();
   const { _id, name, price, description, category, stockAmount } = item;
   const tag = CATEGORY_TAGS[category] ?? { type: "grey", label: "Khác" };
   const stockDesc = stockAmount + " " + translator("unit", item.unit);
@@ -56,8 +58,8 @@ function InventoryItemRow({ item }) {
         <Modal.Window name="delete">
           <ConfirmDelete
             resourceName="thông tin kho liệu"
-            disabled={true}
-            // onConfirm={() => deleteUser(_id)}
+            disabled={isDeleting}
+            onConfirm={() => deleteInventoryItem(_id)}
           />
         </Modal.Window>
       </Modal>
