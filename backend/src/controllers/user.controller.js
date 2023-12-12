@@ -63,6 +63,26 @@ exports.resizeUserPhoto = async (req, res, next) => {
 exports.updateMe = async (req, res, next) => {
 	if (req.file) req.body.image = req.file.filename;
 
+	// Check allowed fields (form data validation with zod is not working)
+	const allowedFields = ["name", "phone", "image"];
+	const receivedFields = Object.keys(req.body);
+	const notAllowedFields = receivedFields.filter(
+		(field) => !allowedFields.includes(field)
+	);
+	if (notAllowedFields.length > 0) {
+		throw new AppError(
+			400,
+			"BAD_REQUEST",
+			`Không thể cập nhật trường ${notAllowedFields.join(", ")}.`,
+			Object.assign(
+				{},
+				...notAllowedFields.map((field) => ({
+					[field]: `Không thể cập nhật trường ${field}.`,
+				}))
+			)
+		);
+	}
+
 	// Update user document
 	const user = await User.findByIdAndUpdate(req.user.id, req.body, {
 		new: true,

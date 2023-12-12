@@ -1,6 +1,8 @@
 const express = require("express");
 const userController = require("../controllers/user.controller");
 const authController = require("../controllers/auth.controller");
+const multerUpload = require("../utils/multerUpload");
+const sharp = require("sharp");
 
 const orderRouter = require("./order.route");
 const paymentRouter = require("./payment.route");

@@ -97,6 +97,8 @@ exports.getOne = (Model, options) => async (req, res, next) => {
 };
 
 exports.updateOne = (Model) => async (req, res, next) => {
+	const oldDoc = await Model.findById(req.params.id);
+
 	const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 		runValidators: true,
@@ -108,6 +110,26 @@ exports.updateOne = (Model) => async (req, res, next) => {
 			"NOT_FOUND",
 			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`
 		);
+	}
+
+	if (
+		oldDoc &&
+		oldDoc.image &&
+		oldDoc.image !== doc.image &&
+		!(
+			oldDoc.image.endsWith("default.jpg") ||
+			oldDoc.image.endsWith("default.png") ||
+			oldDoc.image.endsWith("default.jpeg")
+		)
+	) {
+		// Delete local image on /public/images/{Model.modelName.toLowerCase()}s/{doc.image}
+		const imagePath = path.join(__dirname, `../public${oldDoc.image}`);
+
+		fs.unlink(imagePath, (err) => {
+			if (err) {
+				console.error(err);
+			}
+		});
 	}
 
 	res.status(200).json({
@@ -137,13 +159,11 @@ exports.deleteOne = (Model) => async (req, res, next) => {
 		)
 	) {
 		// Delete local image on /public/images/{Model.modelName.toLowerCase()}s/{doc.image}
-
-		const imagePath = path.join(__dirname, `../public${doc.image}}`);
+		const imagePath = path.join(__dirname, `../public${doc.image}`);
 
 		fs.unlink(imagePath, (err) => {
 			if (err) {
 				console.error(err);
-				return;
 			}
 		});
 	}

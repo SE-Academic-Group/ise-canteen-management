@@ -148,8 +148,6 @@ exports.protect = async (req, res, next) => {
 	}
 	refreshToken = req.cookies.refreshToken;
 
-	console.log(accessToken, refreshToken);
-
 	// If there is no accessToken and no refreshToken, throw error
 	if (!accessToken && !refreshToken) {
 		throw new AppError(
@@ -189,6 +187,15 @@ exports.protect = async (req, res, next) => {
 		// 2.2) Verify refreshToken
 		try {
 			decoded = await verifyToken(refreshToken, process.env.REFRESH_SECRET);
+
+			// If refreshToken is valid, send new accessToken
+			const { accessToken, accessTokenOptions } = createAccessToken(
+				{
+					_id: decoded.id,
+				},
+				req
+			);
+			res.cookie("accessToken", accessToken, accessTokenOptions);
 		} catch (err) {
 			if (err instanceof jwt.TokenExpiredError) {
 				throw new AppError(
@@ -241,14 +248,6 @@ exports.protect = async (req, res, next) => {
 
 	// GRANT ACCESS TO PROTECTED ROUTE
 	req.user = currentUser;
-
-	if (sendNewAccessToken) {
-		const { accessToken, accessTokenOptions } = createAccessToken(
-			req.user,
-			req
-		);
-		res.cookie("accessToken", accessToken, accessTokenOptions);
-	}
 
 	return next();
 };
