@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 const AppError = require("../utils/appError");
 const APIFeatures = require("../utils/apiFeatures");
 
@@ -41,9 +44,9 @@ exports.getAll = (Model, options) => async (req, res, next) => {
 	// EXECUTE QUERY
 	const features = new APIFeatures(Model.find(), req.query)
 		.filter()
-		.sort()
 		.limitFields()
-		.paginate();
+		.paginate()
+		.sort();
 
 	// Populate options
 	if (options && options.populate) {
@@ -55,7 +58,7 @@ exports.getAll = (Model, options) => async (req, res, next) => {
 	}
 
 	// Added .lean() to improve performance
-	const docs = await features.query.lean();
+	const docs = await features.query;
 	const count = await Model.countDocuments(features.filterObj);
 
 	// SEND RESPONSE
@@ -123,6 +126,26 @@ exports.deleteOne = (Model) => async (req, res, next) => {
 			"NOT_FOUND",
 			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`
 		);
+	}
+
+	if (
+		doc.image &&
+		!(
+			doc.image.endsWith("default.jpg") ||
+			doc.image.endsWith("default.png") ||
+			doc.image.endsWith("default.jpeg")
+		)
+	) {
+		// Delete local image on /public/images/{Model.modelName.toLowerCase()}s/{doc.image}
+
+		const imagePath = path.join(__dirname, `../public${doc.image}}`);
+
+		fs.unlink(imagePath, (err) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+		});
 	}
 
 	res.status(204).json({
