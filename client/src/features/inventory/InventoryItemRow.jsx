@@ -10,35 +10,15 @@ import Menus from "../../ui/Menus";
 import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Tag from "../../ui/Tag";
-
-import { translator } from "../../utils/translator";
 import EditInventoryItemForm from "./EditInventoryItemForm";
 
-const categoryToTagName = {
-  ingredient: "green",
-  spice: "red",
-  drink: "blue",
-  other: "grey",
-};
-
-function transformItem(item) {
-  const transformed = {
-    ...item,
-    // stockAmount:
-    //   item.stockAmount + " " + translator('unit', item.unit),
-    stockAmount: item.stockAmount + " " + item.unit,
-    category: {
-      tag: categoryToTagName[item.category],
-      name: translator("category", item.category),
-    },
-  };
-
-  return transformed;
-}
+import { translator } from "../../utils/translator";
+import { CATEGORY_TAGS } from "../../constants/tags";
 
 function InventoryItemRow({ item }) {
-  const { _id, name, price, description, category, stockAmount } =
-    transformItem(item);
+  const { _id, name, price, description, category, stockAmount } = item;
+  const tag = CATEGORY_TAGS[category] ?? { type: "grey", label: "Khác" };
+  const stockDesc = stockAmount + " " + translator("unit", item.unit);
 
   return (
     <Table.Row>
@@ -47,8 +27,8 @@ function InventoryItemRow({ item }) {
       <Table.Column.Description>
         {description ?? "Không có mô tả"}
       </Table.Column.Description>
-      <Tag type={category.tag}>{category.name}</Tag>
-      <Table.Column.Text>{stockAmount}</Table.Column.Text>
+      <Tag type={tag.type}>{tag.label}</Tag>
+      <Table.Column.Text>{stockDesc}</Table.Column.Text>
 
       <Modal>
         <Menus.Menu>

@@ -9,32 +9,7 @@ import Modal from "../../ui/Modal";
 import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
 
-import { formatDateTime, formatVietnameseCurrency } from "../../utils/helpers";
-import { translator } from "../../utils/translator";
-
-function transformOrder(order) {
-  const transformed = {
-    ...order,
-    orderStatus: {
-      tag: statusToTagName[order.orderStatus],
-      name: translator("order_status", order.orderStatus),
-      value: order.orderStatus,
-    },
-    orderDate: formatDateTime(order.orderDate),
-    totalPrice: formatVietnameseCurrency(order.totalPrice),
-    orderItems: order.orderItems
-      .map((item) => item.quantity + " " + item.name)
-      .join(", "),
-  };
-
-  return transformed;
-}
-
-const statusToTagName = {
-  completed: "green",
-  cancelled: "red",
-  pending: "silver",
-};
+import { ORDER_STATUS_TAGS } from "../../constants/tags";
 
 function OrderRow({ order, serial }) {
   const navigate = useNavigate();
@@ -42,19 +17,19 @@ function OrderRow({ order, serial }) {
   const { isCancelling, cancelOrder } = useCancelOrder();
   const isWorking = isCompleting || isCancelling;
 
-  const { _id, user, totalPrice, orderStatus, orderDate, orderItems } =
-    transformOrder({
-      ...order,
-      serial,
-    });
+  const { _id, user, totalPrice, orderStatus, orderDate, orderItems } = order;
+  const tag = ORDER_STATUS_TAGS[orderStatus];
+  const shortDesc = orderItems
+    .map((item) => item.quantity + " " + item.name)
+    .join(", ");
 
   return (
     <Table.Row>
       <Table.Column.Number>{serial}</Table.Column.Number>
-      <span>{user.name}</span>
-      <span>{orderDate}</span>
-      <Tag type={orderStatus.tag}>{orderStatus.name}</Tag>
-      <Table.Column.Description>{orderItems}</Table.Column.Description>
+      <Table.Column.Text>{user.name}</Table.Column.Text>
+      <Table.Column.DateTime>{orderDate}</Table.Column.DateTime>
+      <Tag type={tag.type}>{tag.label}</Tag>
+      <Table.Column.Description>{shortDesc}</Table.Column.Description>
       <Table.Column.Amount>{totalPrice}</Table.Column.Amount>
 
       <Modal>
