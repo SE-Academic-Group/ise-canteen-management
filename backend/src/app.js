@@ -1,5 +1,6 @@
 const express = require("express");
 require("express-async-errors");
+const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const helmet = require("helmet");
@@ -117,7 +118,7 @@ app.use((err, req, res, next) => {
 	}
 
 	// Check if error is Mongoose ValidationError
-	if (err.name === "ValidationError") {
+	if (err instanceof mongoose.Error.ValidationError) {
 		const validationErrorMessages = Object.values(err.errors).map(
 			(error) => error.message
 		);
@@ -125,6 +126,23 @@ app.use((err, req, res, next) => {
 		return res.status(400).json({
 			status: "fail",
 			errors: validationErrorMessages.join("; "),
+			reasonPhrase: "INVALID_ARGUMENTS",
+		});
+	} else if (err instanceof mongoose.Error.CastError) {
+		// Check if error is Mongoose CastError
+		return res.status(400).json({
+			status: "fail",
+			message: `Không tìm thấy ${err.path} với giá trị ${err.value}`,
+			reasonPhrase: "INVALID_ARGUMENTS",
+		});
+	} else if (err.code === 11000) {
+		// Check if error is Mongoose duplicate key error
+		return res.status(400).json({
+			status: "fail",
+			message: `${Object.keys(err.keyValue)[0]} ${
+				Object.values(err.keyValue)[0]
+			} đã tồn tại.`,
+			reasonPhrase: "INVALID_ARGUMENTS",
 		});
 	}
 
