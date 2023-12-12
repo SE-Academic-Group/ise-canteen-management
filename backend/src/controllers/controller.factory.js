@@ -58,7 +58,7 @@ exports.getAll = (Model, options) => async (req, res, next) => {
 	}
 
 	// Added .lean() to improve performance
-	const docs = await features.query;
+	const docs = await features.query.lean();
 	const count = await Model.countDocuments(features.filterObj);
 
 	// SEND RESPONSE
