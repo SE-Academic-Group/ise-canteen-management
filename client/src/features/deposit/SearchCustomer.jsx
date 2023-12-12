@@ -1,10 +1,11 @@
 import styled from "styled-components";
 
-import Heading from "../../ui/Heading";
 import SearchBox from "../../ui/SearchBox";
-import Spinner from "../../ui/Spinner";
-import { useCustomers } from "./useCustomers";
 import CustomerBox from "./CustomerBox";
+import Heading from "../../ui/Heading";
+import Spinner from "../../ui/Spinner";
+
+import { useCustomers } from "./useCustomers";
 
 const Content = styled.div`
   padding: 1.6rem;

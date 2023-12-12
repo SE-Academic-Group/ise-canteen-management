@@ -2,8 +2,8 @@ import { useApiParams } from "../../hooks/useApiParams";
 import { useQueryFetch } from "../../hooks/useQueryFetch";
 import { useQueryPrefetch } from "../../hooks/useQueryPrefetch";
 import { getProducts } from "../../services/apiProducts";
-import { PAGE_SIZE, QUERY_KEYS } from "../../utils/constants";
-
+import { PAGE_SIZE } from "../../constants/api";
+import { QUERY_KEYS } from "../../constants/keys";
 export function useProducts() {
   const { page, q, filters, sortBy } = useApiParams({
     filterFields: ["category"],

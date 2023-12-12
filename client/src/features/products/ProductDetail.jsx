@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useProduct } from "./useProduct";
+import { useMoveBack } from "../../hooks/useMoveBack";
+import { useDeleteProduct } from "./useDeleteProduct";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import ButtonGroup from "../../ui/ButtonGroup";
@@ -12,11 +14,9 @@ import Empty from "../../ui/Empty";
 import Modal from "../../ui/Modal";
 import Tag from "../../ui/Tag";
 import Row from "../../ui/Row";
-import { translator, TRANSLATOR_KEYS } from "../../utils/translator";
 import ProductDataBox from "./ProductDataBox";
 
-import { useMoveBack } from "../../hooks/useMoveBack";
-import { useDeleteProduct } from "./useDeleteProduct";
+import { translator } from "../../utils/translator";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -45,7 +45,7 @@ function ProductDetail() {
 
   const categoryTag = {
     tag: categoryToTagName[category],
-    name: translator(TRANSLATOR_KEYS.CATEGORY, category),
+    name: translator("category", category),
     value: category,
   };
 

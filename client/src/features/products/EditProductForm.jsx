@@ -1,18 +1,18 @@
 import { useForm } from "react-hook-form";
-
-import Button from "../../ui/Button";
-import FileInput from "../../ui/FileInput";
-import Form from "../../ui/Form";
-import FormHeading from "../../ui/FormHeading";
-import FormRow from "../../ui/FormRow";
-import Input from "../../ui/Input";
-import Select from "../../ui/Select";
-import TextArea from "../../ui/TextArea";
-
-import { FORM_RULES, PRODUCT_CATEGORIES } from "../../utils/constants";
-import { TRANSLATOR_KEYS, translator } from "../../utils/translator";
-import { useEditProduct } from "./useEditProduct";
 import { useState } from "react";
+import { useEditProduct } from "./useEditProduct";
+
+import FormHeading from "../../ui/FormHeading";
+import FileInput from "../../ui/FileInput";
+import TextArea from "../../ui/TextArea";
+import FormRow from "../../ui/FormRow";
+import Select from "../../ui/Select";
+import Button from "../../ui/Button";
+import Input from "../../ui/Input";
+import Form from "../../ui/Form";
+
+import { CATEGORY_OPTIONS } from "../../constants/options";
+import { FORM_RULES } from "../../constants/form";
 
 function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
   const [image, setImage] = useState(null);
@@ -49,7 +49,6 @@ function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
           {...register("name", FORM_RULES.PRODUCT_NAME)}
         />
       </FormRow>
-
       <FormRow label={"Giá tiền"} error={errors.price?.message}>
         <Input
           type="number"
@@ -59,7 +58,6 @@ function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
           {...register("price", FORM_RULES.PRICE)}
         />
       </FormRow>
-
       <FormRow label={"Mô tả"} error={errors.description?.message}>
         <TextArea
           disabled={isEditing}
@@ -67,19 +65,14 @@ function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
           {...register("description", FORM_RULES.DESCRIPTION)}
         />
       </FormRow>
-
       <FormRow label={"Phân loại"} error={errors.category?.message}>
         <Select
-          options={PRODUCT_CATEGORIES.map((category) => ({
-            value: category,
-            label: translator(TRANSLATOR_KEYS.CATEGORY, category),
-          }))}
+          options={CATEGORY_OPTIONS}
           disabled={isEditing}
           id="category"
           {...register("category", FORM_RULES.REQUIRED("phân loại"))}
         />
       </FormRow>
-
       <FormRow label="Ảnh sản phẩm">
         <FileInput
           id="avatar"

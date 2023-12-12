@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
 import { updateOrder } from "../../services/apiOrders";
-import { QUERY_KEYS } from "../../utils/constants";
+import { QUERY_KEYS } from "../../constants/keys";
 
 export function useCancelOrder() {
   const queryClient = useQueryClient();

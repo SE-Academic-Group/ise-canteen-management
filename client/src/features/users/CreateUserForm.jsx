@@ -1,21 +1,16 @@
 import { useForm } from "react-hook-form";
-
-import FormHeading from "../../ui/FormHeading";
-import Button from "../../ui/Button";
-import Form from "../../ui/Form";
-import FormRow from "../../ui/FormRow";
-import Input from "../../ui/Input";
-import Select from "../../ui/Select";
-
-import { FORM_RULES, USER_ROLES } from "../../utils/constants";
-import { TRANSLATOR_KEYS, translator } from "../../utils/translator";
-import { generatePasswordFromEmail } from "../../utils/helpers";
 import { useCreateUser } from "./useCreateUser";
 
-const selectOptions = USER_ROLES.map((r) => ({
-  value: r,
-  label: translator(TRANSLATOR_KEYS.ROLE, r),
-}));
+import FormHeading from "../../ui/FormHeading";
+import FormRow from "../../ui/FormRow";
+import Button from "../../ui/Button";
+import Select from "../../ui/Select";
+import Input from "../../ui/Input";
+import Form from "../../ui/Form";
+
+import { FORM_RULES } from "../../constants/form";
+import { ROLE_OPTIONS } from "../../constants/options";
+import { generatePasswordFromEmail } from "../../utils/helpers";
 
 function CreateUserForm({ onCloseModal = () => {} }) {
   const { isCreating, createUser } = useCreateUser();
@@ -70,7 +65,7 @@ function CreateUserForm({ onCloseModal = () => {} }) {
         <Select
           id="role"
           disabled={isCreating}
-          options={selectOptions}
+          options={ROLE_OPTIONS}
           {...register("role")}
         />
       </FormRow>

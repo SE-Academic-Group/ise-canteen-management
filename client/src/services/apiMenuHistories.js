@@ -5,7 +5,9 @@ import {
   getItemsFactory,
 } from "../utils/apiItemsFactory";
 
-export const getMenuHistories = getItemsFactory("menu-histories");
-export const deleteMenuHistory = deleteItemFactory("menu-histories");
-export const createEditMenuHistory = createEditItemFactory("menu-histories");
-export const getMenuHistory = getItemFactory("menu-histories");
+const RESOURCE_NAME = "menu-histories";
+
+export const getMenuHistories = getItemsFactory(RESOURCE_NAME);
+export const deleteMenuHistory = deleteItemFactory(RESOURCE_NAME);
+export const createEditMenuHistory = createEditItemFactory(RESOURCE_NAME);
+export const getMenuHistory = getItemFactory(RESOURCE_NAME);

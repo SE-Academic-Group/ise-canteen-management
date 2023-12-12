@@ -13,6 +13,7 @@ import Products from "./pages/Products";
 import Product from "./pages/Product";
 import Settings from "./pages/Settings";
 import Account from "./pages/Account";
+import Deposit from "./pages/Deposit";
 import Orders from "./pages/Orders";
 import Users from "./pages/Users";
 import Login from "./pages/Login";
@@ -20,7 +21,6 @@ import Stats from "./pages/Stats";
 import Order from "./pages/Order";
 import Menus from "./pages/Menus";
 import Menu from "./pages/Menu";
-import Deposit from "./pages/Deposit";
 
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
@@ -28,8 +28,8 @@ import AppLayout from "./ui/AppLayout";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // staleTime: 60 * 1000,
-      staleTime: 0,
+      staleTime: 60 * 1000,
+      // staleTime: 0,
     },
   },
 });
@@ -73,7 +73,6 @@ function App() {
         </BrowserRouter>
       </QueryClientProvider>
 
-      {/* TODO: Rollback to default style */}
       <Toaster
         position="top-center"
         gutter={12}

@@ -1,6 +1,6 @@
 import { useQueryFetch } from "../../hooks/useQueryFetch";
 import { getProductReviews } from "../../services/apiProducts";
-import { QUERY_KEYS } from "../../utils/constants";
+import { QUERY_KEYS } from "../../constants/keys";
 
 export function useProductReviews(productId) {
   const { isLoading, error, data } = useQueryFetch({

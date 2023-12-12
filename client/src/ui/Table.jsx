@@ -5,7 +5,8 @@ import {
   formatDateTime,
   formatVietnameseCurrency,
   formatVietnamesePhoneNumber,
-  padString,
+  getImageUrl,
+  padNumber,
 } from "../utils/helpers";
 
 const StyledTable = styled.div`
@@ -145,7 +146,7 @@ const Number = styled.span`
   color: var(--color-grey-600);
 `;
 
-const Img = styled.img`
+const StyledImg = styled.img`
   display: block;
   width: 100px;
   margin: 0.4rem;
@@ -204,7 +205,18 @@ function Body({ data, render }) {
 }
 
 function Amount({ children }) {
-  return <StyledAmount>{formatVietnameseCurrency(children)}</StyledAmount>;
+  return (
+    <StyledAmount>
+      {children ? (
+        formatVietnameseCurrency(children)
+      ) : (
+        <>
+          <span className="sr-only">No amount</span>
+          <span role="presentation">___ ___ __ </span>
+        </>
+      )}
+    </StyledAmount>
+  );
 }
 
 function Phone({ children }) {
@@ -220,15 +232,23 @@ function DateTime({ children }) {
 }
 
 function Serial({ children }) {
-  return <Text>{padString(children, 3)}</Text>;
+  return <Text>{padNumber(children, 3)}</Text>;
 }
 
 function Thumbnail({ src, alt, placeholder }) {
   if (!src) {
-    return <NoThumbnail>{placeholder}</NoThumbnail>;
+    return <NoThumbnail>{placeholder ?? alt.at(0) ?? "%"}</NoThumbnail>;
   }
 
   return <StyledThumbnail src={src} alt={alt} />;
+}
+
+function Img({ src, ...props }) {
+  if (!src) {
+    return <NoThumbnail>Ảnh</NoThumbnail>;
+  }
+
+  return <StyledImg src={getImageUrl(src)} {...props} />;
 }
 
 Table.Header = Header;

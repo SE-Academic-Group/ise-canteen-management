@@ -1,11 +1,12 @@
-import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 import FormRow from "../../ui/FormRow";
 import Heading from "../../ui/Heading";
 import Input from "../../ui/Input";
+
 import { formatVietnameseCurrency } from "../../utils/helpers";
-import { useEffect } from "react";
 
 const VALUES = [
   10000, 15000, 20000, 25000, 30000, 50000, 100000, 200000, 500000,
@@ -80,7 +81,7 @@ function DepositAmount({ currentAmount, handleSelectAmount }) {
     }
   }
 
-  // how to sync currentAmount with input value?
+  // Sync currentAmount with input value
   useEffect(() => {
     setValue("amount", currentAmount / 1000);
   }, [currentAmount, setValue]);

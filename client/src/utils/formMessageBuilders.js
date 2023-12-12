@@ -1,5 +1,6 @@
 import { toTitleCase } from "./helpers";
 
+// TODO: Refactor this file
 export function required(strings, field) {
   const name = strings.at(0) ?? field ?? "Giá trị";
   const titledName = toTitleCase(name);

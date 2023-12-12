@@ -1,8 +1,8 @@
-import Filter from "../../ui/Filter";
+import TableOperations from "../../ui/TableOperations";
 import FlexContainer from "../../ui/FlexContainer";
 import SearchBox from "../../ui/SearchBox";
+import Filter from "../../ui/Filter";
 import SortBy from "../../ui/SortBy";
-import TableOperations from "../../ui/TableOperations";
 
 function InventoryTableOperations() {
   return (
@@ -21,7 +21,7 @@ function InventoryTableOperations() {
       <FlexContainer>
         <SortBy
           options={[
-            { value: "id-asc", label: "Sắp xếp mặc định" },
+            { value: "default", label: "Sắp xếp mặc định" },
             { value: "name-asc", label: "Sắp xếp theo tên (A-Z)" },
             { value: "name-desc", label: "Sắp xếp theo tên (Z-A)" },
             {

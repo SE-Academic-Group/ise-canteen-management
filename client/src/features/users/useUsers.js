@@ -2,8 +2,8 @@ import { useApiParams } from "../../hooks/useApiParams";
 import { useQueryFetch } from "../../hooks/useQueryFetch";
 import { useQueryPrefetch } from "../../hooks/useQueryPrefetch";
 import { getUsers } from "../../services/apiUsers";
-import { PAGE_SIZE, QUERY_KEYS } from "../../utils/constants";
-
+import { PAGE_SIZE } from "../../constants/api";
+import { QUERY_KEYS } from "../../constants/keys";
 export function useUsers() {
   const { page, filters, q } = useApiParams({ filterFields: ["role"] });
   const queryKey = [QUERY_KEYS.USERS, page, filters, q];

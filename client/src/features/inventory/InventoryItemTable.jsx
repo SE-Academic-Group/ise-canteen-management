@@ -4,6 +4,7 @@ import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
 import Table from "../../ui/Table";
 import InventoryItemRow from "./InventoryItemRow";
+
 import { useInventoryItems } from "./useInventoryItems";
 
 export default function InventoryTable() {
@@ -27,7 +28,7 @@ export default function InventoryTable() {
 
         <Table.Body
           data={inventoryItems}
-          render={(item) => <InventoryItemRow key={item.id} item={item} />}
+          render={(item) => <InventoryItemRow key={item._id} item={item} />}
         />
 
         <Table.Footer>

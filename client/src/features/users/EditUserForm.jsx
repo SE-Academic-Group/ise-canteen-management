@@ -1,20 +1,15 @@
 import { useForm } from "react-hook-form";
-
-import Button from "../../ui/Button";
-import Form from "../../ui/Form";
-import FormHeading from "../../ui/FormHeading";
-import FormRow from "../../ui/FormRow";
-import Input from "../../ui/Input";
-import Select from "../../ui/Select";
-
-import { FORM_RULES, USER_ROLES } from "../../utils/constants";
-import { translator, TRANSLATOR_KEYS } from "../../utils/translator";
 import { useEditUser } from "./useEditUser";
 
-const selectOptions = USER_ROLES.map((r) => ({
-  value: r,
-  label: translator(TRANSLATOR_KEYS.ROLE, r),
-}));
+import FormHeading from "../../ui/FormHeading";
+import FormRow from "../../ui/FormRow";
+import Select from "../../ui/Select";
+import Button from "../../ui/Button";
+import Input from "../../ui/Input";
+import Form from "../../ui/Form";
+
+import { FORM_RULES } from "../../constants/form";
+import { ROLE_OPTIONS } from "../../constants/options";
 
 function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {
   const { isEditing, editUser } = useEditUser();
@@ -68,7 +63,7 @@ function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {
         <Select
           id="role"
           disabled={isEditing}
-          options={selectOptions}
+          options={ROLE_OPTIONS}
           {...register("role")}
         />
       </FormRow>
