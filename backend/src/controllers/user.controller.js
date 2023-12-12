@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const ControllerFactory = require("./controller.factory");
 const multerUpload = require("../utils/multerUpload");
 const sharp = require("sharp");
@@ -63,16 +65,50 @@ exports.resizeUserPhoto = async (req, res, next) => {
 exports.updateMe = async (req, res, next) => {
 	if (req.file) req.body.image = req.file.filename;
 
+	// Check allowed fields (form data validation with zod is not working)
+	const allowedFields = ["name", "phone", "image"];
+	const receivedFields = Object.keys(req.body);
+	const notAllowedFields = receivedFields.filter(
+		(field) => !allowedFields.includes(field)
+	);
+	if (notAllowedFields.length > 0) {
+		throw new AppError(
+			400,
+			"BAD_REQUEST",
+			`Không thể cập nhật trường ${notAllowedFields.join(", ")}.`,
+			Object.assign(
+				{},
+				...notAllowedFields.map((field) => ({
+					[field]: `Không thể cập nhật trường ${field}.`,
+				}))
+			)
+		);
+	}
+
 	// Update user document
-	const user = await User.findByIdAndUpdate(req.user.id, req.body, {
+	const updatedUser = await User.findByIdAndUpdate(req.user.id, req.body, {
 		new: true,
 		runValidators: true,
 	});
 
+	// Delete local image
+	if (
+		req.user.image &&
+		req.user.image !== updatedUser.image &&
+		!(req.user.image.search("default") !== -1) // prevent deleting default image
+	) {
+		const imagePath = path.join(__dirname, `../public${req.user.image}`);
+		fs.unlink(imagePath, (err) => {
+			if (err) {
+				console.error(err);
+			}
+		});
+	}
+
 	res.status(200).json({
 		status: "success",
 		data: {
-			user,
+			updatedUser,
 		},
 	});
 };
