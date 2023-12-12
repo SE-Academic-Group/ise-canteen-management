@@ -153,7 +153,7 @@ export function generatePasswordFromEmail(email) {
  * @returns {string} - The complete image URL.
  */
 export function getImageUrl(path) {
-  return import.meta.env.IMAGE_BASE_URL + path;
+  return import.meta.env.VITE_IMAGE_BASE_URL + path;
 }
 
 /**
