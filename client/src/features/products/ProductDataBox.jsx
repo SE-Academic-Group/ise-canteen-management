@@ -12,9 +12,9 @@ import DataItem from "../../ui/DataItem";
 import Heading from "../../ui/Heading";
 import ProductReviewsBox from "./ProductReviewsBox";
 
-import { IMAGE_URL } from "../../utils/constants";
+import { IMAGE_BASE_URL } from "../../utils/constants";
 import { formatVietnameseCurrency } from "../../utils/helpers";
-import { categoryToVietnamese } from "../../utils/translator";
+import { translator } from "../../utils/translator";
 
 const StyledProductDataBox = styled.section`
   background-color: var(--color-grey-0);
@@ -90,7 +90,7 @@ function ProductDataBox({ product }) {
       <Section>
         <Layout>
           <Img
-            src={IMAGE_URL + image}
+            src={IMAGE_BASE_URL + image}
             alt={name}
             width={200}
             height={200}
@@ -112,7 +112,7 @@ function ProductDataBox({ product }) {
               {ratingAverage ?? "Chưa có đánh giá"}
             </DataItem>
             <DataItem icon={<MdOutlineCategory />} label="Phân loại">
-              {categoryToVietnamese(category)}
+              {translator("category", category)}
             </DataItem>
             <DataItem icon={<HiOutlineCurrencyDollar />} label="Giá tiền">
               {formatVietnameseCurrency(price)}

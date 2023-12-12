@@ -8,12 +8,12 @@ import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 
 import { FORM_RULES, USER_ROLES } from "../../utils/constants";
-import { translator, TRANSLATOR_KEYS } from "../../utils/translator";
+import { translator } from "../../utils/translator";
 import { useEditUser } from "./useEditUser";
 
 const selectOptions = USER_ROLES.map((r) => ({
   value: r,
-  label: translator(TRANSLATOR_KEYS.ROLE, r),
+  label: translator("role", r),
 }));
 
 function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {

@@ -5,7 +5,7 @@ import {
   formatDateTime,
   formatVietnameseCurrency,
   formatVietnamesePhoneNumber,
-  padString,
+  padNumber,
 } from "../utils/helpers";
 
 const StyledTable = styled.div`
@@ -220,7 +220,7 @@ function DateTime({ children }) {
 }
 
 function Serial({ children }) {
-  return <Text>{padString(children, 3)}</Text>;
+  return <Text>{padNumber(children, 3)}</Text>;
 }
 
 function Thumbnail({ src, alt, placeholder }) {

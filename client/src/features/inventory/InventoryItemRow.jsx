@@ -1,17 +1,18 @@
 import {
-  HiEye,
-  HiTrash,
-  HiPencil,
   HiMiniArrowLeftOnRectangle,
   HiMiniArrowRightOnRectangle,
+  HiPencil,
+  HiTrash,
 } from "react-icons/hi2";
 
 import Menus from "../../ui/Menus";
 import Table from "../../ui/Table";
+import Modal from "../../ui/Modal";
 import Tag from "../../ui/Tag";
 
-import { formatVietnameseCurrency } from "../../utils/helpers";
-import { TRANSLATOR_KEYS, translator } from "../../utils/translator";
+import { translator } from "../../utils/translator";
+import EditInventoryItemForm from "./EditInventoryItemForm";
+import ConfirmDelete from "../../ui/ConfirmDelete";
 
 const categoryToTagName = {
   ingredient: "green",
@@ -23,12 +24,12 @@ const categoryToTagName = {
 function transformItem(item) {
   const transformed = {
     ...item,
-    price: formatVietnameseCurrency(item.price),
-    stockAmount:
-      item.stockAmount + " " + translator(TRANSLATOR_KEYS.UNIT, item.unit),
+    // stockAmount:
+    //   item.stockAmount + " " + translator('unit', item.unit),
+    stockAmount: item.stockAmount + " " + item.unit,
     category: {
       tag: categoryToTagName[item.category],
-      name: translator(TRANSLATOR_KEYS.CATEGORY, item.category),
+      name: translator("category", item.category),
     },
   };
 
@@ -36,31 +37,50 @@ function transformItem(item) {
 }
 
 function InventoryItemRow({ item }) {
-  const { id, name, price, description, category, stockAmount } =
+  const { _id, name, price, description, category, stockAmount } =
     transformItem(item);
 
   return (
     <Table.Row>
       <Table.Column.Name>{name}</Table.Column.Name>
       <Table.Column.Amount>{price}</Table.Column.Amount>
-      <Table.Column.Description>{description}</Table.Column.Description>
+      <Table.Column.Description>
+        {description ?? "Không có mô tả"}
+      </Table.Column.Description>
       <Tag type={category.tag}>{category.name}</Tag>
-      <Table.Column.Amount>{stockAmount}</Table.Column.Amount>
+      <Table.Column.Text>{stockAmount}</Table.Column.Text>
 
-      <Menus.Menu>
-        <Menus.Toggle id={id} />
-        <Menus.List id={id}>
-          <Menus.Button icon={<HiEye />}>Xem chi tiết</Menus.Button>
-          <Menus.Button icon={<HiPencil />}>Chỉnh sửa</Menus.Button>
-          <Menus.Button icon={<HiMiniArrowLeftOnRectangle />}>
-            Nhập kho
-          </Menus.Button>
-          <Menus.Button icon={<HiMiniArrowRightOnRectangle />}>
-            Xuất kho
-          </Menus.Button>
-          <Menus.Button icon={<HiTrash />}>Xóa thông tin</Menus.Button>
-        </Menus.List>
-      </Menus.Menu>
+      <Modal>
+        <Menus.Menu>
+          <Menus.Toggle id={_id} />
+          <Menus.List id={_id}>
+            <Modal.Open opens="edit">
+              <Menus.Button icon={<HiPencil />}>Chỉnh sửa</Menus.Button>
+            </Modal.Open>
+            <Menus.Button icon={<HiMiniArrowLeftOnRectangle />}>
+              Nhập kho
+            </Menus.Button>
+            <Menus.Button icon={<HiMiniArrowRightOnRectangle />}>
+              Xuất kho
+            </Menus.Button>
+            <Modal.Open opens="delete">
+              <Menus.Button icon={<HiTrash />}>Xóa thông tin</Menus.Button>
+            </Modal.Open>
+          </Menus.List>
+        </Menus.Menu>
+
+        <Modal.Window name="edit">
+          <EditInventoryItemForm itemToEdit={item} />
+        </Modal.Window>
+
+        <Modal.Window name="delete">
+          <ConfirmDelete
+            resourceName="thông tin kho liệu"
+            disabled={true}
+            // onConfirm={() => deleteUser(_id)}
+          />
+        </Modal.Window>
+      </Modal>
     </Table.Row>
   );
 }

@@ -7,7 +7,7 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
 
-import { TRANSLATOR_KEYS, translator } from "../../utils/translator";
+import { translator } from "../../utils/translator";
 import { useUser } from "../authentication/useUser";
 import EditUserForm from "./EditUserForm";
 import { useDeleteUser } from "./useDeleteUser";
@@ -24,7 +24,7 @@ function transformUser(user) {
     ...user,
     role: {
       tag: roleToTagName[user.role],
-      name: translator(TRANSLATOR_KEYS.ROLE, user.role),
+      name: translator("role", user.role),
       value: user.role,
     },
     image: `https://ui-avatars.com/api/?name=${user.name}&background=random&rounded=true&size=48&font-size=0.33&bold=true&color=fff&length=1`,

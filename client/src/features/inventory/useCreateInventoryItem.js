@@ -1,21 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
-import { createEditProduct } from "../../services/apiProducts";
+import { createEditInventoryItem } from "../../services/apiInventoryItems";
 import { QUERY_KEYS } from "../../utils/constants";
 
-export function useCreateProduct() {
+export function useCreateInventoryItem() {
   const queryClient = useQueryClient();
 
-  const { mutate: createProduct, isLoading: isCreating } = useMutation({
-    mutationFn: createEditProduct,
+  const { mutate: createInventoryItem, isLoading: isCreating } = useMutation({
+    mutationFn: createEditInventoryItem,
     onSuccess: () => {
-      toast.success("Tạo sản phẩm thành công!");
+      toast.success("Thông tin kho liệu đã được tạo!");
 
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCTS] });
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.INVENTORY_ITEMS] });
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast.error(err.message ?? "Có lỗi xảy ra!"),
   });
 
-  return { isCreating, createProduct };
+  return { isCreating, createInventoryItem };
 }

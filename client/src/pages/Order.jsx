@@ -1,7 +1,7 @@
 import OrderDetail from "../features/orders/OrderDetail";
 
 function Order() {
-  return <OrderDetail />;
+  // return <OrderDetail />;
 }
 
 export default Order;

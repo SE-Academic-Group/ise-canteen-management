@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import SpinnerMini from "../../ui/SpinnerMini";
 import Tag from "../../ui/Tag";
-import { translator, TRANSLATOR_KEYS } from "../../utils/translator";
+import { translator } from "../../utils/translator";
 import { useUser } from "./useUser";
 
 const StyledUserAvatar = styled.div`
@@ -35,7 +35,7 @@ function UserAvatar() {
     <StyledUserAvatar>
       <Avatar src={image} alt={`Avatar of ${name}`} />
       <span>{name}</span>
-      <Tag type="brand">{translator(TRANSLATOR_KEYS.ROLE, role)}</Tag>
+      <Tag type="brand">{translator("role", role)}</Tag>
     </StyledUserAvatar>
   );
 }

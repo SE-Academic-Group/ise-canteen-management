@@ -7,8 +7,8 @@ import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
 import EditProductForm from "./EditProductForm";
 
-import { IMAGE_URL } from "../../utils/constants";
-import { categoryToVietnamese } from "../../utils/translator";
+import { IMAGE_BASE_URL } from "../../utils/constants";
+import { translator } from "../../utils/translator";
 import { useDeleteProduct } from "./useDeleteProduct";
 import { useNavigate } from "react-router-dom";
 
@@ -28,12 +28,12 @@ function ProductRow({ product }) {
 
   return (
     <Table.Row>
-      <Table.Column.Img src={IMAGE_URL + image} width={100} height={100} />
+      <Table.Column.Img src={IMAGE_BASE_URL + image} width={100} height={100} />
       <Table.Column.Name>{name}</Table.Column.Name>
       <Table.Column.Amount>{price}</Table.Column.Amount>
       <Table.Column.Description>{description}</Table.Column.Description>
       <Tag type={categoryToTagName[category]}>
-        {categoryToVietnamese(category)}
+        {translator("category", category)}
       </Tag>
       <Table.Column.Rating>
         {ratingAverage?.toFixed(1) ?? "__"}

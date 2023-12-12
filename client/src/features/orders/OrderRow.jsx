@@ -7,22 +7,17 @@ import Modal from "../../ui/Modal";
 import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
 
-import {
-  formatDateTime,
-  formatVietnameseCurrency,
-  padString,
-} from "../../utils/helpers";
-import { TRANSLATOR_KEYS, translator } from "../../utils/translator";
+import { formatDateTime, formatVietnameseCurrency } from "../../utils/helpers";
+import { translator } from "../../utils/translator";
 import { useCancelOrder } from "./useCancelOrder";
 import { useCompleteOrder } from "./useCompleteOrder";
 
 function transformOrder(order) {
   const transformed = {
     ...order,
-    number: padString(order.serial, 3),
     orderStatus: {
       tag: statusToTagName[order.orderStatus],
-      name: translator(TRANSLATOR_KEYS.ORDER_STATUS, order.orderStatus),
+      name: translator("order_status", order.orderStatus),
       value: order.orderStatus,
     },
     orderDate: formatDateTime(order.orderDate),
@@ -47,7 +42,7 @@ function OrderRow({ order, serial }) {
   const { isCancelling, cancelOrder } = useCancelOrder();
   const isWorking = isCompleting || isCancelling;
 
-  const { id, user, totalPrice, orderStatus, orderDate, orderItems, number } =
+  const { _id, user, totalPrice, orderStatus, orderDate, orderItems } =
     transformOrder({
       ...order,
       serial,
@@ -55,7 +50,7 @@ function OrderRow({ order, serial }) {
 
   return (
     <Table.Row>
-      <Table.Column.Number>{number}</Table.Column.Number>
+      <Table.Column.Number>{serial}</Table.Column.Number>
       <span>{user.name}</span>
       <span>{orderDate}</span>
       <Tag type={orderStatus.tag}>{orderStatus.name}</Tag>
@@ -64,11 +59,11 @@ function OrderRow({ order, serial }) {
 
       <Modal>
         <Menus.Menu>
-          <Menus.Toggle id={id} />
-          <Menus.List id={id}>
+          <Menus.Toggle id={_id} />
+          <Menus.List id={_id}>
             <Menus.Button
               icon={<HiEye />}
-              onClick={() => navigate("/orders/" + id)}
+              onClick={() => navigate("/orders/" + _id)}
             >
               Xem chi tiết
             </Menus.Button>
@@ -78,7 +73,7 @@ function OrderRow({ order, serial }) {
                 <Menus.Button
                   icon={<HiCheckBadge />}
                   disabled={isWorking}
-                  onClick={() => completeOrder(id)}
+                  onClick={() => completeOrder(_id)}
                 >
                   Sẵn sàng
                 </Menus.Button>
@@ -96,7 +91,7 @@ function OrderRow({ order, serial }) {
             title="Hủy đơn hàng"
             description="Bạn có chắc chắn muốn hủy đơn hàng này?"
             disabled={isWorking}
-            onConfirm={() => cancelOrder(id)}
+            onConfirm={() => cancelOrder(_id)}
           />
         </Modal.Window>
       </Modal>

@@ -8,13 +8,13 @@ import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 
 import { FORM_RULES, USER_ROLES } from "../../utils/constants";
-import { TRANSLATOR_KEYS, translator } from "../../utils/translator";
+import { translator } from "../../utils/translator";
 import { generatePasswordFromEmail } from "../../utils/helpers";
 import { useCreateUser } from "./useCreateUser";
 
 const selectOptions = USER_ROLES.map((r) => ({
   value: r,
-  label: translator(TRANSLATOR_KEYS.ROLE, r),
+  label: translator("role", r),
 }));
 
 function CreateUserForm({ onCloseModal = () => {} }) {
