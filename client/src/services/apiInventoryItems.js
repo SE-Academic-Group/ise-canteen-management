@@ -4,8 +4,8 @@ import {
   getItemsFactory,
 } from "../utils/apiItemsFactory";
 
-const RESOURCE_URL = "/inventory-items";
+const RESOURCE_NAME = "inventory-items";
 
-export const getInventoryItems = getItemsFactory(RESOURCE_URL);
-export const deleteInventoryItem = deleteItemFactory(RESOURCE_URL);
-export const createEditInventoryItem = createEditItemFactory(RESOURCE_URL);
+export const getInventoryItems = getItemsFactory(RESOURCE_NAME);
+export const deleteInventoryItem = deleteItemFactory(RESOURCE_NAME);
+export const createEditInventoryItem = createEditItemFactory(RESOURCE_NAME);
