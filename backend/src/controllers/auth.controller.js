@@ -148,7 +148,7 @@ exports.protect = async (req, res, next) => {
 	}
 	refreshToken = req.cookies.refreshToken;
 
-	console.log({ accessToken, refreshToken });
+	console.log(accessToken, refreshToken);
 
 	// If there is no accessToken and no refreshToken, throw error
 	if (!accessToken && !refreshToken) {
@@ -162,28 +162,14 @@ exports.protect = async (req, res, next) => {
 	// 2) Verify Tokens
 	let decoded;
 	let sendNewAccessToken = false;
-	let accessTokenExpired = false;
 
 	if (accessToken) {
 		// 2.1) Verify accessToken
 		try {
-			decoded = await promisify(jwt.verify)(
-				accessToken,
-				process.env.ACCESS_SECRET
-			);
+			decoded = await verifyToken(accessToken, process.env.ACCESS_SECRET);
 		} catch (err) {
-			// If accessToken is expired (jwt.TokenExpiredError), skip the error and verify refreshToken
 			if (err instanceof jwt.TokenExpiredError) {
 				accessTokenExpired = true;
-			} else if (
-				err instanceof jwt.JsonWebTokenError ||
-				err instanceof jwt.NotBeforeError
-			) {
-				throw new AppError(
-					401,
-					"INVALID_TOKENS",
-					"Phiên đăng nhập có vấn đề. Vui lòng đăng nhập lại."
-				);
 			} else {
 				throw err;
 			}
@@ -191,7 +177,7 @@ exports.protect = async (req, res, next) => {
 	}
 
 	// If accessToken is expired
-	if (accessTokenExpired) {
+	if (!decoded) {
 		if (!refreshToken) {
 			throw new AppError(
 				401,
@@ -202,29 +188,16 @@ exports.protect = async (req, res, next) => {
 
 		// 2.2) Verify refreshToken
 		try {
-			decoded = await promisify(jwt.verify)(
-				refreshToken,
-				process.env.REFRESH_SECRET
-			);
-
-			// If refreshToken is valid, check user id exists and send new accessToken
-			sendNewAccessToken = true;
+			decoded = await verifyToken(refreshToken, process.env.REFRESH_SECRET);
 		} catch (err) {
-			if (
-				err instanceof jwt.JsonWebTokenError ||
-				err instanceof jwt.NotBeforeError
-			) {
-				throw new AppError(
-					401,
-					"INVALID_TOKENS",
-					"Phiên đăng nhập có vấn đề. Vui lòng đăng nhập lại."
-				);
-			} else if (err instanceof jwt.TokenExpiredError) {
+			if (err instanceof jwt.TokenExpiredError) {
 				throw new AppError(
 					401,
 					"SESSION_EXPIRED",
 					"Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại."
 				);
+			} else {
+				throw err;
 			}
 		}
 	}
@@ -297,3 +270,26 @@ exports.restrictTo = (...roles) => {
 		next();
 	};
 };
+
+async function verifyToken(token, tokenSecret) {
+	try {
+		decoded = await promisify(jwt.verify)(token, tokenSecret);
+
+		return decoded;
+	} catch (err) {
+		if (err instanceof jwt.TokenExpiredError) {
+			throw err;
+		} else if (
+			err instanceof jwt.JsonWebTokenError ||
+			err instanceof jwt.NotBeforeError
+		) {
+			throw new AppError(
+				401,
+				"INVALID_TOKENS",
+				"Phiên đăng nhập có vấn đề. Vui lòng đăng nhập lại."
+			);
+		} else {
+			throw err;
+		}
+	}
+}
