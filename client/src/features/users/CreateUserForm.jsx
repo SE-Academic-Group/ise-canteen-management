@@ -1,17 +1,16 @@
 import { useForm } from "react-hook-form";
+import { useCreateUser } from "./useCreateUser";
 
 import FormHeading from "../../ui/FormHeading";
-import Button from "../../ui/Button";
-import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
-import Input from "../../ui/Input";
+import Button from "../../ui/Button";
 import Select from "../../ui/Select";
+import Input from "../../ui/Input";
+import Form from "../../ui/Form";
 
 import { FORM_RULES } from "../../constants/form";
 import { ROLE_OPTIONS } from "../../constants/options";
-
 import { generatePasswordFromEmail } from "../../utils/helpers";
-import { useCreateUser } from "./useCreateUser";
 
 function CreateUserForm({ onCloseModal = () => {} }) {
   const { isCreating, createUser } = useCreateUser();

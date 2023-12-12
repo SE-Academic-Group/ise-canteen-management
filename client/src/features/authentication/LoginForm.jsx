@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Button from "../../ui/Button";
-import CheckBox from "../../ui/CheckBox";
-import Form from "../../ui/Form";
-import FormRowVertical from "../../ui/FormRowVertical";
-import Input from "../../ui/Input";
-import SpinnerMini from "../../ui/SpinnerMini";
 import { useLogin } from "./useLogin";
+
+import FormRowVertical from "../../ui/FormRowVertical";
+import SpinnerMini from "../../ui/SpinnerMini";
+import CheckBox from "../../ui/CheckBox";
+import Button from "../../ui/Button";
+import Input from "../../ui/Input";
+import Form from "../../ui/Form";
 
 function LoginForm() {
   const { login, isLoading } = useLogin();
@@ -16,7 +17,7 @@ function LoginForm() {
   const { register, handleSubmit, formState } = useForm({
     defaultValues: {
       email: localStorage.getItem("email") ?? "",
-      password: "test1234",
+      password: "test1234", // TODO: Remove this
     },
   });
   const { errors } = formState;

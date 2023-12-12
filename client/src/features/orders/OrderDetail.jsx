@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useMoveBack } from "../../hooks/useMoveBack";
+import { useCompleteOrder } from "./useCompleteOrder";
+import { useCancelOrder } from "./useCancelOrder";
+import { useOrder } from "./useOrder";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import ButtonGroup from "../../ui/ButtonGroup";
@@ -13,10 +17,6 @@ import Tag from "../../ui/Tag";
 import Row from "../../ui/Row";
 import OrderDataBox from "./OrderDataBox";
 
-import { useMoveBack } from "../../hooks/useMoveBack";
-import { useOrder } from "./useOrder";
-import { useCancelOrder } from "./useCancelOrder";
-import { useCompleteOrder } from "./useCompleteOrder";
 import { translator } from "../../utils/translator";
 
 const HeadingGroup = styled.div`

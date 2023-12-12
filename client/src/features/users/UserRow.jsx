@@ -1,15 +1,16 @@
 import { HiPencil, HiTrash } from "react-icons/hi2";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import SpinnerMini from "../../ui/SpinnerMini";
 import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
-import SpinnerMini from "../../ui/SpinnerMini";
 import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
 
 import { translator } from "../../utils/translator";
-import { useUser } from "../authentication/useUser";
 import EditUserForm from "./EditUserForm";
+
+import { useUser } from "../authentication/useUser";
 import { useDeleteUser } from "./useDeleteUser";
 
 const roleToTagName = {

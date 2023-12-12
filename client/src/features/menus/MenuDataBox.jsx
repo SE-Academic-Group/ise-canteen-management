@@ -4,14 +4,13 @@ import { MdOutlineRestaurantMenu, MdOutlinePercent } from "react-icons/md";
 
 import DataItem from "../../ui/DataItem";
 import Heading from "../../ui/Heading";
+import MenuItemsBox from "./MenuItemsBox";
 
-// import { IMAGE_URL } from "../../utils/constants";
 import { formatDate, formatVietnameseCurrency } from "../../utils/helpers";
 import {
   calculateRevenue,
   createMenuSummary,
 } from "../../services/MenuOperations";
-import MenuItemsBox from "./MenuItemsBox";
 
 const StyledProductDataBox = styled.section`
   background-color: var(--color-grey-0);

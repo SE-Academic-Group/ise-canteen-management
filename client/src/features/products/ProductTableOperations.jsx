@@ -1,8 +1,8 @@
-import Filter from "../../ui/Filter";
+import TableOperations from "../../ui/TableOperations";
 import FlexContainer from "../../ui/FlexContainer";
 import SearchBox from "../../ui/SearchBox";
+import Filter from "../../ui/Filter";
 import SortBy from "../../ui/SortBy";
-import TableOperations from "../../ui/TableOperations";
 
 function ProductTableOperations() {
   return (

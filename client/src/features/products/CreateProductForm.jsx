@@ -1,18 +1,18 @@
-import { useForm } from "react-hook-form";
-
-import Button from "../../ui/Button";
-import FileInput from "../../ui/FileInput";
-import Form from "../../ui/Form";
-import FormHeading from "../../ui/FormHeading";
-import FormRow from "../../ui/FormRow";
-import Input from "../../ui/Input";
-import Select from "../../ui/Select";
-import TextArea from "../../ui/TextArea";
-
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useCreateProduct } from "./useCreateProduct";
+
+import FormHeading from "../../ui/FormHeading";
+import FileInput from "../../ui/FileInput";
+import TextArea from "../../ui/TextArea";
+import FormRow from "../../ui/FormRow";
+import Button from "../../ui/Button";
+import Select from "../../ui/Select";
+import Input from "../../ui/Input";
+import Form from "../../ui/Form";
+
 import { FORM_RULES } from "../../constants/form";
 import { CATEGORY_OPTIONS } from "../../constants/options";
-import { useCreateProduct } from "./useCreateProduct";
 
 function CreateProductForm({ onCloseModal = () => {} }) {
   const [image, setImage] = useState(null);

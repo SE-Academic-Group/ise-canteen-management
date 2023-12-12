@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useUpdateUser } from "./useUpdateUser";
 
-import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
-import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
+import Button from "../../ui/Button";
 import Input from "../../ui/Input";
+import Form from "../../ui/Form";
 
 import { FORM_RULES } from "../../constants/form";
-import { useUpdateUser } from "./useUpdateUser";
 
 function UpdateUserDataForm({ user }) {
   const [image, setImage] = useState(null);

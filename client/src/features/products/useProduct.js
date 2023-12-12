@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-
 import { useQueryFetch } from "../../hooks/useQueryFetch";
+
 import { getProduct } from "../../services/apiProducts";
 import { QUERY_KEYS } from "../../constants/keys";
 

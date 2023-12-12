@@ -1,5 +1,7 @@
 import { HiCheckBadge, HiEye, HiTrash } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
+import { useCancelOrder } from "./useCancelOrder";
+import { useCompleteOrder } from "./useCompleteOrder";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Menus from "../../ui/Menus";
@@ -9,8 +11,6 @@ import Tag from "../../ui/Tag";
 
 import { formatDateTime, formatVietnameseCurrency } from "../../utils/helpers";
 import { translator } from "../../utils/translator";
-import { useCancelOrder } from "./useCancelOrder";
-import { useCompleteOrder } from "./useCompleteOrder";
 
 function transformOrder(order) {
   const transformed = {

@@ -1,5 +1,8 @@
 import { HiCheckBadge, HiEye, HiPencil, HiTrash } from "react-icons/hi2";
 
+import { useNavigate } from "react-router-dom";
+import { useDeleteProduct } from "./useDeleteProduct";
+
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
@@ -7,9 +10,7 @@ import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
 import EditProductForm from "./EditProductForm";
 
-import { useNavigate } from "react-router-dom";
 import { translator } from "../../utils/translator";
-import { useDeleteProduct } from "./useDeleteProduct";
 
 const categoryToTagName = {
   food: "green",
@@ -34,6 +35,7 @@ function ProductRow({ product }) {
       <Tag type={categoryToTagName[category]}>
         {translator("category", category)}
       </Tag>
+      {/* TODO: Abstract the formatting logic */}
       <Table.Column.Rating>
         {ratingAverage?.toFixed(1) ?? "__"}
       </Table.Column.Rating>

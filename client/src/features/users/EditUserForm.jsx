@@ -1,16 +1,15 @@
 import { useForm } from "react-hook-form";
+import { useEditUser } from "./useEditUser";
 
-import Button from "../../ui/Button";
-import Form from "../../ui/Form";
 import FormHeading from "../../ui/FormHeading";
 import FormRow from "../../ui/FormRow";
-import Input from "../../ui/Input";
 import Select from "../../ui/Select";
+import Button from "../../ui/Button";
+import Input from "../../ui/Input";
+import Form from "../../ui/Form";
 
 import { FORM_RULES } from "../../constants/form";
 import { ROLE_OPTIONS } from "../../constants/options";
-
-import { useEditUser } from "./useEditUser";
 
 function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {
   const { isEditing, editUser } = useEditUser();

@@ -1,20 +1,18 @@
 import { useForm } from "react-hook-form";
-
-import Button from "../../ui/Button";
-import FileInput from "../../ui/FileInput";
-import Form from "../../ui/Form";
-import FormHeading from "../../ui/FormHeading";
-import FormRow from "../../ui/FormRow";
-import Input from "../../ui/Input";
-import Select from "../../ui/Select";
-import TextArea from "../../ui/TextArea";
-
-import { CATEGORY_OPTIONS } from "../../constants/options";
-
-import { FORM_RULES } from "../../constants/form";
-
 import { useState } from "react";
 import { useEditProduct } from "./useEditProduct";
+
+import FormHeading from "../../ui/FormHeading";
+import FileInput from "../../ui/FileInput";
+import TextArea from "../../ui/TextArea";
+import FormRow from "../../ui/FormRow";
+import Select from "../../ui/Select";
+import Button from "../../ui/Button";
+import Input from "../../ui/Input";
+import Form from "../../ui/Form";
+
+import { CATEGORY_OPTIONS } from "../../constants/options";
+import { FORM_RULES } from "../../constants/form";
 
 function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
   const [image, setImage] = useState(null);
@@ -51,7 +49,6 @@ function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
           {...register("name", FORM_RULES.PRODUCT_NAME)}
         />
       </FormRow>
-
       <FormRow label={"Giá tiền"} error={errors.price?.message}>
         <Input
           type="number"
@@ -61,7 +58,6 @@ function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
           {...register("price", FORM_RULES.PRICE)}
         />
       </FormRow>
-
       <FormRow label={"Mô tả"} error={errors.description?.message}>
         <TextArea
           disabled={isEditing}
@@ -69,7 +65,6 @@ function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
           {...register("description", FORM_RULES.DESCRIPTION)}
         />
       </FormRow>
-
       <FormRow label={"Phân loại"} error={errors.category?.message}>
         <Select
           options={CATEGORY_OPTIONS}
@@ -78,7 +73,6 @@ function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
           {...register("category", FORM_RULES.REQUIRED("phân loại"))}
         />
       </FormRow>
-
       <FormRow label="Ảnh sản phẩm">
         <FileInput
           id="avatar"

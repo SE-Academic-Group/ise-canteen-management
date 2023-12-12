@@ -5,6 +5,7 @@ import {
   HiTrash,
 } from "react-icons/hi2";
 
+import ConfirmDelete from "../../ui/ConfirmDelete";
 import Menus from "../../ui/Menus";
 import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
@@ -12,7 +13,6 @@ import Tag from "../../ui/Tag";
 
 import { translator } from "../../utils/translator";
 import EditInventoryItemForm from "./EditInventoryItemForm";
-import ConfirmDelete from "../../ui/ConfirmDelete";
 
 const categoryToTagName = {
   ingredient: "green",

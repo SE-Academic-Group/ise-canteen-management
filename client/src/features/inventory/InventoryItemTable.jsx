@@ -4,6 +4,7 @@ import Empty from "../../ui/Empty";
 import Menus from "../../ui/Menus";
 import Table from "../../ui/Table";
 import InventoryItemRow from "./InventoryItemRow";
+
 import { useInventoryItems } from "./useInventoryItems";
 
 export default function InventoryTable() {
