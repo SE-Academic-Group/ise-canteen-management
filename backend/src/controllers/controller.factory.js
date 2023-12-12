@@ -4,8 +4,12 @@ const path = require("path");
 const AppError = require("../utils/appError");
 const APIFeatures = require("../utils/apiFeatures");
 
-exports.createOne = (Model) => async (req, res, next) => {
+exports.createOne = (Model, options) => async (req, res, next) => {
 	const newDoc = await Model.create(req.body);
+
+	if (options?.populate) {
+		await newDoc.populate(options.populate);
+	}
 
 	res.status(201).json({
 		status: "success",

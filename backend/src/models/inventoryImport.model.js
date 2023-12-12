@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const InventoryItem = require("./inventoryItem.model");
 
 const inventoryImportSchema = new mongoose.Schema(
 	{
@@ -28,6 +29,17 @@ const inventoryImportSchema = new mongoose.Schema(
 );
 
 inventoryImportSchema.index({ inventoryItemId: 1 });
+
+inventoryImportSchema.pre("save", function (next) {
+	this.importItems.forEach((item) => {
+		if (!item.price) {
+			InventoryItem.findById(item.inventoryItemId).then((inventoryItem) => {
+				item.price = inventoryItem.price;
+			});
+		}
+	});
+	next();
+});
 
 const InventoryImport = mongoose.model(
 	"InventoryImport",
