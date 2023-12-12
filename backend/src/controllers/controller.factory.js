@@ -116,11 +116,7 @@ exports.updateOne = (Model) => async (req, res, next) => {
 		oldDoc &&
 		oldDoc.image &&
 		oldDoc.image !== doc.image &&
-		!(
-			oldDoc.image.endsWith("default.jpg") ||
-			oldDoc.image.endsWith("default.png") ||
-			oldDoc.image.endsWith("default.jpeg")
-		)
+		!(oldDoc.image.search("default") !== -1) // prevent deleting default image
 	) {
 		// Delete local image on /public/images/{Model.modelName.toLowerCase()}s/{doc.image}
 		const imagePath = path.join(__dirname, `../public${oldDoc.image}`);
@@ -152,11 +148,7 @@ exports.deleteOne = (Model) => async (req, res, next) => {
 
 	if (
 		doc.image &&
-		!(
-			doc.image.endsWith("default.jpg") ||
-			doc.image.endsWith("default.png") ||
-			doc.image.endsWith("default.jpeg")
-		)
+		!(doc.image.search("default") !== -1) // prevent deleting default image
 	) {
 		// Delete local image on /public/images/{Model.modelName.toLowerCase()}s/{doc.image}
 		const imagePath = path.join(__dirname, `../public${doc.image}`);

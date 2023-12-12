@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const ControllerFactory = require("./controller.factory");
 const multerUpload = require("../utils/multerUpload");
 const sharp = require("sharp");
@@ -84,15 +86,29 @@ exports.updateMe = async (req, res, next) => {
 	}
 
 	// Update user document
-	const user = await User.findByIdAndUpdate(req.user.id, req.body, {
+	const updatedUser = await User.findByIdAndUpdate(req.user.id, req.body, {
 		new: true,
 		runValidators: true,
 	});
 
+	// Delete local image
+	if (
+		req.user.image &&
+		req.user.image !== updatedUser.image &&
+		!(req.user.image.search("default") !== -1) // prevent deleting default image
+	) {
+		const imagePath = path.join(__dirname, `../public${req.user.image}`);
+		fs.unlink(imagePath, (err) => {
+			if (err) {
+				console.error(err);
+			}
+		});
+	}
+
 	res.status(200).json({
 		status: "success",
 		data: {
-			user,
+			updatedUser,
 		},
 	});
 };
