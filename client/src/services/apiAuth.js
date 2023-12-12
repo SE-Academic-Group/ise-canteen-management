@@ -1,4 +1,3 @@
-import FormData from "form-data";
 import axiosClient from "../utils/axios";
 
 export async function login({ email, password }) {
