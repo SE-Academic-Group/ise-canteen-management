@@ -36,7 +36,7 @@ class APIFeatures {
 			this.query = this.query.sort(sortBy);
 			// this.query.sort('price ratingsAverage');
 		} else {
-			this.query = this.query.sort("-createdAt");
+			this.query = this.query.sort("-_id");
 		}
 
 		return this;
@@ -57,6 +57,7 @@ class APIFeatures {
 		const page = this.queryString.page * 1 || 1;
 		const limit = this.queryString.limit * 1 || 100;
 		const skipValue = (page - 1) * limit;
+
 		// query.skip: skip a number of docs from beginning
 		// query.limit : limit output to a custom number
 		this.query = this.query.skip(skipValue).limit(limit);
