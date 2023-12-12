@@ -21,7 +21,7 @@ function InventoryTableOperations() {
       <FlexContainer>
         <SortBy
           options={[
-            { value: "id-asc", label: "Sắp xếp mặc định" },
+            { value: "default", label: "Sắp xếp mặc định" },
             { value: "name-asc", label: "Sắp xếp theo tên (A-Z)" },
             { value: "name-desc", label: "Sắp xếp theo tên (Z-A)" },
             {
