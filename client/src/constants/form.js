@@ -7,8 +7,9 @@ import {
   minLength,
   required,
 } from "../utils/formMessageBuilders";
-import { REGEX_PATTERNS } from "./regex";
+import * as REGEX_PATTERNS from "./regex";
 
+// TODO: Refactor this to be more readable
 export const FORM_RULES = {
   REQUIRED: (field) => {
     return { required: required`${field}` };

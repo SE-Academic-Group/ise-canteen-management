@@ -7,7 +7,7 @@ import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 
-import { FORM_RULES } from "../../utils/constants";
+import { FORM_RULES } from "../../constants/form";
 import { useUpdateUser } from "./useUpdateUser";
 
 function UpdateUserDataForm({ user }) {

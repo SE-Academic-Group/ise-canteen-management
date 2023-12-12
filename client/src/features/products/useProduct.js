@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 
 import { useQueryFetch } from "../../hooks/useQueryFetch";
 import { getProduct } from "../../services/apiProducts";
-import { QUERY_KEYS } from "../../utils/constants";
+import { QUERY_KEYS } from "../../constants/keys";
 
 export function useProduct() {
   const { productId } = useParams();

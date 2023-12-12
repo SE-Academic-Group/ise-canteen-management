@@ -7,15 +7,11 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 
-import { FORM_RULES, USER_ROLES } from "../../utils/constants";
-import { translator } from "../../utils/translator";
+import { FORM_RULES } from "../../constants/form";
+import { ROLE_OPTIONS } from "../../constants/options";
+
 import { generatePasswordFromEmail } from "../../utils/helpers";
 import { useCreateUser } from "./useCreateUser";
-
-const selectOptions = USER_ROLES.map((r) => ({
-  value: r,
-  label: translator("role", r),
-}));
 
 function CreateUserForm({ onCloseModal = () => {} }) {
   const { isCreating, createUser } = useCreateUser();
@@ -70,7 +66,7 @@ function CreateUserForm({ onCloseModal = () => {} }) {
         <Select
           id="role"
           disabled={isCreating}
-          options={selectOptions}
+          options={ROLE_OPTIONS}
           {...register("role")}
         />
       </FormRow>

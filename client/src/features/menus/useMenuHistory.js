@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 
 import { useQueryFetch } from "../../hooks/useQueryFetch";
 import { getMenuHistory } from "../../services/apiMenuHistories";
-import { QUERY_KEYS } from "../../utils/constants";
+import { QUERY_KEYS } from "../../constants/keys";
 
 export function useMenuHistory() {
   const { menuId } = useParams();

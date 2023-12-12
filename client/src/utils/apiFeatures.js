@@ -1,5 +1,4 @@
-import { PAGE_SIZE } from "./constants";
-
+import { PAGE_SIZE } from "../constants/api";
 export function buildUrlParams(resource, options) {
   const { page, limit = PAGE_SIZE, filters, sortBy, q } = options;
 

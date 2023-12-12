@@ -7,14 +7,10 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 
-import { FORM_RULES, USER_ROLES } from "../../utils/constants";
-import { translator } from "../../utils/translator";
-import { useEditUser } from "./useEditUser";
+import { FORM_RULES } from "../../constants/form";
+import { ROLE_OPTIONS } from "../../constants/options";
 
-const selectOptions = USER_ROLES.map((r) => ({
-  value: r,
-  label: translator("role", r),
-}));
+import { useEditUser } from "./useEditUser";
 
 function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {
   const { isEditing, editUser } = useEditUser();
@@ -68,7 +64,7 @@ function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {
         <Select
           id="role"
           disabled={isEditing}
-          options={selectOptions}
+          options={ROLE_OPTIONS}
           {...register("role")}
         />
       </FormRow>

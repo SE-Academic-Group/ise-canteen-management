@@ -9,7 +9,7 @@ import Button from "../../ui/Button";
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 
-import { FORM_RULES } from "../../utils/constants";
+import { FORM_RULES } from "../../constants/form";
 import { CATEGORY_OPTIONS } from "../../constants/options";
 
 function CreateInventoryItemForm({ onCloseModal = () => {} }) {

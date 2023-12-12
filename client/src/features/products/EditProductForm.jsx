@@ -9,10 +9,12 @@ import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 import TextArea from "../../ui/TextArea";
 
-import { FORM_RULES, PRODUCT_CATEGORIES } from "../../utils/constants";
-import { translator } from "../../utils/translator";
-import { useEditProduct } from "./useEditProduct";
+import { CATEGORY_OPTIONS } from "../../constants/options";
+
+import { FORM_RULES } from "../../constants/form";
+
 import { useState } from "react";
+import { useEditProduct } from "./useEditProduct";
 
 function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
   const [image, setImage] = useState(null);
@@ -70,10 +72,7 @@ function EditProductForm({ productToEdit = {}, onCloseModal = () => {} }) {
 
       <FormRow label={"Phân loại"} error={errors.category?.message}>
         <Select
-          options={PRODUCT_CATEGORIES.map((category) => ({
-            value: category,
-            label: translator("category", category),
-          }))}
+          options={CATEGORY_OPTIONS}
           disabled={isEditing}
           id="category"
           {...register("category", FORM_RULES.REQUIRED("phân loại"))}

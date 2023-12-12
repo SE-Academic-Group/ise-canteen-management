@@ -2,8 +2,8 @@ import { useApiParams } from "../../hooks/useApiParams";
 import { useQueryFetch } from "../../hooks/useQueryFetch";
 import { useQueryPrefetch } from "../../hooks/useQueryPrefetch";
 import { getMenuHistories } from "../../services/apiMenuHistories";
-import { PAGE_SIZE, QUERY_KEYS } from "../../utils/constants";
-
+import { PAGE_SIZE } from "../../constants/api";
+import { QUERY_KEYS } from "../../constants/keys";
 export function useMenuHistories() {
   const { page } = useApiParams();
 

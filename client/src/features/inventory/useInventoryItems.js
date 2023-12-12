@@ -2,8 +2,8 @@ import { useApiParams } from "../../hooks/useApiParams";
 import { useQueryFetch } from "../../hooks/useQueryFetch";
 import { useQueryPrefetch } from "../../hooks/useQueryPrefetch";
 import { getInventoryItems } from "../../services/apiInventoryItems";
-import { PAGE_SIZE, QUERY_KEYS } from "../../utils/constants";
-
+import { PAGE_SIZE } from "../../constants/api";
+import { QUERY_KEYS } from "../../constants/keys";
 export function useInventoryItems() {
   const { page, filters, sortBy, q } = useApiParams({
     filterFields: ["category"],

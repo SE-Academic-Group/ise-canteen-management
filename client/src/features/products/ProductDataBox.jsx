@@ -12,8 +12,7 @@ import DataItem from "../../ui/DataItem";
 import Heading from "../../ui/Heading";
 import ProductReviewsBox from "./ProductReviewsBox";
 
-import { IMAGE_BASE_URL } from "../../utils/constants";
-import { formatVietnameseCurrency } from "../../utils/helpers";
+import { formatVietnameseCurrency, getImageUrl } from "../../utils/helpers";
 import { translator } from "../../utils/translator";
 
 const StyledProductDataBox = styled.section`
@@ -90,7 +89,7 @@ function ProductDataBox({ product }) {
       <Section>
         <Layout>
           <Img
-            src={IMAGE_BASE_URL + image}
+            src={getImageUrl(image)}
             alt={name}
             width={200}
             height={200}

@@ -5,6 +5,7 @@ import {
   formatDateTime,
   formatVietnameseCurrency,
   formatVietnamesePhoneNumber,
+  getImageUrl,
   padNumber,
 } from "../utils/helpers";
 
@@ -145,7 +146,7 @@ const Number = styled.span`
   color: var(--color-grey-600);
 `;
 
-const Img = styled.img`
+const StyledImg = styled.img`
   display: block;
   width: 100px;
   margin: 0.4rem;
@@ -229,6 +230,14 @@ function Thumbnail({ src, alt, placeholder }) {
   }
 
   return <StyledThumbnail src={src} alt={alt} />;
+}
+
+function Img({ src, ...props }) {
+  if (!src) {
+    return <NoThumbnail>Ảnh</NoThumbnail>;
+  }
+
+  return <StyledImg src={getImageUrl(src)} {...props} />;
 }
 
 Table.Header = Header;

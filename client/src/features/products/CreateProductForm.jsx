@@ -9,10 +9,10 @@ import Input from "../../ui/Input";
 import Select from "../../ui/Select";
 import TextArea from "../../ui/TextArea";
 
-import { FORM_RULES, PRODUCT_CATEGORIES } from "../../utils/constants";
-import { translator } from "../../utils/translator";
-import { useCreateProduct } from "./useCreateProduct";
 import { useState } from "react";
+import { FORM_RULES } from "../../constants/form";
+import { CATEGORY_OPTIONS } from "../../constants/options";
+import { useCreateProduct } from "./useCreateProduct";
 
 function CreateProductForm({ onCloseModal = () => {} }) {
   const [image, setImage] = useState(null);
@@ -67,10 +67,7 @@ function CreateProductForm({ onCloseModal = () => {} }) {
       </FormRow>
       <FormRow label={"Phân loại"} error={errors.category?.message}>
         <Select
-          options={PRODUCT_CATEGORIES.map((category) => ({
-            value: category,
-            label: translator("category", category),
-          }))}
+          options={CATEGORY_OPTIONS}
           disabled={isCreating}
           id="category"
           {...register("category", FORM_RULES.REQUIRED("phân loại"))}
