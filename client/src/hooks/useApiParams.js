@@ -1,5 +1,11 @@
 import { useSearchParams } from "react-router-dom";
 
+/**
+ * Custom hook to extract API parameters from the search query parameters.
+ * @param {Object} options - Options for the hook.
+ * @param {Array} options.filterFields - Fields to be used as filters.
+ * @returns {Object} - API parameters extracted from the search query parameters.
+ */
 export function useApiParams({ filterFields = [] } = {}) {
   const [searchParams] = useSearchParams();
 
