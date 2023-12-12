@@ -90,7 +90,11 @@ exports.getOne = (Model, options) => async (req, res, next) => {
 		throw new AppError(
 			404,
 			"NOT_FOUND",
-			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`
+			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`,
+			{
+				id: req.params.id,
+				modelName: Model.modelName.toLowerCase(),
+			}
 		);
 	}
 
@@ -112,7 +116,11 @@ exports.updateOne = (Model) => async (req, res, next) => {
 		throw new AppError(
 			404,
 			"NOT_FOUND",
-			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`
+			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`,
+			{
+				id: req.params.id,
+				modelName: Model.modelName.toLowerCase(),
+			}
 		);
 	}
 
@@ -146,7 +154,11 @@ exports.deleteOne = (Model) => async (req, res, next) => {
 		throw new AppError(
 			404,
 			"NOT_FOUND",
-			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`
+			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`,
+			{
+				id: req.params.id,
+				modelName: Model.modelName.toLowerCase(),
+			}
 		);
 	}
 

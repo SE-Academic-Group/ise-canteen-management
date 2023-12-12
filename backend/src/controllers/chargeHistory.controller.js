@@ -31,10 +31,7 @@ exports.createChargeHistory = async (req, res, next) => {
 				400,
 				"INVALID_ARGUMENTS",
 				"Phải có email của người được nạp tiền.",
-				{
-					field: "email",
-					message: "Phải có email của người được nạp tiền.",
-				}
+				{ email }
 			);
 		}
 
@@ -44,7 +41,8 @@ exports.createChargeHistory = async (req, res, next) => {
 			throw new AppError(
 				404,
 				"NOT_FOUND",
-				`Không tìm thấy người dùng với email ${email}.`
+				`Không tìm thấy người dùng với email ${email}.`,
+				{ email }
 			);
 		}
 

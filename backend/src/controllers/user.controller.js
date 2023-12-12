@@ -33,7 +33,10 @@ exports.updateUser = async (req, res, next) => {
 		throw new AppError(
 			404,
 			"NOT_FOUND",
-			`Không tìm thấy người dùng với ID ${req.params.id}.`
+			`Không tìm thấy người dùng với ID ${req.params.id}.`,
+			{
+				id: req.params.id,
+			}
 		);
 	}
 
@@ -72,16 +75,16 @@ exports.updateMe = async (req, res, next) => {
 		(field) => !allowedFields.includes(field)
 	);
 	if (notAllowedFields.length > 0) {
+		const metadata = {};
+		notAllowedFields.forEach((field) => {
+			metadata[field] = req.body[field];
+		});
+
 		throw new AppError(
 			400,
 			"BAD_REQUEST",
 			`Không thể cập nhật trường ${notAllowedFields.join(", ")}.`,
-			Object.assign(
-				{},
-				...notAllowedFields.map((field) => ({
-					[field]: `Không thể cập nhật trường ${field}.`,
-				}))
-			)
+			metadata
 		);
 	}
 
