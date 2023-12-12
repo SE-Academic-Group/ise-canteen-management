@@ -1,52 +1,38 @@
-import { useQueryClient, useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
-
+import { useApiParams } from "../../hooks/useApiParams";
+import { useQueryFetch } from "../../hooks/useQueryFetch";
+import { useQueryPrefetch } from "../../hooks/useQueryPrefetch";
 import { getInventoryItems } from "../../services/apiInventoryItems";
 import { PAGE_SIZE, QUERY_KEYS } from "../../utils/constants";
 
 export function useInventoryItems() {
-  const queryClient = useQueryClient();
-  const [searchParams] = useSearchParams();
-
-  const q = searchParams.get("q");
-  const page = !searchParams.get("page") ? 1 : Number(searchParams.get("page"));
-
-  const filterFields = ["category"];
-  const filters = filterFields
-    .map((field) => {
-      const value = searchParams.get(field);
-      return { field, value };
-    })
-    .filter((filter) => filter.value !== null && filter.value !== "all");
-
-  const sortField = searchParams.get("sortBy");
-  const sortInfo = sortField?.split("-");
-  const sortBy = sortField
-    ? { sort: sortInfo.at(0), order: sortInfo.at(1) }
-    : null;
+  const { page, filters, sortBy, q } = useApiParams({
+    filterFields: ["category"],
+  });
+  const queryKey = [QUERY_KEYS.INVENTORY_ITEMS, page, q, filters, sortBy];
+  const queryOptions = { page, filters, sortBy, q };
 
   const {
     isLoading,
-    data: { data, count } = {},
     error,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.INVENTORY_ITEMS, q, page, filters, sortBy],
-    queryFn: () => getInventoryItems({ page, filters, q, sortBy }),
+    data: { data, count },
+  } = useQueryFetch({
+    fn: () => getInventoryItems(queryOptions),
+    key: queryKey,
   });
 
-  const pageCount = Math.ceil(count / PAGE_SIZE);
+  const noPage = Math.ceil(count / PAGE_SIZE);
 
-  if (page < pageCount)
-    queryClient.prefetchQuery({
-      queryKey: [QUERY_KEYS.INVENTORY_ITEMS, q, page + 1, filters, sortBy],
-      queryFn: () => getInventoryItems({ page: page + 1, filters, q, sortBy }),
-    });
+  useQueryPrefetch({
+    fn: () => getInventoryItems({ ...queryOptions, page: page + 1 }),
+    key: queryKey.with(1, page + 1),
+    when: page < noPage,
+  });
 
-  if (page > 1)
-    queryClient.prefetchQuery({
-      queryKey: [QUERY_KEYS.INVENTORY_ITEMS, q, page - 1, filters, sortBy],
-      queryFn: () => getInventoryItems({ page: page - 1, filters, q, sortBy }),
-    });
+  useQueryPrefetch({
+    fn: () => getInventoryItems({ ...queryOptions, page: page - 1 }),
+    key: queryKey.with(1, page - 1),
+    when: page > 1,
+  });
 
   return { isLoading, error, inventoryItems: data, count };
 }
