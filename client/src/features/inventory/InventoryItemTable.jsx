@@ -27,7 +27,7 @@ export default function InventoryTable() {
 
         <Table.Body
           data={inventoryItems}
-          render={(item) => <InventoryItemRow key={item.id} item={item} />}
+          render={(item) => <InventoryItemRow key={item._id} item={item} />}
         />
 
         <Table.Footer>
