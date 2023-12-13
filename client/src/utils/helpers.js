@@ -157,6 +157,15 @@ export function getImageUrl(path) {
 }
 
 /**
+ * Generates a placeholder image URL with the given name.
+ * @param {string} name - The name to be displayed on the placeholder image.
+ * @returns {string} The URL of the generated placeholder image.
+ */
+export function getPlaceholderImageUrl(name) {
+  return `https://ui-avatars.com/api/?name=${name}&background=random&rounded=true&size=48&font-size=0.33&bold=true&color=fff&length=1`;
+}
+
+/**
  * Converts an object to an array by mapping its values.
  *
  * @param {Object} obj - The object to be converted.
