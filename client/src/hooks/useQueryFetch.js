@@ -16,6 +16,7 @@ export function useQueryFetch({ fn, key }) {
   } = useQuery({
     queryKey: key,
     queryFn: fn,
+    retry: false,
   });
 
   return { isLoading, error, data };

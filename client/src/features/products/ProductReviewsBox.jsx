@@ -4,9 +4,12 @@ import ReviewItem from "../../ui/ReviewItem";
 import ReviewsBox from "../../ui/ReviewsBox";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
+import ErrorLoading from "../../ui/ErrorLoading";
 
 function ProductReviewsBox({ productId }) {
-  const { isLoading, reviews, count } = useProductReviews(productId);
+  const { isLoading, reviews, count, error } = useProductReviews(productId);
+
+  if (error) return <ErrorLoading error={error} />;
 
   if (isLoading) return <Spinner />;
 

@@ -163,7 +163,7 @@ export function getImageUrl(path) {
  * @returns {Array} - The array containing the values of the object.
  */
 export function objectToArray(obj) {
-  const cloned = structuredClone(obj);
+  const cloned = { ...obj };
   const keys = Object.keys(cloned);
   const arr = keys.map((key) => cloned[key]);
 
@@ -209,4 +209,16 @@ export function buildTagOptions(object) {
   });
 
   return tagObj;
+}
+
+/**
+ * Returns the error message from the given error object.
+ * If the error object has a response with a data property containing a message,
+ * that message is returned. Otherwise, a default error message is returned.
+ * @param {Error} error - The error object.
+ * @returns {string} - The error message.
+ */
+export function getErrorMessage(error) {
+  const errMsg = error?.response?.data?.message;
+  return errMsg || "Có lỗi xảy ra, vui lòng thử lại.";
 }

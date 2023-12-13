@@ -1,3 +1,4 @@
+import ErrorLoading from "../../ui/ErrorLoading";
 import Pagination from "../../ui/Pagination";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
@@ -8,7 +9,9 @@ import InventoryItemRow from "./InventoryItemRow";
 import { useInventoryItems } from "./useInventoryItems";
 
 export default function InventoryTable() {
-  const { isLoading, count, inventoryItems } = useInventoryItems();
+  const { isLoading, error, count, inventoryItems } = useInventoryItems();
+
+  if (error) return <ErrorLoading error={error} />;
 
   if (isLoading) return <Spinner />;
 

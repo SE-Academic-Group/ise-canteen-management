@@ -1,5 +1,6 @@
 import { useUsers } from "./useUsers";
 
+import ErrorLoading from "../../ui/ErrorLoading";
 import Pagination from "../../ui/Pagination";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
@@ -8,7 +9,9 @@ import Table from "../../ui/Table";
 import UserRow from "./UserRow";
 
 export default function UserTable() {
-  const { isLoading, count, users } = useUsers();
+  const { isLoading, error, count, users } = useUsers();
+
+  if (error) return <ErrorLoading error={error} />;
 
   if (isLoading) return <Spinner />;
 

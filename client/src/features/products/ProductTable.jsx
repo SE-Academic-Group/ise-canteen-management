@@ -1,3 +1,4 @@
+import ErrorLoading from "../../ui/ErrorLoading";
 import Pagination from "../../ui/Pagination";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
@@ -8,7 +9,9 @@ import ProductRow from "./ProductRow";
 import { useProducts } from "./useProducts";
 
 export default function ProductTable() {
-  const { isLoading, count, products } = useProducts();
+  const { isLoading, error, count, products } = useProducts();
+
+  if (error) return <ErrorLoading error={error} />;
 
   if (isLoading) return <Spinner />;
 
