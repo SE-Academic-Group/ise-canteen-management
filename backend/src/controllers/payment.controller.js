@@ -10,7 +10,10 @@ exports.createPayment = async (req, res, next) => {
 		throw new AppError(
 			404,
 			"NOT_FOUND",
-			`Không tìm thấy đơn hàng với ID ${req.body.orderId}`
+			`Không tìm thấy đơn hàng với ID ${req.body.orderId}`,
+			{
+				id: req.body.orderId,
+			}
 		);
 
 	// If order.userId not exists and req.user.role === "cashier" or "admin", then create payment with method = "cash"

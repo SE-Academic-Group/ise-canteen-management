@@ -54,7 +54,10 @@ exports.updateInventoryExport = async (req, res, next) => {
 		throw new AppError(
 			404,
 			"NOT_FOUND",
-			`Không tìm thấy phiếu xuất kho với ID ${req.params.id}`
+			`Không tìm thấy phiếu xuất kho với ID ${req.params.id}`,
+			{
+				id: req.params.id,
+			}
 		);
 	}
 

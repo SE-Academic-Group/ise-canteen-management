@@ -14,10 +14,7 @@ exports.signup = async (req, res, next) => {
 
 	const existUser = await User.findOne({ email });
 	if (existUser) {
-		throw new AppError(400, "DUPLICATE_KEYS", "Email đã tồn tại.", {
-			field: "email",
-			message: "Email đã tồn tại.",
-		});
+		throw new AppError(400, "DUPLICATE_KEYS", "Email đã tồn tại.", { email });
 	}
 
 	const user = await User.create({
@@ -112,7 +109,7 @@ exports.updatePassword = async (req, res, next) => {
 			"INVALID_ARGUMENTS",
 			"Mật khẩu nhập lại không khớp.",
 			{
-				newPasswordConfirm: "Mật khẩu nhập lại không khớp.",
+				newPasswordConfirm,
 			}
 		);
 	}
@@ -292,3 +289,20 @@ async function verifyToken(token, tokenSecret) {
 		}
 	}
 }
+
+exports.passwordConfirm = async (req, res, next) => {
+	const { password, passwordConfirm } = req.body;
+
+	if (password !== passwordConfirm) {
+		throw new AppError(
+			400,
+			"INVALID_ARGUMENTS",
+			"Mật khẩu xác nhận không khớp.",
+			{
+				passwordConfirm,
+			}
+		);
+	}
+
+	next();
+};

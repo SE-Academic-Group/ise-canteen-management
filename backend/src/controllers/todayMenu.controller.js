@@ -34,7 +34,10 @@ exports.createTodayMenuItem = async (req, res, next) => {
 			throw new AppError(
 				400,
 				"DUPLICATE_KEY",
-				`Sản phẩm ${product.name} đã có trong menu hôm nay`
+				`Sản phẩm ${product.name} đã có trong menu hôm nay`,
+				{
+					name: product.name,
+				}
 			);
 		}
 	}
@@ -47,7 +50,10 @@ exports.updateTodayMenuItem = async (req, res, next) => {
 		throw new AppError(
 			404,
 			"NOT_FOUND",
-			`Không tìm thấy today menu item với ID ${req.params.id}`
+			`Không tìm thấy today-menu-item với ID ${req.params.id}`,
+			{
+				id: req.params.id,
+			}
 		);
 	}
 
@@ -134,7 +140,10 @@ exports.closeTodayMenu = async (req, res, next) => {
 			throw new AppError(
 				404,
 				"NOT_FOUND",
-				`Không có product với ID ${item.productId}`
+				`Không có product với ID ${item.productId}`,
+				{
+					id: item.productId,
+				}
 			);
 		}
 
@@ -171,7 +180,10 @@ async function populateMenuItemWithProductInfo(menuItem) {
 		throw new AppError(
 			404,
 			"NOT_FOUND",
-			`Không tìm thấy sản phẩm với ID ${menuItem.productId}`
+			`Không tìm thấy sản phẩm với ID ${menuItem.productId}`,
+			{
+				id: menuItem.productId,
+			}
 		);
 	}
 	menuItem.price = menuItem.price || product.price;

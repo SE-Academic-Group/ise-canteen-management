@@ -29,6 +29,9 @@ const todayMenuItemSchema = new mongoose.Schema(
 		},
 		totalQuantity: {
 			type: Number,
+			default: function () {
+				return this.quantity;
+			},
 		},
 		description: {
 			type: String,

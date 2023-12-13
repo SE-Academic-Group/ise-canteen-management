@@ -4,8 +4,12 @@ const path = require("path");
 const AppError = require("../utils/appError");
 const APIFeatures = require("../utils/apiFeatures");
 
-exports.createOne = (Model) => async (req, res, next) => {
+exports.createOne = (Model, options) => async (req, res, next) => {
 	const newDoc = await Model.create(req.body);
+
+	if (options?.populate) {
+		await newDoc.populate(options.populate);
+	}
 
 	res.status(201).json({
 		status: "success",
@@ -86,7 +90,11 @@ exports.getOne = (Model, options) => async (req, res, next) => {
 		throw new AppError(
 			404,
 			"NOT_FOUND",
-			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`
+			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`,
+			{
+				id: req.params.id,
+				modelName: Model.modelName.toLowerCase(),
+			}
 		);
 	}
 
@@ -108,7 +116,11 @@ exports.updateOne = (Model) => async (req, res, next) => {
 		throw new AppError(
 			404,
 			"NOT_FOUND",
-			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`
+			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`,
+			{
+				id: req.params.id,
+				modelName: Model.modelName.toLowerCase(),
+			}
 		);
 	}
 
@@ -142,7 +154,11 @@ exports.deleteOne = (Model) => async (req, res, next) => {
 		throw new AppError(
 			404,
 			"NOT_FOUND",
-			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`
+			`Không tìm thấy ${Model.modelName.toLowerCase()} với ID ${req.params.id}`,
+			{
+				id: req.params.id,
+				modelName: Model.modelName.toLowerCase(),
+			}
 		);
 	}
 
