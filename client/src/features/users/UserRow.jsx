@@ -38,7 +38,7 @@ function UserRow({ user, serial }) {
       <Table.Column.Phone>{phone}</Table.Column.Phone>
       <Tag type={tag.type}>{tag.label}</Tag>
       <Table.Column.Amount>
-        {role.value === "customer" ? balance : null}
+        {role === "customer" ? balance : null}
       </Table.Column.Amount>
 
       {!isCurrentUser && (
