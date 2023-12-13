@@ -17,12 +17,26 @@ exports.signup = async (req, res, next) => {
 		throw new AppError(400, "DUPLICATE_KEYS", "Email đã tồn tại.", { email });
 	}
 
+	// Check if password and passwordConfirm are the same
+	if (password !== passwordConfirm) {
+		throw new AppError(
+			400,
+			"INVALID_ARGUMENTS",
+			"Mật khẩu nhập lại không khớp.",
+			{
+				passwordConfirm,
+			}
+		);
+	}
+
 	const user = await User.create({
 		name,
 		email,
 		password,
-		passwordConfirm,
-	}).select("-password -passwordChangedAt -active");
+	});
+	// Remove password and active from user object
+	user.password = undefined;
+	user.active = undefined;
 
 	const { accessToken, accessTokenOptions } = createAccessToken(user, req);
 	const { refreshToken, refreshTokenOptions } = createRefreshToken(user, req);
@@ -91,7 +105,9 @@ exports.updatePassword = async (req, res, next) => {
 	const { oldPassword, newPassword, newPasswordConfirm } = req.body;
 
 	// 1) Get user from collection
-	const user = await User.findById(req.user.id).select("+password");
+	const user = await User.findById(req.user.id).select(
+		"+password +passwordConfirm"
+	);
 
 	// 2) Check if POSTed current password is correct
 	if (!(await user.isCorrectPassword(oldPassword))) {
@@ -292,6 +308,12 @@ async function verifyToken(token, tokenSecret) {
 
 exports.passwordConfirm = async (req, res, next) => {
 	const { passwordConfirm } = req.body;
+
+	if (!passwordConfirm) {
+		throw new AppError(400, "INVALID_ARGUMENTS", "Phải có mật khẩu xác nhận.", {
+			passwordConfirm,
+		});
+	}
 
 	const user = await User.findById(req.user.id).select("+password");
 	const isCorrectPassword = await user.isCorrectPassword(passwordConfirm);

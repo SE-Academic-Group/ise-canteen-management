@@ -26,16 +26,6 @@ const userSchema = new mongoose.Schema(
 			minlength: [8, "Mật khẩu phải có ít nhất 8 ký tự"],
 			select: false,
 		},
-		passwordConfirm: {
-			type: String,
-			required: [true, "Hãy nhập lại mật khẩu của bạn"],
-			validate: {
-				validator: function () {
-					return this.password === this.passwordConfirm;
-				},
-				message: "Mật khẩu nhập lại không khớp",
-			},
-		},
 		role: {
 			type: String,
 			enum: ["admin", "cashier", "customer", "staff"],
@@ -88,7 +78,6 @@ userSchema.pre("save", async function (next) {
 
 	// 12 : how CPU intensive to hash password
 	this.password = await bcrypt.hash(this.password, 12);
-	this.passwordConfirm = undefined;
 
 	next();
 });
