@@ -1,20 +1,12 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-hot-toast";
-
-import { createEditUser } from "../../services/apiUsers";
 import { QUERY_KEYS } from "../../constants/keys";
+import { useApiMutation } from "../../hooks/useApiMutation";
+import { createEditUser } from "../../services/apiUsers";
 
 export function useEditUser() {
-  const queryClient = useQueryClient();
-
-  const { mutate: editUser, isLoading: isEditing } = useMutation({
-    mutationFn: ({ newUserData, id }) => createEditUser(newUserData, id),
-    onSuccess: () => {
-      toast.success("Cập nhật thông tin người dùng thành công!");
-
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USERS] });
-    },
-    onError: (err) => toast.error(err.message),
+  const { mutate: editUser, isLoading: isEditing } = useApiMutation({
+    fn: ({ newUserData, id }) => createEditUser(newUserData, id),
+    key: [QUERY_KEYS.USERS],
+    successMsg: "Cập nhật thông tin người dùng thành công!",
   });
 
   return { isEditing, editUser };

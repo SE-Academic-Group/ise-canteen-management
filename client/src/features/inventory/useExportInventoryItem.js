@@ -1,21 +1,14 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-hot-toast";
-
-import { exportInventoryItem as exportInventoryItemApi } from "../../services/apiInventoryItems";
 import { QUERY_KEYS } from "../../constants/keys";
+import { useApiMutation } from "../../hooks/useApiMutation";
+import { exportInventoryItem as exportInventoryItemApi } from "../../services/apiInventoryItems";
 
 export function useExportInventoryItem() {
-  const queryClient = useQueryClient();
-
-  const { mutate: exportInventoryItem, isLoading: isExporting } = useMutation({
-    mutationFn: exportInventoryItemApi,
-    onSuccess: () => {
-      toast.success("Đã cập nhật thông tin xuất hàng!");
-
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.INVENTORY_ITEMS] });
-    },
-    onError: (err) => toast.error(err.message ?? "Có lỗi xảy ra!"),
-  });
+  const { mutate: exportInventoryItem, isLoading: isExporting } =
+    useApiMutation({
+      fn: exportInventoryItemApi,
+      key: [QUERY_KEYS.INVENTORY_ITEMS],
+      successMsg: "Đã cập nhật thông tin xuất hàng!",
+    });
 
   return { isExporting, exportInventoryItem };
 }

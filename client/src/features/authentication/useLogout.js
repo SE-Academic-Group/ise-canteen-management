@@ -1,22 +1,18 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { logout as logoutApi } from "../../services/apiAuth";
+import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { useApiMutation } from "../../hooks/useApiMutation";
+import { logout as logoutApi } from "../../services/apiAuth";
 
 export function useLogout() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { mutate: logout, isLoading } = useMutation({
-    mutationFn: logoutApi,
+  const { mutate: logout, isLoading } = useApiMutation({
+    fn: logoutApi,
+    successMsg: "Đã đăng xuất ra khỏi hệ thống.",
     onSuccess: () => {
       queryClient.removeQueries();
-      toast.success("Đã đăng xuất ra khỏi hệ thống.");
       navigate("/login", { replace: true });
-    },
-    onError: (error) => {
-      const errMsg = error?.response?.data?.message;
-      toast.error(errMsg || "Có lỗi xảy ra, vui lòng thử lại.");
     },
   });
 

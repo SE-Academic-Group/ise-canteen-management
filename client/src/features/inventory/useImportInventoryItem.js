@@ -1,21 +1,14 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-hot-toast";
-
-import { importInventoryItem as importInventoryItemApi } from "../../services/apiInventoryItems";
 import { QUERY_KEYS } from "../../constants/keys";
+import { useApiMutation } from "../../hooks/useApiMutation";
+import { importInventoryItem as importInventoryItemApi } from "../../services/apiInventoryItems";
 
 export function useImportInventoryItem() {
-  const queryClient = useQueryClient();
-
-  const { mutate: importInventoryItem, isLoading: isImporting } = useMutation({
-    mutationFn: importInventoryItemApi,
-    onSuccess: () => {
-      toast.success("Đã cập nhật thông tin nhập hàng!");
-
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.INVENTORY_ITEMS] });
-    },
-    onError: (err) => toast.error(err.message ?? "Có lỗi xảy ra!"),
-  });
+  const { isLoading: isImporting, mutate: importInventoryItem } =
+    useApiMutation({
+      fn: importInventoryItemApi,
+      key: [QUERY_KEYS.INVENTORY_ITEMS],
+      successMsg: "Đã cập nhật thông tin nhập hàng!",
+    });
 
   return { isImporting, importInventoryItem };
 }

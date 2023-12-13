@@ -219,6 +219,7 @@ export function buildTagOptions(object) {
  * @returns {string} - The error message.
  */
 export function getErrorMessage(error) {
-  const errMsg = error?.response?.data?.message;
+  const errMsg =
+    error?.response?.data?.message || error?.response?.data?.errors;
   return errMsg || "Có lỗi xảy ra, vui lòng thử lại.";
 }
