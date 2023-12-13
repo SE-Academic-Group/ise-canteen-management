@@ -1,20 +1,12 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-hot-toast";
-
-import { createEditProduct } from "../../services/apiProducts";
 import { QUERY_KEYS } from "../../constants/keys";
+import { useApiMutation } from "../../hooks/useApiMutation";
+import { createEditProduct } from "../../services/apiProducts";
 
 export function useCreateProduct() {
-  const queryClient = useQueryClient();
-
-  const { mutate: createProduct, isLoading: isCreating } = useMutation({
-    mutationFn: createEditProduct,
-    onSuccess: () => {
-      toast.success("Tạo sản phẩm thành công!");
-
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.PRODUCTS] });
-    },
-    onError: (err) => toast.error(err.message),
+  const { mutate: createProduct, isLoading: isCreating } = useApiMutation({
+    fn: createEditProduct,
+    key: [QUERY_KEYS.PRODUCTS],
+    successMsg: "Tạo sản phẩm thành công!",
   });
 
   return { isCreating, createProduct };

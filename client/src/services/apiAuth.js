@@ -77,3 +77,27 @@ export async function updateCurrentUser({ name, phone, image }) {
 
   return data.data;
 }
+
+/**
+ * Updates the user's password.
+ * @param {Object} params - The parameters for updating the password.
+ * @param {string} params.oldPassword - The user's current password.
+ * @param {string} params.newPassword - The new password to be set.
+ * @param {string} params.newPasswordConfirm - The confirmation of the new password.
+ * @returns {Promise<any>} - A promise that resolves to the updated password data.
+ */
+export async function updatePassword({
+  oldPassword,
+  newPassword,
+  newPasswordConfirm,
+}) {
+  const { data } = await axiosClient.patch("auth/update-password", {
+    oldPassword,
+    newPassword,
+    newPasswordConfirm,
+    password: oldPassword,
+    passwordConfirm: newPasswordConfirm,
+  });
+
+  return data.data;
+}

@@ -1,3 +1,4 @@
+import ErrorLoading from "../../ui/ErrorLoading";
 import Pagination from "../../ui/Pagination";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
@@ -8,7 +9,9 @@ import MenuRow from "./MenuRow";
 import { useMenuHistories } from "./useMenuHistories";
 
 export default function MenuTable() {
-  const { isLoading, count, menuHistories } = useMenuHistories();
+  const { isLoading, error, count, menuHistories } = useMenuHistories();
+
+  if (error) return <ErrorLoading error={error} />;
 
   if (isLoading) return <Spinner />;
 

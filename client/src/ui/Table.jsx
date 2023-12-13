@@ -207,7 +207,7 @@ function Body({ data, render }) {
 function Amount({ children }) {
   return (
     <StyledAmount>
-      {children ? (
+      {children != null ? (
         formatVietnameseCurrency(children)
       ) : (
         <>

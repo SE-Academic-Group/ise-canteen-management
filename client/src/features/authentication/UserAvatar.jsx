@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { useUser } from "./useUser";
+
 import SpinnerMini from "../../ui/SpinnerMini";
 import Tag from "../../ui/Tag";
 import { translator } from "../../utils/translator";
+import { getImageUrl, getPlaceholderImageUrl } from "../../utils/helpers";
 
 const StyledUserAvatar = styled.div`
   display: flex;
@@ -28,12 +30,12 @@ function UserAvatar() {
 
   if (isLoading) return <SpinnerMini />;
 
-  const { name, role } = user;
-  const image = "https://i.pravatar.cc/150?img=3&u=" + user._id;
+  const { name, role, image } = user;
+  const imageUrl = image ? getImageUrl(image) : getPlaceholderImageUrl(name);
 
   return (
     <StyledUserAvatar>
-      <Avatar src={image} alt={`Avatar of ${name}`} />
+      <Avatar src={imageUrl} alt={`Avatar of ${name}`} />
       <span>{name}</span>
       <Tag type="brand">{translator("role", role)}</Tag>
     </StyledUserAvatar>

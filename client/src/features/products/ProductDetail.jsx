@@ -17,6 +17,7 @@ import Row from "../../ui/Row";
 import ProductDataBox from "./ProductDataBox";
 
 import { translator } from "../../utils/translator";
+import ErrorLoading from "../../ui/ErrorLoading";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -37,9 +38,11 @@ function ProductDetail() {
   const { isDeleting, deleteProduct } = useDeleteProduct();
   const isWorking = isDeleting;
 
+  if (error) return <ErrorLoading error={error} />;
+
   if (isLoading) return <Spinner />;
 
-  if (!product || error) return <Empty resourceName="Sản phẩm" />;
+  if (!product) return <Empty resourceName="Sản phẩm" />;
 
   const { category, _id: productId } = product;
 

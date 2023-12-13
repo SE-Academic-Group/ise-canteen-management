@@ -1,18 +1,8 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 
-import {
-  HiOutlineBuildingStorefront,
-  HiOutlineCube,
-  HiOutlineChartBarSquare,
-  HiOutlineHome,
-  HiOutlineShoppingBag,
-  HiOutlineCog8Tooth,
-  HiOutlineUserGroup,
-} from "react-icons/hi2";
-import { FaMoneyCheckDollar } from "react-icons/fa6";
-import { BiFoodMenu } from "react-icons/bi";
 import { useUser } from "../features/authentication/useUser";
+import { ROUTES_MAP } from "../constants/nav";
 
 const Nav = styled.nav`
   block-size: 100%;
@@ -73,64 +63,20 @@ function MainNav() {
   if (isLoading) {
     return null;
   }
+  const role = user.role ?? "customer";
+  const routes = ROUTES_MAP[role];
 
   return (
     <Nav>
       <NavList>
-        <li>
-          <StyledNavLink to="/dashboard">
-            <HiOutlineHome />
-            <span>Trang chủ</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/users">
-            <HiOutlineUserGroup />
-            <span>Người dùng</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/deposit">
-            <FaMoneyCheckDollar />
-            <span>Nạp tiền</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/orders">
-            <HiOutlineShoppingBag />
-            <span>Đơn hàng</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/products">
-            <HiOutlineCube />
-            <span>Sản phẩm</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/menus">
-            <BiFoodMenu />
-            <span>Thực đơn</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/inventory">
-            <HiOutlineBuildingStorefront />
-            <span>Kho hàng</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/stats">
-            <HiOutlineChartBarSquare />
-            <span>Thống kê</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/settings">
-            <HiOutlineCog8Tooth />
-            <span>Cài đặt</span>
-          </StyledNavLink>
-        </li>
+        {routes.map((route) => (
+          <li key={route.path}>
+            <StyledNavLink to={route.path}>
+              <route.icon />
+              <span>{route.name}</span>
+            </StyledNavLink>
+          </li>
+        ))}
       </NavList>
     </Nav>
   );

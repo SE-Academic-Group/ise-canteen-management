@@ -11,6 +11,7 @@ import EditUserForm from "./EditUserForm";
 import { useUser } from "../authentication/useUser";
 import { useDeleteUser } from "./useDeleteUser";
 import { ROLE_TAGS } from "../../constants/tags";
+import { getImageUrl, getPlaceholderImageUrl } from "../../utils/helpers";
 
 function UserRow({ user, serial }) {
   const { deleteUser, isDeleting } = useDeleteUser();
@@ -23,14 +24,12 @@ function UserRow({ user, serial }) {
 
   const { _id, name, email, image, phone, role, balance } = user;
   const tag = ROLE_TAGS[role];
+  const imageUrl = image ? getImageUrl(image) : getPlaceholderImageUrl(name);
 
   return (
     <Table.Row>
       <Table.Column.Serial>{serial}</Table.Column.Serial>
-      <Table.Column.Thumbnail
-        src={`https://ui-avatars.com/api/?name=${user.name}&background=random&rounded=true&size=48&font-size=0.33&bold=true&color=fff&length=1`}
-        alt={"Avatar of " + name}
-      />
+      <Table.Column.Thumbnail src={imageUrl} alt={"Avatar of " + name} />
       <Table.Column.Stacked>
         <span>{name}</span>
         <span>{email}</span>
@@ -38,7 +37,7 @@ function UserRow({ user, serial }) {
       <Table.Column.Phone>{phone}</Table.Column.Phone>
       <Tag type={tag.type}>{tag.label}</Tag>
       <Table.Column.Amount>
-        {role.value === "customer" ? balance : null}
+        {role === "customer" ? balance : null}
       </Table.Column.Amount>
 
       {!isCurrentUser && (

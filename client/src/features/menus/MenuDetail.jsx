@@ -10,10 +10,15 @@ import Row from "../../ui/Row";
 import ButtonGroup from "../../ui/ButtonGroup";
 import MenuDataBox from "./MenuDataBox";
 import Button from "../../ui/Button";
+import ErrorLoading from "../../ui/ErrorLoading";
 
 function MenuDetail() {
   const moveBack = useMoveBack();
-  const { menuHistory, isLoading } = useMenuHistory();
+  const { menuHistory, error, isLoading } = useMenuHistory();
+
+  if (error) {
+    return <ErrorLoading error={error} />;
+  }
 
   if (isLoading) {
     return <Spinner />;

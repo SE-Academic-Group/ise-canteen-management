@@ -19,6 +19,7 @@ import OrderDataBox from "./OrderDataBox";
 
 import { translator } from "../../utils/translator";
 import { ORDER_STATUS_TAGS } from "../../constants/tags";
+import ErrorLoading from "../../ui/ErrorLoading";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -29,10 +30,12 @@ const HeadingGroup = styled.div`
 function OrderDetail() {
   const moveBack = useMoveBack();
   const navigate = useNavigate();
-  const { order, isLoading } = useOrder();
+  const { order, isLoading, error } = useOrder();
   const { isCancelling, cancelOrder } = useCancelOrder();
   const { isCompleting, completeOrder } = useCompleteOrder();
   const isWorking = isCancelling || isCompleting;
+
+  if (error) return <ErrorLoading error={error} />;
 
   if (isLoading) return <Spinner />;
 

@@ -6,9 +6,12 @@ import Table from "../../ui/Table";
 import OrderRow from "./OrderRow";
 
 import { useOrders } from "./useOrders";
+import ErrorLoading from "../../ui/ErrorLoading";
 
 export default function OrderTable() {
-  const { isLoading, count, orders } = useOrders();
+  const { isLoading, count, orders, error } = useOrders();
+
+  if (error) return <ErrorLoading error={error} />;
 
   if (isLoading) return <Spinner />;
 
