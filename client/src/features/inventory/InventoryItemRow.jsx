@@ -10,6 +10,8 @@ import Menus from "../../ui/Menus";
 import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Tag from "../../ui/Tag";
+import ImportInventoryItemForm from "./ImportInventoryItemForm";
+import ExportInventoryItemForm from "./ExportInventoryItemForm";
 import EditInventoryItemForm from "./EditInventoryItemForm";
 
 import { translator } from "../../utils/translator";
@@ -39,12 +41,16 @@ function InventoryItemRow({ item }) {
             <Modal.Open opens="edit">
               <Menus.Button icon={<HiPencil />}>Chỉnh sửa</Menus.Button>
             </Modal.Open>
-            <Menus.Button icon={<HiMiniArrowLeftOnRectangle />}>
-              Nhập kho
-            </Menus.Button>
-            <Menus.Button icon={<HiMiniArrowRightOnRectangle />}>
-              Xuất kho
-            </Menus.Button>
+            <Modal.Open opens="import">
+              <Menus.Button icon={<HiMiniArrowLeftOnRectangle />}>
+                Nhập kho
+              </Menus.Button>
+            </Modal.Open>
+            <Modal.Open opens="export">
+              <Menus.Button icon={<HiMiniArrowRightOnRectangle />}>
+                Xuất kho
+              </Menus.Button>
+            </Modal.Open>
             <Modal.Open opens="delete">
               <Menus.Button icon={<HiTrash />}>Xóa thông tin</Menus.Button>
             </Modal.Open>
@@ -53,6 +59,14 @@ function InventoryItemRow({ item }) {
 
         <Modal.Window name="edit">
           <EditInventoryItemForm itemToEdit={item} />
+        </Modal.Window>
+
+        <Modal.Window name="import">
+          <ImportInventoryItemForm itemToImport={item} />
+        </Modal.Window>
+
+        <Modal.Window name="export">
+          <ExportInventoryItemForm itemToExport={item} />
         </Modal.Window>
 
         <Modal.Window name="delete">
