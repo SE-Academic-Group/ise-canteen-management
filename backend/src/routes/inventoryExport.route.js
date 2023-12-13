@@ -6,6 +6,7 @@ const {
 	validateRequest,
 	validateRequestId,
 } = require("../middlewares/validateRequest");
+const createInventoryExportSchema = require("../schemas/inventoryExport/createInventoryExport.schema");
 
 const router = express.Router();
 
@@ -15,7 +16,12 @@ router.use(
 );
 
 router.get("/", inventoryExportController.getAllInventoryExports);
-router.post("/", inventoryExportController.createInventoryExport);
+
+router.post(
+	"/",
+	validateRequest(createInventoryExportSchema),
+	inventoryExportController.createInventoryExport
+);
 
 router
 	.route("/:id", validateRequestId("id"))

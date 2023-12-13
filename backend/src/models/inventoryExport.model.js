@@ -12,18 +12,18 @@ const inventoryExportSchema = new mongoose.Schema(
 				inventoryItemId: {
 					type: mongoose.Schema.Types.ObjectId,
 					ref: "InventoryItem",
-					required: true,
+					required: [true, "Mã sản phẩm không được để trống"],
 				},
-				exportQuantity: {
+				quantity: {
 					type: Number,
 					min: [0, "Số lượng sản phẩm không hợp lệ"],
-					required: true,
+					required: [true, ["Số lượng sản phẩm không được để trống"]],
 				},
 				remainQuantity: {
 					type: Number,
 					min: [0, "Số lượng sản phẩm không hợp lệ"],
 					default: function () {
-						return this.exportQuantity;
+						return this.quantity;
 					},
 				},
 			},

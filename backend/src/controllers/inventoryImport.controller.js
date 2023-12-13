@@ -34,9 +34,7 @@ exports.createInventoryImport = async (req, res, next) => {
 
 	res.status(201).json({
 		status: "success",
-		data: {
-			data: inventoryImport,
-		},
+		data: inventoryImport,
 	});
 };
 
@@ -80,8 +78,6 @@ exports.updateInventoryImport = async (req, res, next) => {
 
 	res.status(200).json({
 		status: "success",
-		data: {
-			data: inventoryImport,
-		},
+		data: inventoryImport,
 	});
 };

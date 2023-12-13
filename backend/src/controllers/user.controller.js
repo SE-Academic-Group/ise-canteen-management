@@ -15,9 +15,7 @@ exports.createUser = async (req, res, next) => {
 
 	res.status(201).json({
 		status: "success",
-		data: {
-			user: newUser,
-		},
+		data: newUser,
 	});
 };
 
@@ -110,9 +108,7 @@ exports.updateMe = async (req, res, next) => {
 
 	res.status(200).json({
 		status: "success",
-		data: {
-			updatedUser,
-		},
+		data: updatedUser,
 	});
 };
 

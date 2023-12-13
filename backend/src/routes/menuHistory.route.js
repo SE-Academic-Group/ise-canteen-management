@@ -19,7 +19,7 @@ router.use(authController.restrictTo("staff", "admin"));
 // );
 
 // CRUD routes
-router.use(authController.restrictTo("admin"));
+router.use(authController.restrictTo("admin", "staff", "cashier"));
 router.get("/", menuHistoryController.getAllMenuHistory);
 router.get("/:id", menuHistoryController.getMenuHistory);
 router.post("/", menuHistoryController.createMenuHistory);

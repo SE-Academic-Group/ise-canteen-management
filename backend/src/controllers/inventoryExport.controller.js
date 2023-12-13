@@ -28,15 +28,13 @@ exports.createInventoryExport = async (req, res, next) => {
 	// Update the inventory items stockAmount
 	for (const item of exportItems) {
 		await InventoryItem.findByIdAndUpdate(item.inventoryItemId, {
-			$inc: { stockAmount: -item.exportQuantity },
+			$inc: { stockAmount: -item.quantity },
 		});
 	}
 
 	res.status(201).json({
 		status: "success",
-		data: {
-			data: inventoryExport,
-		},
+		data: inventoryExport,
 	});
 };
 
@@ -75,14 +73,12 @@ exports.updateInventoryExport = async (req, res, next) => {
 	// Subtract the new export quantity from stockAmount
 	for (const item of newExportItems) {
 		await InventoryItem.findByIdAndUpdate(item.inventoryItemId, {
-			$inc: { stockAmount: -item.exportQuantity },
+			$inc: { stockAmount: -item.quantity },
 		});
 	}
 
 	res.status(200).json({
 		status: "success",
-		data: {
-			data: inventoryExport,
-		},
+		data: inventoryExport,
 	});
 };
