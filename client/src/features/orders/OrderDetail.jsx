@@ -18,6 +18,7 @@ import Row from "../../ui/Row";
 import OrderDataBox from "./OrderDataBox";
 
 import { translator } from "../../utils/translator";
+import { ORDER_STATUS_TAGS } from "../../constants/tags";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -38,25 +39,14 @@ function OrderDetail() {
   if (!order) return <Empty resourceName="đơn hàng" />;
 
   const { orderStatus, id: orderId } = order;
-
-  const statusToTagName = {
-    completed: "green",
-    cancelled: "red",
-    pending: "silver",
-  };
-
-  const status = {
-    tag: statusToTagName[orderStatus],
-    name: translator("order_status", orderStatus),
-    value: orderStatus,
-  };
+  const tag = ORDER_STATUS_TAGS[orderStatus];
 
   return (
     <>
       <Row type="horizontal">
         <HeadingGroup>
           <Heading as="h1">Đơn hàng #{orderId}</Heading>
-          <Tag type={status.tag}>{status.name}</Tag>
+          <Tag type={tag.type}>{tag.label}</Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>
           <span role="presentation">&larr;</span>

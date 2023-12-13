@@ -1,23 +1,23 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
-import { deleteProduct as deleteProductApi } from "../../services/apiProducts";
+import { deleteInventoryItem as deleteInventoryItemApi } from "../../services/apiInventoryItems";
 import { QUERY_KEYS } from "../../constants/keys";
 
-export function useDeleteProduct() {
+export function useDeleteInventoryItem() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isDeleting, mutate: deleteProduct } = useMutation({
-    mutationFn: deleteProductApi,
+  const { isLoading: isDeleting, mutate: deleteInventoryItem } = useMutation({
+    mutationFn: deleteInventoryItemApi,
     onSuccess: () => {
-      toast.success("Xóa sản phẩm thành công!");
+      toast.success("Xóa thông tin thành công!");
 
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.PRODUCTS],
+        queryKey: [QUERY_KEYS.INVENTORY_ITEMS],
       });
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => toast.error(err.message ?? "Có lỗi xảy ra!"),
   });
 
-  return { isDeleting, deleteProduct };
+  return { isDeleting, deleteInventoryItem };
 }

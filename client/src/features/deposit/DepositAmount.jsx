@@ -8,10 +8,6 @@ import Input from "../../ui/Input";
 
 import { formatVietnameseCurrency } from "../../utils/helpers";
 
-const VALUES = [
-  10000, 15000, 20000, 25000, 30000, 50000, 100000, 200000, 500000,
-];
-
 const Container = styled.div`
   & > *:not(:last-child) {
     margin-bottom: 4rem;
@@ -60,6 +56,10 @@ const StepFormRow = styled(FormRow)`
   }
 `;
 
+const DEPOSIT_QUICK_VALUES = [
+  10000, 15000, 20000, 25000, 30000, 50000, 100000, 200000, 500000,
+];
+
 function DepositAmount({ currentAmount, handleSelectAmount }) {
   const { register, formState, setValue } = useForm({
     mode: "onChange",
@@ -90,7 +90,7 @@ function DepositAmount({ currentAmount, handleSelectAmount }) {
     <Container>
       <StepHeading as="h2">Chọn mệnh giá nạp</StepHeading>
       <Layout>
-        {VALUES.map((value) => (
+        {DEPOSIT_QUICK_VALUES.map((value) => (
           <AmountButton
             key={value}
             className={currentAmount === value ? "active" : "s"}

@@ -10,7 +10,7 @@ import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 
 import { FORM_RULES } from "../../constants/form";
-import { CATEGORY_OPTIONS } from "../../constants/options";
+import { CATEGORY_OPTIONS, UNIT_OPTIONS } from "../../constants/options";
 
 function CreateInventoryItemForm({ onCloseModal = () => {} }) {
   const { isCreating, createInventoryItem } = useCreateInventoryItem();
@@ -19,9 +19,9 @@ function CreateInventoryItemForm({ onCloseModal = () => {} }) {
     defaultValues: {
       name: "",
       price: 1000,
-      stockAmount: 1,
+      stockAmount: 0,
       category: CATEGORY_OPTIONS.at(0).value,
-      unit: "",
+      unit: UNIT_OPTIONS.at(0).value,
       description: "",
     },
   });
@@ -75,6 +75,14 @@ function CreateInventoryItemForm({ onCloseModal = () => {} }) {
           disabled={isCreating}
           id="category"
           {...register("category", FORM_RULES.REQUIRED("phân loại"))}
+        />
+      </FormRow>
+      <FormRow label={"Đơn vị"} error={errors.unit?.message}>
+        <Select
+          options={UNIT_OPTIONS}
+          disabled={isCreating}
+          id="unit"
+          {...register("unit", FORM_RULES.REQUIRED("đơn vị"))}
         />
       </FormRow>
       <FormRow label={"Mô tả"} error={errors.description?.message}>
