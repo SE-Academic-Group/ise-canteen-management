@@ -294,8 +294,9 @@ exports.passwordConfirm = async (req, res, next) => {
 	const { passwordConfirm } = req.body;
 
 	const user = await User.findById(req.user.id).select("+password");
+	const isCorrectPassword = await user.isCorrectPassword(passwordConfirm);
 
-	if (!(await user.isCorrectPassword(passwordConfirm))) {
+	if (!isCorrectPassword) {
 		throw new AppError(
 			400,
 			"INVALID_CREDENTIALS",
