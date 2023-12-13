@@ -1,27 +1,15 @@
-import styled from "styled-components";
-import FlexContainer from "../../ui/FlexContainer";
+import SelectFIlter from "../../ui/SelectFIlter";
 import SearchBox from "../../ui/SearchBox";
-import Filter from "../../ui/Filter";
 import SortBy from "../../ui/SortBy";
-
-const Layout = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 1.2rem;
-
-  & > :first-child {
-    align-self: flex-start;
-  }
-`;
+import TableOperations from "../../ui/TableOperations";
 
 function InventoryTableOperations() {
   return (
-    <Layout>
-      <Filter
-        filterField="category"
+    <TableOperations>
+      <SelectFIlter
+        filterField={"category"}
         options={[
-          { value: "all", label: "Tất cả" },
+          { value: "all", label: "Tất cả phân loại" },
           { value: "food", label: "Thực phẩm" },
           { value: "beverage", label: "Nước" },
           { value: "ingredient", label: "Nguyên liệu" },
@@ -33,22 +21,20 @@ function InventoryTableOperations() {
         ]}
       />
 
-      <FlexContainer>
-        <SortBy
-          options={[
-            { value: "default", label: "Sắp xếp mặc định" },
-            { value: "name-asc", label: "Sắp xếp theo tên (A-Z)" },
-            { value: "name-desc", label: "Sắp xếp theo tên (Z-A)" },
-            {
-              value: "createdAt-desc",
-              label: "Sắp xếp theo ngày tạo (gần đây)",
-            },
-            { value: "createdAt-asc", label: "Sắp xếp theo ngày tạo (cũ)" },
-          ]}
-        />
-        <SearchBox />
-      </FlexContainer>
-    </Layout>
+      <SortBy
+        options={[
+          { value: "default", label: "Sắp xếp mặc định" },
+          { value: "name-asc", label: "Sắp xếp theo tên (A-Z)" },
+          { value: "name-desc", label: "Sắp xếp theo tên (Z-A)" },
+          {
+            value: "createdAt-desc",
+            label: "Sắp xếp theo ngày tạo (gần đây)",
+          },
+          { value: "createdAt-asc", label: "Sắp xếp theo ngày tạo (cũ)" },
+        ]}
+      />
+      <SearchBox />
+    </TableOperations>
   );
 }
 
