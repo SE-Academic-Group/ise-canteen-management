@@ -291,12 +291,15 @@ async function verifyToken(token, tokenSecret) {
 }
 
 exports.passwordConfirm = async (req, res, next) => {
-	const { password, passwordConfirm } = req.body;
+	const { passwordConfirm } = req.body;
 
-	if (password !== passwordConfirm) {
+	const user = await User.findById(req.user.id).select("+password");
+	const isCorrectPassword = await user.isCorrectPassword(passwordConfirm);
+
+	if (!isCorrectPassword) {
 		throw new AppError(
 			400,
-			"INVALID_ARGUMENTS",
+			"INVALID_CREDENTIALS",
 			"Mật khẩu xác nhận không khớp.",
 			{
 				passwordConfirm,
