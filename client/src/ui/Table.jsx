@@ -162,7 +162,7 @@ const StyledImg = styled.img`
   font-style: italic;
 `;
 
-const Rating = styled.div`
+const StyledRating = styled.div`
   font-size: 1.6rem;
   font-weight: 600;
   text-align: center;
@@ -249,6 +249,10 @@ function Img({ src, ...props }) {
   }
 
   return <StyledImg src={getImageUrl(src)} {...props} />;
+}
+
+function Rating({ children }) {
+  return <StyledRating>{children?.toFixed(1) ?? "__"}</StyledRating>;
 }
 
 Table.Header = Header;

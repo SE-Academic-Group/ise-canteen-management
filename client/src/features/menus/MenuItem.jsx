@@ -51,7 +51,7 @@ function MenuItem({ menuItem = {} }) {
 
   return (
     <Container>
-      <Image src={getImageUrl(image)} alt="banh-mi-pate" />
+      <Image src={getImageUrl(image)} alt={name} />
       <Name>{name}</Name>
       <div>
         <p>

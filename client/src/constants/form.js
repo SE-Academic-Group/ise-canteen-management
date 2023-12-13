@@ -74,6 +74,7 @@ export const FORM_RULES = {
       value: 100000000,
       message: max`Giá ${100000000}`,
     },
+    valueAsNumber: true,
   },
   DESCRIPTION: {
     minLength: {
@@ -91,5 +92,14 @@ export const FORM_RULES = {
       message: min`Số lượng ${0}`,
     },
     required: required`Số lượng`,
+    valueAsNumber: true,
+  },
+  AMOUNT: {
+    required: "Vui lòng nhập số lượng",
+    min: {
+      value: 1,
+      message: "Số lượng phải lớn hơn 0",
+    },
+    valueAsNumber: true,
   },
 };

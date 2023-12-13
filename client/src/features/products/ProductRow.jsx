@@ -10,13 +10,7 @@ import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
 import EditProductForm from "./EditProductForm";
 
-import { translator } from "../../utils/translator";
-
-const categoryToTagName = {
-  food: "green",
-  beverage: "blue",
-  other: "grey",
-};
+import { CATEGORY_TAGS } from "../../constants/tags";
 
 function ProductRow({ product }) {
   const navigate = useNavigate();
@@ -25,6 +19,7 @@ function ProductRow({ product }) {
   const { isDeleting, deleteProduct } = useDeleteProduct();
   const isAddingToMenu = false;
   const isWorking = isDeleting || isAddingToMenu;
+  const tag = CATEGORY_TAGS[category];
 
   return (
     <Table.Row>
@@ -32,13 +27,8 @@ function ProductRow({ product }) {
       <Table.Column.Name>{name}</Table.Column.Name>
       <Table.Column.Amount>{price}</Table.Column.Amount>
       <Table.Column.Description>{description}</Table.Column.Description>
-      <Tag type={categoryToTagName[category]}>
-        {translator("category", category)}
-      </Tag>
-      {/* TODO: Abstract the formatting logic */}
-      <Table.Column.Rating>
-        {ratingAverage?.toFixed(1) ?? "__"}
-      </Table.Column.Rating>
+      <Tag type={tag.type}>{tag.label}</Tag>
+      <Table.Column.Rating>{ratingAverage}</Table.Column.Rating>
 
       <Modal>
         <Menus.Menu>
