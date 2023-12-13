@@ -7,7 +7,10 @@ const router = express.Router();
 
 router.get("/", todayMenuController.getTodayMenu);
 
-router.use(authController.protect, authController.restrictTo("staff", "admin"));
+router.use(
+	authController.protect,
+	authController.restrictTo("staff", "admin", "cashier")
+);
 
 // POST "/" should only be used to add new menu item after "/create-today-menu" is called
 router.post("/", todayMenuController.createTodayMenuItem);

@@ -15,7 +15,10 @@ router.use("/:productId/reviews", validateRequestId("productId"), reviewRouter);
 router.get("/", productController.getAllProducts);
 router.get("/:id", validateRequestId("id"), productController.getProduct);
 
-router.use(authController.protect, authController.restrictTo("admin", "staff"));
+router.use(
+	authController.protect,
+	authController.restrictTo("admin", "staff", "cashier")
+);
 router.post(
 	"/",
 	productController.uploadProductImage,
