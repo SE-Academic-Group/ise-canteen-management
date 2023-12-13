@@ -20,7 +20,7 @@ function ExportInventoryItemForm({
       exportQuantity: 0,
     },
   });
-  const { _id: inventoryItemId } = itemToExport;
+  const { _id: inventoryItemId, stockAmount } = itemToExport;
 
   function onSubmit(data) {
     const { exportQuantity } = data;
@@ -52,7 +52,11 @@ function ExportInventoryItemForm({
           type="number"
           step={1}
           min={0}
-          {...register("exportQuantity", FORM_RULES.AMOUNT)}
+          max={stockAmount}
+          {...register("exportQuantity", {
+            ...FORM_RULES.exportQuantity,
+            max: stockAmount,
+          })}
           disabled={isExporting}
         />
       </FormRow>
