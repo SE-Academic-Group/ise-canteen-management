@@ -1,12 +1,10 @@
 import MenuTable from "../features/menus/MenuTable";
-import TodayMenu from "../features/menus/TodayMenu";
 import PageHeading from "../ui/PageHeading";
 
 function Menus() {
   return (
     <>
-      <PageHeading>Quản lý thực đơn</PageHeading>
-      <TodayMenu />
+      <PageHeading>Quản lý lịch sử thực đơn</PageHeading>
       <MenuTable />
     </>
   );
