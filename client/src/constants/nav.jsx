@@ -37,11 +37,6 @@ export const ROUTES = {
     name: "Sản phẩm",
     icon: HiOutlineCube,
   },
-  MENUS: {
-    path: "/menus",
-    name: "Thực đơn",
-    icon: BiFoodMenu,
-  },
   INVENTORY: {
     path: "/inventory",
     name: "Kho hàng",
@@ -51,6 +46,11 @@ export const ROUTES = {
     path: "/stats",
     name: "Thống kê",
     icon: HiOutlineChartBarSquare,
+  },
+  MENUS: {
+    path: "/menus",
+    name: "Lịch sử thực đơn",
+    icon: BiFoodMenu,
   },
   SETTINGS: {
     path: "/settings",
