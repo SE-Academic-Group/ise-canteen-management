@@ -11,7 +11,9 @@ module.exports = zod.object({
 				message: "Số tiền nạp tối thiểu là 10.000đ",
 			}),
 		email: zod
-			.string()
+			.string({
+				required_error: "Phải nhập email",
+			})
 			.email({
 				message: "Email không hợp lệ",
 			})

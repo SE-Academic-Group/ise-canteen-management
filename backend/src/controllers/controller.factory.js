@@ -20,8 +20,8 @@ exports.createOne = (Model, options) => async (req, res, next) => {
 exports.getAll = (Model, options) => async (req, res, next) => {
 	// // Allow nested routes
 	// CURRENTLY COMMENTED OUT FOR REFACORING (add those id to query manually in route)
-	if (options && options.allowNested) {
-		for (const key in options.allowNested) {
+	if (options && options.allowNestedQueries) {
+		for (const key of options.allowNestedQueries) {
 			if (req.params[key]) {
 				req.query[key] = req.params[key];
 			}

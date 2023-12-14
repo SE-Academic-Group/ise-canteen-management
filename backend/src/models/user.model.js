@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema(
 		balance: {
 			type: Number,
 			default: 0,
+			min: [0, "Số dư không được nhỏ hơn 0"],
 		},
 		phone: {
 			type: String,

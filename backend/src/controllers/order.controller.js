@@ -12,7 +12,7 @@ exports.getAllOrders = ControllerFactory.getAll(Order, {
 		path: "orderItems.productId",
 		select: "name image",
 	},
-	allowNested: ["userId"],
+	allowNestedQueries: ["userId"],
 });
 exports.getOrder = ControllerFactory.getOne(Order, {
 	populate: {
@@ -22,25 +22,34 @@ exports.getOrder = ControllerFactory.getOne(Order, {
 });
 exports.createOrder = async (req, res, next) => {
 	// Get user from req.user
-	const user = req.user;
 	const orderItems = req.body;
 	const totalPrice = orderItems.reduce((total, item) => {
 		return total + item.quantity * item.price;
 	}, 0);
 
-	// Check if user.balance >= totalPrice
-	if (user.balance < totalPrice) {
-		throw new AppError(
-			400,
-			"NOT_ENOUGH_BALANCE",
-			"Số dư của bạn không đủ để thanh toán đơn hàng này",
-			{
-				balance: user.balance,
-				totalPrice,
-			}
-		);
+	const user = req.user;
+	let userId, paymentMethod;
+	if (user.role === "admin" || user.role === "cashier") {
+		userId = undefined;
+		paymentMethod = "cash";
+	} else {
+		userId = user.id;
+		paymentMethod = "balance";
+		// Check if user.balance >= totalPrice
+		if (user.balance < totalPrice) {
+			throw new AppError(
+				400,
+				"NOT_ENOUGH_BALANCE",
+				"Số dư của bạn không đủ để thanh toán đơn hàng này",
+				{
+					balance: user.balance,
+					totalPrice,
+				}
+			);
+		}
 	}
 
+	let order;
 	// For each orderItem, check if orderItem.quantity <= todayMenuItem.quantity
 	// Use mongoose Session to rollback if any orderItem.quantity > todayMenuItem.quantity
 	const session = await mongoose.startSession();
@@ -68,6 +77,32 @@ exports.createOrder = async (req, res, next) => {
 			}
 		}
 
+		// Subtract user.balance if paymentMethod === "balance"
+		if (paymentMethod === "balance") {
+			await User.findByIdAndUpdate(
+				user.id,
+				{ balance: user.balance - totalPrice },
+				{ new: true, runValidators: true }
+			);
+		}
+
+		// After subtracting all todayMenuItem.quantity, create order
+		order = await Order.create({
+			orderItems,
+			totalPrice,
+			userId,
+			orderStatus: "success",
+		});
+
+		// Create payment
+		const payment = await Payment.create({
+			orderId: order.id,
+			paymentMethod,
+			paymentStatus: "success",
+			paymentAmount: totalPrice,
+			discountAmount: 0,
+		});
+
 		await session.commitTransaction();
 		session.endSession();
 	} catch (error) {
@@ -75,27 +110,6 @@ exports.createOrder = async (req, res, next) => {
 		session.endSession();
 		throw error;
 	}
-
-	// After subtracting all todayMenuItem.quantity, create order
-	const order = await Order.create({
-		orderItems,
-		totalPrice,
-		userId: user.id,
-	});
-
-	// Create payment
-	const payment = await Payment.create({
-		orderId: order.id,
-		paymentMethod: "balance",
-		paymentStatus: "success",
-		paymentAmount: totalPrice,
-		discountAmount: 0,
-	});
-
-	// Subtract user.balance
-	await User.findByIdAndUpdate(user.id, {
-		$inc: { balance: -totalPrice },
-	});
 
 	// Populate order.orderItems.productId
 	await order.populate({
