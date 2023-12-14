@@ -11,6 +11,7 @@ import Tag from "../../ui/Tag";
 import EditProductForm from "./EditProductForm";
 
 import { CATEGORY_TAGS } from "../../constants/tags";
+import AddProductToTodayMenuForm from "./AddProductToTodayMenuForm";
 
 function ProductRow({ product }) {
   const navigate = useNavigate();
@@ -41,9 +42,11 @@ function ProductRow({ product }) {
               Xem chi tiết
             </Menus.Button>
 
-            <Menus.Button icon={<HiCheckBadge />}>
-              Thêm vào thực đơn
-            </Menus.Button>
+            <Modal.Open opens="add-to-menu">
+              <Menus.Button icon={<HiCheckBadge />}>
+                Thêm vào thực đơn
+              </Menus.Button>
+            </Modal.Open>
 
             <Modal.Open opens="edit">
               <Menus.Button icon={<HiPencil />}>Cập nhật</Menus.Button>
@@ -57,6 +60,10 @@ function ProductRow({ product }) {
 
         <Modal.Window name="edit">
           <EditProductForm productToEdit={product} />
+        </Modal.Window>
+
+        <Modal.Window name="add-to-menu">
+          <AddProductToTodayMenuForm productToAdd={product} />
         </Modal.Window>
 
         <Modal.Window name="delete">
