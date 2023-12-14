@@ -24,7 +24,6 @@ const Heading = styled.h3`
   font-size: 2.4rem;
   font-weight: 500;
   margin-bottom: 2.4rem;
-  text-decoration: underline double;
   text-align: center;
 `;
 
