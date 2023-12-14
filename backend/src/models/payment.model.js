@@ -10,6 +10,7 @@ const paymentSchema = new mongoose.Schema(
 		paymentMethod: {
 			type: String,
 			default: "cash",
+			enum: ["cash", "balance"],
 		},
 		paymentStatus: {
 			type: String,
