@@ -20,7 +20,6 @@ const Layout = styled.div.attrs({
 const ReviewHeading = styled(Heading)`
   font-size: 1.8rem;
   margin-bottom: 1.8rem;
-  text-decoration: double underline var(--color-grey-700);
 `;
 
 function ReviewsBox({ children }) {
