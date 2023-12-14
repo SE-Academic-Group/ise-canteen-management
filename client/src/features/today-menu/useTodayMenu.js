@@ -47,5 +47,5 @@ export function useTodayMenu() {
     key: queryKey.with(2, prefetchCategoryOptions.other),
   });
 
-  return { isLoading, error, menuItems: data };
+  return { isLoading, error, menuItems: data.data };
 }
