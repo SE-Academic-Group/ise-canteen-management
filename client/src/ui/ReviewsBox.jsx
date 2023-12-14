@@ -15,6 +15,8 @@ const Layout = styled.div.attrs({
   gap: 1.6rem;
   max-block-size: 42rem;
   overflow: auto;
+  padding-inline-end: 0.8rem;
+  margin-inline-end: -0.8rem;
 `;
 
 const ReviewHeading = styled(Heading)`
