@@ -47,6 +47,11 @@ export const ROUTES = {
     name: "Thống kê",
     icon: HiOutlineChartBarSquare,
   },
+  TODAY_MENU: {
+    path: "/today-menu",
+    name: "Thực đơn",
+    icon: BiFoodMenu,
+  },
   MENUS: {
     path: "/menus",
     name: "Lịch sử thực đơn",
@@ -64,6 +69,7 @@ export const CUSTOMER_ROUTES = [];
 export const PUBLIC_ROUTES = [ROUTES.SETTINGS];
 export const STAFF_ROUTES = [
   ROUTES.INVENTORY,
+  ROUTES.TODAY_MENU,
   ROUTES.MENUS,
   ROUTES.ORDERS,
   ROUTES.PRODUCTS,
