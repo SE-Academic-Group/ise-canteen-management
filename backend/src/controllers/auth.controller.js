@@ -105,9 +105,7 @@ exports.updatePassword = async (req, res, next) => {
 	const { oldPassword, newPassword, newPasswordConfirm } = req.body;
 
 	// 1) Get user from collection
-	const user = await User.findById(req.user.id).select(
-		"+password +passwordConfirm"
-	);
+	const user = await User.findById(req.user.id).select("+password");
 
 	// 2) Check if POSTed current password is correct
 	if (!(await user.isCorrectPassword(oldPassword))) {
@@ -131,7 +129,8 @@ exports.updatePassword = async (req, res, next) => {
 	}
 
 	// 3) If so, update password
-	await user.updatePassword(newPassword);
+	user.password = newPassword;
+	await user.save();
 
 	// 4) Log user in, send JWT
 	const { accessToken, accessTokenOptions } = createAccessToken(user, req);
