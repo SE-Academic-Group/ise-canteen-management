@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { getImageUrl } from "../../utils/helpers";
+import ButtonText from "../../ui/ButtonText";
 
 const Container = styled.article`
   border: 1px solid var(--color-grey-300);
@@ -57,7 +58,9 @@ function MenuItem({ menuItem = {} }) {
         <p>
           Đã bán: {soldQuantity} / {totalQuantity}
         </p>
-        <Link href={`/products/${productId._id}`}>Chi tiết sản phẩm</Link>
+        <Link href={`/products/${productId._id}`}>
+          <ButtonText>Xem chi tiết</ButtonText>
+        </Link>
       </div>
     </Container>
   );
