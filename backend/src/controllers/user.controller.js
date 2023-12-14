@@ -9,6 +9,18 @@ const User = require("../models/user.model");
 
 // For admin to manage users
 exports.createUser = async (req, res, next) => {
+	// Check if email is already taken
+	if (await User.findOne({ email: req.body.email })) {
+		throw new AppError(
+			400,
+			"BAD_REQUEST",
+			`Email ${req.body.email} đã được sử dụng.`,
+			{
+				email: req.body.email,
+			}
+		);
+	}
+
 	const newUser = await User(req.body).save({
 		validateBeforeSave: false,
 	});
