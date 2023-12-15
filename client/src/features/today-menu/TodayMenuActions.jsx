@@ -1,24 +1,36 @@
-import Button from "../../ui/Button";
-import FlexContainer from "../../ui/FlexContainer";
 import { useTodayMenu } from "./useTodayMenu";
 import { useCloseTodayMenu } from "./useCloseTodayMenu";
-import Modal from "../../ui/Modal";
+import { useCreateTodayMenu } from "./useCreateTodayMenu";
+
+import FlexContainer from "../../ui/FlexContainer";
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import Button from "../../ui/Button";
+import Modal from "../../ui/Modal";
+import { useNavigate } from "react-router-dom";
 
 function TodayMenuActions() {
+  const navigate = useNavigate();
   const { isAlreadyCreated } = useTodayMenu();
   const { isClosing, closeTodayMenu } = useCloseTodayMenu();
-  const isWorking = isClosing;
+  const { isCreating, createTodayMenu } = useCreateTodayMenu();
+  const isWorking = isClosing || isCreating;
 
   return (
     <FlexContainer>
       <Modal>
         {isAlreadyCreated ? (
-          <Modal.Open opens="close-today-menu">
-            <Button variation="danger">Đóng thực đơn hôm nay</Button>
-          </Modal.Open>
+          <>
+            <Button onClick={() => navigate("/products")} disabled={isWorking}>
+              Thêm sản phẩm
+            </Button>
+            <Modal.Open opens="close-today-menu">
+              <Button variation="danger">Đóng thực đơn hôm nay</Button>
+            </Modal.Open>
+          </>
         ) : (
-          <Button>Tạo thực đơn hôm nay</Button>
+          <Button onClick={() => createTodayMenu([])} disabled={isWorking}>
+            Tạo thực đơn hôm nay
+          </Button>
         )}
 
         <Modal.Window name="close-today-menu">

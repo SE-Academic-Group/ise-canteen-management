@@ -2,10 +2,11 @@ import styled from "styled-components";
 import { useTodayMenu } from "./useTodayMenu";
 
 import ErrorLoading from "../../ui/ErrorLoading";
+import Pagination from "../../ui/Pagination";
 import Spinner from "../../ui/Spinner";
 import Empty from "../../ui/Empty";
-import TodayMenuItemDataBox from "./TodayMenuItemDataBox";
 import Info from "../../ui/Info";
+import TodayMenuItemDataBox from "./TodayMenuItemDataBox";
 
 const Border = styled.div`
   border: 2px solid var(--color-brand-600);
@@ -13,9 +14,7 @@ const Border = styled.div`
   border-radius: 8px;
 `;
 
-const Layout = styled.div.attrs({
-  className: "custom-scrollbar",
-})`
+const Layout = styled.div`
   --_grid-item-width: 20rem;
 
   display: grid;
@@ -24,14 +23,11 @@ const Layout = styled.div.attrs({
     minmax(var(--_grid-item-width, 20rem), 1fr)
   );
   gap: 2.4rem;
-  max-block-size: 80rem;
-  overflow: auto;
-  padding-inline-end: 0.8rem;
-  margin-inline-end: -0.8rem;
 `;
 
 function TodayMenuList() {
-  const { isLoading, error, menuItems, isAlreadyCreated } = useTodayMenu();
+  const { isLoading, error, menuItems, isAlreadyCreated, count } =
+    useTodayMenu();
 
   if (error) {
     return <ErrorLoading error={error} />;
@@ -58,6 +54,7 @@ function TodayMenuList() {
           <TodayMenuItemDataBox item={item} key={item._id} />
         ))}
       </Layout>
+      <Pagination count={count} hasBox />
     </Border>
   );
 }

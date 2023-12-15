@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
 import { useSearchParams } from "react-router-dom";
@@ -9,6 +10,14 @@ const StyledPagination = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+const PaginationBox = styled.div`
+  margin-top: 2.4rem;
+  padding: 1.2rem;
+  border-radius: 8px;
+  border: 2px dashed var(--color-brand-200);
+  background-color: var(--color-grey-0);
 `;
 
 const P = styled.p`
@@ -60,7 +69,7 @@ const PaginationButton = styled.button`
   }
 `;
 
-function Pagination({ count }) {
+function Pagination({ count, hasBox = false }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = !searchParams.get("page")
     ? 1
@@ -84,30 +93,34 @@ function Pagination({ count }) {
 
   if (pageCount <= 1) return null;
 
+  const Container = hasBox ? PaginationBox : React.Fragment;
+
   return (
-    <StyledPagination>
-      <P>
-        Showing <span>{(currentPage - 1) * PAGE_SIZE + 1}</span> to{" "}
-        <span>
-          {currentPage === pageCount ? count : currentPage * PAGE_SIZE}
-        </span>{" "}
-        of <span>{count}</span> results
-      </P>
+    <Container>
+      <StyledPagination>
+        <P>
+          Hiển thị <span>{(currentPage - 1) * PAGE_SIZE + 1}</span> &rarr;{" "}
+          <span>
+            {currentPage === pageCount ? count : currentPage * PAGE_SIZE}
+          </span>{" "}
+          trong <span>{count}</span> kết quả
+        </P>
 
-      <Buttons>
-        <PaginationButton onClick={prevPage} disabled={currentPage === 1}>
-          <HiChevronLeft /> <span>Previous</span>
-        </PaginationButton>
+        <Buttons>
+          <PaginationButton onClick={prevPage} disabled={currentPage === 1}>
+            <HiChevronLeft /> <span>Trước</span>
+          </PaginationButton>
 
-        <PaginationButton
-          onClick={nextPage}
-          disabled={currentPage === pageCount}
-        >
-          <span>Next</span>
-          <HiChevronRight />
-        </PaginationButton>
-      </Buttons>
-    </StyledPagination>
+          <PaginationButton
+            onClick={nextPage}
+            disabled={currentPage === pageCount}
+          >
+            <span>Sau</span>
+            <HiChevronRight />
+          </PaginationButton>
+        </Buttons>
+      </StyledPagination>
+    </Container>
   );
 }
 
