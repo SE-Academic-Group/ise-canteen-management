@@ -9,6 +9,7 @@ import DataItem from "../../ui/DataItem";
 import Tag from "../../ui/Tag";
 
 import { CATEGORY_TAGS } from "../../constants/tags";
+import { formatVietnameseCurrency } from "../../utils/helpers";
 
 const Border = styled.article`
   border: 1px solid var(--color-grey-300);
@@ -30,7 +31,7 @@ function AddProductDataBox({ product }) {
         <Tag type={tag.type}>{tag.label}</Tag>
       </DataItem>
       <DataItem label="Giá bán" icon={<HiOutlineCurrencyDollar />}>
-        {price}
+        {formatVietnameseCurrency(price)}
       </DataItem>
     </Border>
   );
