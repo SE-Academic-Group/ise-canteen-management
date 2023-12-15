@@ -148,10 +148,10 @@ const Number = styled.span`
 
 const StyledImg = styled.img`
   display: block;
-  width: 100px;
+  width: 80px;
   margin: 0.4rem;
-  border-radius: 2px;
-  border: 1px solid var(--color-grey-200);
+  border-radius: 4px;
+  border: 1px solid var(--color-grey-100);
   aspect-ratio: 1 / 1;
   object-fit: cover;
   object-position: center;

@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useMoveBack } from "../../hooks/useMoveBack";
-import { useCompleteOrder } from "./useCompleteOrder";
-import { useCancelOrder } from "./useCancelOrder";
+import { useUpdateOrderStatus } from "./useUpdateOrderStatus";
 import { useOrder } from "./useOrder";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import ErrorLoading from "../../ui/ErrorLoading";
 import ButtonGroup from "../../ui/ButtonGroup";
 import ButtonText from "../../ui/ButtonText";
 import Heading from "../../ui/Heading";
@@ -17,9 +17,7 @@ import Tag from "../../ui/Tag";
 import Row from "../../ui/Row";
 import OrderDataBox from "./OrderDataBox";
 
-import { translator } from "../../utils/translator";
 import { ORDER_STATUS_TAGS } from "../../constants/tags";
-import ErrorLoading from "../../ui/ErrorLoading";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -31,9 +29,13 @@ function OrderDetail() {
   const moveBack = useMoveBack();
   const navigate = useNavigate();
   const { order, isLoading, error } = useOrder();
-  const { isCancelling, cancelOrder } = useCancelOrder();
-  const { isCompleting, completeOrder } = useCompleteOrder();
-  const isWorking = isCancelling || isCompleting;
+  const { isUpdating: isCompleting, updateOrderStatus: completeOrder } =
+    useUpdateOrderStatus("complete", "hoàn thành");
+  const { isUpdating: isCancelling, updateOrderStatus: cancelOrder } =
+    useUpdateOrderStatus("cancelled", "bị hủy");
+  const { isUpdating: isPreparing, updateOrderStatus: prepareOrder } =
+    useUpdateOrderStatus("preparing", "đang chuẩn bị");
+  const isWorking = isCancelling || isCompleting || isPreparing;
 
   if (error) return <ErrorLoading error={error} />;
 
@@ -41,7 +43,7 @@ function OrderDetail() {
 
   if (!order) return <Empty resourceName="đơn hàng" />;
 
-  const { orderStatus, id: orderId } = order;
+  const { orderStatus, _id: orderId } = order;
   const tag = ORDER_STATUS_TAGS[orderStatus];
 
   return (
@@ -60,32 +62,32 @@ function OrderDetail() {
       <OrderDataBox order={order} />
 
       <ButtonGroup>
-        {orderStatus === "pending" && (
-          <>
-            <Button onClick={() => completeOrder(order.id)}>
-              Đánh dấu hoàn thành
-            </Button>
+        {orderStatus === "success" && (
+          <Modal>
+            <Button onClick={() => prepareOrder(orderId)}>Chuẩn bị</Button>
 
-            <Modal>
-              <Modal.Open opens="delete">
-                <Button variation="danger" disabled={isWorking}>
-                  Hủy đơn hàng
-                </Button>
-              </Modal.Open>
+            <Modal.Open opens="delete">
+              <Button variation="danger" disabled={isWorking}>
+                Hủy đơn hàng
+              </Button>
+            </Modal.Open>
 
-              <Modal.Window name="delete">
-                <ConfirmDelete
-                  resourceName="đơn hàng"
-                  disabled={isWorking}
-                  onConfirm={() =>
-                    cancelOrder(order.id, {
-                      onSettled: () => navigate(-1),
-                    })
-                  }
-                />
-              </Modal.Window>
-            </Modal>
-          </>
+            <Modal.Window name="delete">
+              <ConfirmDelete
+                resourceName="đơn hàng"
+                disabled={isWorking}
+                onConfirm={() =>
+                  cancelOrder(order.id, {
+                    onSettled: () => navigate(-1),
+                  })
+                }
+              />
+            </Modal.Window>
+          </Modal>
+        )}
+
+        {orderStatus === "preparing" && (
+          <Button onClick={() => completeOrder(orderId)}>Hoàn tất</Button>
         )}
 
         <Button variation="secondary" onClick={moveBack}>

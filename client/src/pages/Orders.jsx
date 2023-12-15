@@ -7,7 +7,7 @@ function Orders() {
     <>
       <PageHeading>Quản lý đơn hàng</PageHeading>
       <OrderTableOperations />
-      {/* <OrderTable /> */}
+      <OrderTable />
     </>
   );
 }

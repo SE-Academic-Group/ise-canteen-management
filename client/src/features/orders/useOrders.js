@@ -6,9 +6,11 @@ import { PAGE_SIZE } from "../../constants/api";
 import { QUERY_KEYS } from "../../constants/keys";
 
 export function useOrders() {
-  const { page } = useApiParams();
-  const queryKey = [QUERY_KEYS.ORDERS, page];
-  const queryOptions = { page };
+  const { page, filters, sortBy } = useApiParams({
+    filterFields: ["orderStatus"],
+  });
+  const queryKey = [QUERY_KEYS.ORDERS, page, filters, sortBy];
+  const queryOptions = { page, filters, sortBy };
 
   const {
     isLoading,
