@@ -5,7 +5,8 @@ import Input from "../../ui/Input";
 function UpdateSettingsForm() {
   return (
     <Form>
-      <FormRow label="Minimum nights/booking">
+      {/* TODO: Add darkmode setting */}
+      {/* <FormRow label="Minimum nights/booking">
         <Input type="number" id="min-nights" />
       </FormRow>
 
@@ -19,7 +20,7 @@ function UpdateSettingsForm() {
 
       <FormRow label="Breakfast price">
         <Input type="number" id="breakfast-price" />
-      </FormRow>
+      </FormRow> */}
     </Form>
   );
 }
