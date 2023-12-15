@@ -14,7 +14,15 @@ router.post(
 	reviewController.setProductAndUserOnBody,
 	reviewController.createReview
 );
-router.patch("/:id", reviewController.updateReview);
-router.delete("/:id", reviewController.deleteReview);
+router.patch(
+	"/:id",
+	reviewController.checkReviewBelongsToUser,
+	reviewController.updateReview
+);
+router.delete(
+	"/:id",
+	reviewController.checkReviewBelongsToUser,
+	reviewController.deleteReview
+);
 
 module.exports = router;

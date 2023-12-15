@@ -13,6 +13,17 @@ module.exports = zod.object({
 			})
 			.email({
 				message: "Email không hợp lệ",
+			})
+			.superRefine((data, ctx) => {
+				const regex = /^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)*hcmus\.edu\.vn$/;
+				if (!regex.test(data)) {
+					ctx.addIssue({
+						code: "custom",
+						message:
+							"Email phải thuộc về trường Đại học Khoa học Tự nhiên TP.HCM",
+						path: ["email"],
+					});
+				}
 			}),
 		password: zod
 			.string({

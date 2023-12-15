@@ -11,14 +11,6 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: [true, "Hãy nhập email của bạn"],
 			unique: true,
-			validate: {
-				validator: function (email) {
-					const regex =
-						/^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+hcmus\.edu\.vn$/;
-					return regex.test(email);
-				},
-				message: "Email phải thuộc về trường Đại học Khoa học Tự nhiên TP.HCM",
-			},
 		},
 		password: {
 			type: String,
@@ -42,6 +34,7 @@ const userSchema = new mongoose.Schema(
 		balance: {
 			type: Number,
 			default: 0,
+			min: [0, "Số dư không được nhỏ hơn 0"],
 		},
 		phone: {
 			type: String,

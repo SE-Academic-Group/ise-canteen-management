@@ -6,7 +6,7 @@ const AppError = require("../utils/appError");
 
 exports.getAllChargeHistories = ControllerFactory.getAll(ChargeHistory, {
 	populate: [{ path: "userId", select: "name email" }],
-	allowNested: ["userId"],
+	allowNestedQueries: ["userId"],
 });
 exports.getChargeHistory = ControllerFactory.getOne(ChargeHistory);
 exports.deleteChargeHistory = ControllerFactory.deleteOne(ChargeHistory);
