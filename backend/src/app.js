@@ -25,6 +25,7 @@ const chargeHistoryRouter = require("./routes/chargeHistory.route");
 const todayMenuRouter = require("./routes/todayMenu.route");
 const inventoryExportRouter = require("./routes/inventoryExport.route");
 const inventoryImportRouter = require("./routes/inventoryImport.route");
+const paymentRouter = require("./routes/payment.route");
 
 const app = express();
 
@@ -98,6 +99,7 @@ app.use("/api/v1/charge-histories", chargeHistoryRouter);
 app.use("/api/v1/today-menu", todayMenuRouter);
 app.use("/api/v1/inventory-exports", inventoryExportRouter);
 app.use("/api/v1/inventory-imports", inventoryImportRouter);
+app.use("/api/v1/payments", paymentRouter);
 
 // Error handler
 app.use((err, req, res, next) => {

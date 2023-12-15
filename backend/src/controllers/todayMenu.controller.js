@@ -3,6 +3,7 @@ const ControllerFactory = require("./controller.factory");
 const AppError = require("../utils/appError");
 const Product = require("../models/product.model");
 const MenuHistory = require("../models/menuHistory.model");
+const APIFeatures = require("../utils/apiFeatures");
 
 // Used by kitchen staff to add new menu item to today menu
 exports.createTodayMenuItem = async (req, res, next) => {
@@ -50,7 +51,7 @@ exports.updateTodayMenuItem = async (req, res, next) => {
 		throw new AppError(
 			404,
 			"NOT_FOUND",
-			`Không tìm thấy today-menu-item với ID ${req.params.id}`,
+			`Không tìm thấy todaymenuitem với ID ${req.params.id}`,
 			{
 				id: req.params.id,
 			}
@@ -74,11 +75,56 @@ exports.updateTodayMenuItem = async (req, res, next) => {
 };
 
 // Used by kitchen staff to delete each today menu item
-exports.deleteTodayMenuItem = ControllerFactory.deleteOne(TodayMenuItem);
+exports.deleteTodayMenuItem = async (req, res, next) => {
+	// Using findByIdAndDelete() does not remove indexes, use findOneAndDelete() instead
+	const doc = await TodayMenuItem.findOneAndDelete({ _id: req.params.id });
+
+	if (!doc) {
+		throw new AppError(
+			404,
+			"NOT_FOUND",
+			`Không tìm thấy todaymenuitem với ID ${req.params.id}`,
+			{
+				id: req.params.id,
+				modelName: "todaymenuitem",
+			}
+		);
+	}
+
+	res.status(204).json({
+		status: "success",
+		data: null,
+	});
+};
 
 // --- TODAY MENU ---
 
-exports.getTodayMenu = ControllerFactory.getAll(TodayMenuItem);
+exports.getTodayMenu = async (req, res, next) => {
+	// EXECUTE QUERY
+	const features = new APIFeatures(Model.find(), req.query)
+		.filter()
+		.limitFields()
+		.paginate()
+		.sort();
+
+	// Added .lean() to improve performance
+	let docs = await features.query.lean();
+
+	if (docs.length !== 0) {
+		const count = await Model.countDocuments(features.filterObj);
+		// Set X-Total-Count header
+		res.set("Access-Control-Expose-Headers", "X-Total-Count");
+		res.set("X-Total-Count", count);
+	} else {
+		docs = null;
+	}
+
+	// SEND RESPONSE
+	res.status(200).json({
+		status: "success",
+		data: docs,
+	});
+};
 exports.createTodayMenu = async (req, res, next) => {
 	const checkTodayMenu = await TodayMenuItem.countDocuments();
 	if (checkTodayMenu > 0) {
