@@ -7,6 +7,7 @@ import { DarkModeProvider } from "./context/DarkModeContext";
 import GlobalStyles from "./styles/GlobalStyles";
 
 import PageNotFound from "./pages/PageNotFound";
+import CreateOrder from "./pages/CreateOrder";
 import TodayMenu from "./pages/TodayMenu";
 import Inventory from "./pages/Inventory";
 import Dashboard from "./pages/Dashboard";
@@ -57,6 +58,7 @@ function App() {
               <Route path="account" element={<Account />} />
               <Route path="orders" element={<Orders />} />
               <Route path="orders/:orderId" element={<Order />} />
+              <Route path="create-order" element={<CreateOrder />} />
               <Route path="users" element={<Users />} />
               <Route path="products" element={<Products />} />
               <Route path="products/:productId" element={<Product />} />

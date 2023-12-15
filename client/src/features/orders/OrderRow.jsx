@@ -28,8 +28,6 @@ function OrderRow({ order, serial }) {
     .map((item) => item.quantity + " " + item.productId.name)
     .join(", ");
 
-  console.log(order);
-
   return (
     <Table.Row>
       <Table.Column.Serial>{serial}</Table.Column.Serial>
