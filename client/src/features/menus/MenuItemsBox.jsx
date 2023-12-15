@@ -33,7 +33,7 @@ function MenuItemsBox({ menuItems = [] }) {
       <Heading>Danh sách chi tiết</Heading>
       <Layout>
         {menuItems.map((menuItem) => (
-          <MenuItem key={menuItem.productId} menuItem={menuItem} />
+          <MenuItem key={menuItem._id} menuItem={menuItem} />
         ))}
       </Layout>
     </Container>
