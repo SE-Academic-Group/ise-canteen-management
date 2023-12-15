@@ -22,7 +22,7 @@ function UserRow({ user, serial }) {
     return <SpinnerMini />;
   }
 
-  const { _id, name, email, image, phone, role, balance } = user;
+  const { _id, name, email, image, phone, role, balance, active = true } = user;
   const tag = ROLE_TAGS[role];
   const imageUrl = image ? getImageUrl(image) : getPlaceholderImageUrl(name);
 
@@ -39,6 +39,13 @@ function UserRow({ user, serial }) {
       <Table.Column.Amount>
         {role === "customer" ? balance : null}
       </Table.Column.Amount>
+      <Table.Column.Text>
+        {active ? (
+          <Tag type="green">Hoạt động</Tag>
+        ) : (
+          <Tag type="red">Tạm khóa</Tag>
+        )}
+      </Table.Column.Text>
 
       {!isCurrentUser && (
         <Modal>
