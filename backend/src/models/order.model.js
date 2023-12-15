@@ -45,7 +45,7 @@ const orderSchema = new mongoose.Schema(
 	}
 );
 
-orderSchema.index({ orderDate: 1 });
+orderSchema.index({ orderDate: 1, orderStatus: 1 });
 orderSchema.index({ userId: 1 });
 
 const Order = mongoose.model("Order", orderSchema);

@@ -19,7 +19,8 @@ router.post(
 );
 
 router
-	.route("/:id", validateRequestId("id"))
+	.route("/:id")
+	.all(validateRequestId("id"), orderController.checkOrderOwnership)
 	.get(orderController.getOrder)
 	.patch(orderController.updateOrder)
 	.delete(orderController.deleteOrder);

@@ -24,7 +24,8 @@ router.post(
 );
 
 router
-	.route("/:id", validateRequestId("id"))
+	.route("/:id")
+	.all(validateRequestId("id"))
 	.get(inventoryExportController.getInventoryExport)
 	.patch(inventoryExportController.updateInventoryExport)
 	.delete(inventoryExportController.deleteInventoryExport);

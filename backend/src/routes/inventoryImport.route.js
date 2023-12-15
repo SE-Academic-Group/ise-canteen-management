@@ -14,7 +14,8 @@ router.get("/", inventoryImportController.getAllInventoryImports);
 router.post("/", inventoryImportController.createInventoryImport);
 
 router
-	.route("/:id", validateRequestId("id"))
+	.route("/:id")
+	.all(validateRequestId("id"))
 	.get(inventoryImportController.getInventoryImport)
 	.delete(inventoryImportController.deleteInventoryImport)
 	.patch(inventoryImportController.updateInventoryImport);
