@@ -48,7 +48,7 @@ export function deleteItemFactory(name) {
  * @returns {Function} - The create or edit item function.
  */
 export function createEditItemFactory(name) {
-  return async function (data, id) {
+  return async function (data = {}, id) {
     const { image, ...fields } = data;
     let postData = fields;
     let config = {};
