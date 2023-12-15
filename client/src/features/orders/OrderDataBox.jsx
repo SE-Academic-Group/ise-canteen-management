@@ -1,9 +1,9 @@
+import { NavLink } from "react-router-dom";
 import { format } from "date-fns";
-import { BiDrink } from "react-icons/bi";
 import { HiOutlineCurrencyDollar } from "react-icons/hi";
-import { PiBowlFoodDuotone } from "react-icons/pi";
 import styled from "styled-components";
 
+import ButtonText from "../../ui/ButtonText";
 import DataItem from "../../ui/DataItem";
 import Heading from "../../ui/Heading";
 
@@ -77,12 +77,8 @@ const Footer = styled.footer`
 `;
 
 function OrderDataBox({ order }) {
-  const { orderDate, totalPrice, orderItems, user } = order;
-
-  const categoryToIcon = {
-    drink: <BiDrink />,
-    food: <PiBowlFoodDuotone />,
-  };
+  const { orderDate, totalPrice, orderItems, userId } = order;
+  const user = userId ?? { name: "Khách", email: "N/A" };
 
   return (
     <StyledBookingDataBox>
@@ -103,17 +99,16 @@ function OrderDataBox({ order }) {
         </Heading>
         <Items>
           {orderItems.map((item) => (
-            <DataItem
-              icon={categoryToIcon[item.category]}
-              label={item.name}
-              key={item.name}
-            >
-              <span role="presentation">x {item.quantity}</span>
+            <DataItem label={item.productId.name} key={item.productId._id}>
               <span role="presentation">
-                / {formatVietnameseCurrency(item.price)}
+                ({formatVietnameseCurrency(item.price)})
               </span>
-              <span className="sr-only">số lượng {item.quantity}</span>
-              <span className="sr-only">giá của một suất {item.price}</span>
+              <span role="presentation">x {item.quantity}</span>
+              <ButtonText>
+                <NavLink to={`/products/${item.productId._id}`}>
+                  Chi tiết
+                </NavLink>
+              </ButtonText>
             </DataItem>
           ))}
         </Items>

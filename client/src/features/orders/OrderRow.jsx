@@ -17,16 +17,19 @@ function OrderRow({ order, serial }) {
   const { isCancelling, cancelOrder } = useCancelOrder();
   const isWorking = isCompleting || isCancelling;
 
-  const { _id, user, totalPrice, orderStatus, orderDate, orderItems } = order;
+  const { _id, totalPrice, orderStatus, orderDate, orderItems } = order;
   const tag = ORDER_STATUS_TAGS[orderStatus];
   const shortDesc = orderItems
-    .map((item) => item.quantity + " " + item.name)
+    .map((item) => item.quantity + " " + item.productId.name)
     .join(", ");
 
   return (
     <Table.Row>
-      <Table.Column.Number>{serial}</Table.Column.Number>
-      <Table.Column.Text>{user.name}</Table.Column.Text>
+      <Table.Column.Serial>{serial}</Table.Column.Serial>
+      <Table.Column.Stacked>
+        <span>{"user.name"}</span>
+        <span>{"21120524@student.hcmus.edu.vn"}</span>
+      </Table.Column.Stacked>
       <Table.Column.DateTime>{orderDate}</Table.Column.DateTime>
       <Tag type={tag.type}>{tag.label}</Tag>
       <Table.Column.Description>{shortDesc}</Table.Column.Description>
