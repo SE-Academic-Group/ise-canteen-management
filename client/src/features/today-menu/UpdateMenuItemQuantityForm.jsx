@@ -54,7 +54,6 @@ function UpdateMenuItemQuantityForm({
       <FormRow label="Số lượng đã bán">
         <Input disabled value={soldQuantity} />
       </FormRow>
-
       <FormRow label="Số lượng còn lại">
         <Input disabled value={quantity} />
       </FormRow>

@@ -15,13 +15,11 @@ export function useTodayMenu() {
     key: queryKey,
   });
 
-  const menuItems = data?.data || [];
-  // const menuItems = data?.data;
+  const menuItems = data.data;
   return {
     isLoading,
     error,
     menuItems: menuItems,
-    isAlreadyCreated: menuItems.length > 0,
-    // isAlreadyCreated: !menuItems,
+    isAlreadyCreated: menuItems == null ? false : true,
   };
 }
