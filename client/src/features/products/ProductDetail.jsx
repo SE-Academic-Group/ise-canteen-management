@@ -18,6 +18,7 @@ import ProductDataBox from "./ProductDataBox";
 
 import { translator } from "../../utils/translator";
 import ErrorLoading from "../../ui/ErrorLoading";
+import AddProductToTodayMenuForm from "./AddProductToTodayMenuForm";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -68,28 +69,31 @@ function ProductDetail() {
       <ProductDataBox product={product} />
 
       <ButtonGroup>
-        <>
-          <Button>Thêm vào thực đơn hôm nay</Button>
+        <Modal>
+          <Modal.Open opens="add-to-menu">
+            <Button>Thêm vào thực đơn hôm nay</Button>
+          </Modal.Open>
+          <Modal.Open opens="delete">
+            <Button variation="danger" disabled={isWorking}>
+              Xóa sản phẩm
+            </Button>
+          </Modal.Open>
 
-          <Modal>
-            <Modal.Open opens="delete">
-              <Button variation="danger" disabled={isWorking}>
-                Xóa sản phẩm
-              </Button>
-            </Modal.Open>
+          <Modal.Window name="add-to-menu">
+            <AddProductToTodayMenuForm productToAdd={product} />
+          </Modal.Window>
 
-            <Modal.Window name="delete">
-              <ConfirmDelete
-                resourceName="sản phẩm"
-                disabled={isWorking}
-                onConfirm={() => {
-                  deleteProduct(productId);
-                  navigate("/products");
-                }}
-              />
-            </Modal.Window>
-          </Modal>
-        </>
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              resourceName="sản phẩm"
+              disabled={isWorking}
+              onConfirm={() => {
+                deleteProduct(productId);
+                navigate("/products");
+              }}
+            />
+          </Modal.Window>
+        </Modal>
 
         <Button variation="secondary" onClick={moveBack}>
           Quay lại
