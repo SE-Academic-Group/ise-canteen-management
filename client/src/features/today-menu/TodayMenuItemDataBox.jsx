@@ -1,10 +1,14 @@
+import { HiEye, HiPencil, HiTrash } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { getImageUrl } from "../../utils/helpers";
+import { useRemoveTodayMenuItem } from "./useRemoveTodayMenuItem";
 
 import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
-import { HiPencil, HiTrash, HiEye } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+
+import { getImageUrl } from "../../utils/helpers";
+import UpdateMenuItemQuantityForm from "./UpdateMenuItemQuantityForm";
 
 const Container = styled.article`
   max-inline-size: var(--_grid-item-width);
@@ -18,6 +22,7 @@ const Container = styled.article`
   justify-content: space-between;
   text-align: center;
   position: relative;
+  font-size: 1.4rem;
 `;
 
 const Image = styled.img`
@@ -29,6 +34,7 @@ const Image = styled.img`
 `;
 
 const Name = styled.h4`
+  font-size: 1.6rem;
   font-weight: 500;
   text-wrap: balance;
   padding-inline: 0.4rem;
@@ -41,14 +47,17 @@ const Actions = styled.div`
 
 function TodayMenuItemDataBox({ item }) {
   const navigate = useNavigate();
+  const { isRemoving, removeTodayMenuItem } = useRemoveTodayMenuItem();
   const {
     productId,
     totalQuantity,
     quantity: remainQuantity,
     name,
     image,
+    _id: itemId,
   } = item;
   const soldQuantity = totalQuantity - remainQuantity;
+  const isWorking = isRemoving;
 
   return (
     <Container>
@@ -57,6 +66,7 @@ function TodayMenuItemDataBox({ item }) {
       <p>
         Đã bán: {soldQuantity} / {totalQuantity}
       </p>
+      <p>Số lượng còn lại: {remainQuantity}</p>
 
       <Actions>
         <Modal>
@@ -65,20 +75,40 @@ function TodayMenuItemDataBox({ item }) {
               <Menus.Toggle id={productId} />
               <Menus.List id={productId}>
                 <Menus.Button
+                  disabled={isWorking}
                   icon={<HiEye />}
                   onClick={() => navigate(`/products/${productId}`)}
                 >
                   Xem chi tiết
                 </Menus.Button>
-                <Menus.Button icon={<HiPencil />}>
-                  Cập nhật số lượng
-                </Menus.Button>
-                <Menus.Button icon={<HiTrash />}>
-                  Xóa khỏi thực đơn
-                </Menus.Button>
+
+                <Modal.Open opens="update-quantity">
+                  <Menus.Button disabled={isWorking} icon={<HiPencil />}>
+                    Cập nhật số lượng
+                  </Menus.Button>
+                </Modal.Open>
+
+                <Modal.Open opens="remove-item">
+                  <Menus.Button disabled={isWorking} icon={<HiTrash />}>
+                    Xóa khỏi thực đơn
+                  </Menus.Button>
+                </Modal.Open>
               </Menus.List>
             </Menus.Menu>
           </Menus>
+
+          <Modal.Window name="remove-item">
+            <ConfirmDelete
+              title="Xóa sản phẩm ra khỏi thực đơn"
+              description="Bạn có chắc chắn muốn xóa sản phẩm này ra khỏi thực đơn hôm nay?"
+              disabled={isWorking}
+              onConfirm={() => removeTodayMenuItem(itemId)}
+            />
+          </Modal.Window>
+
+          <Modal.Window name="update-quantity">
+            <UpdateMenuItemQuantityForm productToUpdate={item} />
+          </Modal.Window>
         </Modal>
       </Actions>
     </Container>

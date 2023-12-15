@@ -1,8 +1,11 @@
 import styled from "styled-components";
+import { useTodayMenu } from "./useTodayMenu";
+
 import ErrorLoading from "../../ui/ErrorLoading";
 import Spinner from "../../ui/Spinner";
-import { useTodayMenu } from "./useTodayMenu";
+import Empty from "../../ui/Empty";
 import TodayMenuItemDataBox from "./TodayMenuItemDataBox";
+import Info from "../../ui/Info";
 
 const Border = styled.div`
   border: 2px solid var(--color-brand-600);
@@ -28,7 +31,7 @@ const Layout = styled.div.attrs({
 `;
 
 function TodayMenuList() {
-  const { isLoading, error, menuItems } = useTodayMenu();
+  const { isLoading, error, menuItems, isAlreadyCreated } = useTodayMenu();
 
   if (error) {
     return <ErrorLoading error={error} />;
@@ -36,6 +39,16 @@ function TodayMenuList() {
 
   if (isLoading) {
     return <Spinner />;
+  }
+
+  if (!isAlreadyCreated) {
+    return (
+      <Info>Chưa có thực đơn cho hôm nay hoặc đã hết thời gian hoạt động</Info>
+    );
+  }
+
+  if (!menuItems.length) {
+    return <Empty resourceName="sản phẩm" />;
   }
 
   return (

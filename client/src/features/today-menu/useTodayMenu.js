@@ -1,8 +1,7 @@
+import { QUERY_KEYS } from "../../constants/keys";
 import { useApiParams } from "../../hooks/useApiParams";
 import { useQueryFetch } from "../../hooks/useQueryFetch";
-import { useQueryPrefetch } from "../../hooks/useQueryPrefetch";
 import { getTodayMenu } from "../../services/apiTodayMenu";
-import { QUERY_KEYS } from "../../constants/keys";
 export function useTodayMenu() {
   const { q = "", filters = [] } = useApiParams({
     filterFields: ["category"],
@@ -16,36 +15,13 @@ export function useTodayMenu() {
     key: queryKey,
   });
 
-  const prefetchCategoryOptions = {
-    food: [{ filters: [{ field: "category", value: "food" }] }],
-    beverage: [{ filters: [{ field: "category", value: "beverage" }] }],
-    other: [{ filters: [{ field: "category", value: "other" }] }],
+  const menuItems = data?.data || [];
+  // const menuItems = data?.data;
+  return {
+    isLoading,
+    error,
+    menuItems: menuItems,
+    isAlreadyCreated: menuItems.length > 0,
+    // isAlreadyCreated: !menuItems,
   };
-
-  useQueryPrefetch({
-    fn: () =>
-      getTodayMenu({
-        ...queryOptions,
-        filters: prefetchCategoryOptions.food,
-      }),
-    key: queryKey.with(2, prefetchCategoryOptions.food),
-  });
-  useQueryPrefetch({
-    fn: () =>
-      getTodayMenu({
-        ...queryOptions,
-        filters: prefetchCategoryOptions.beverage,
-      }),
-    key: queryKey.with(2, prefetchCategoryOptions.beverage),
-  });
-  useQueryPrefetch({
-    fn: () =>
-      getTodayMenu({
-        ...queryOptions,
-        filters: prefetchCategoryOptions.other,
-      }),
-    key: queryKey.with(2, prefetchCategoryOptions.other),
-  });
-
-  return { isLoading, error, menuItems: data.data };
 }
