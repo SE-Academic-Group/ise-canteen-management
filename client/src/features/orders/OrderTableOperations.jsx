@@ -2,8 +2,11 @@ import TableOperations from "../../ui/TableOperations";
 import FlexContainer from "../../ui/FlexContainer";
 import Filter from "../../ui/Filter";
 import SortBy from "../../ui/SortBy";
+import { getToday } from "../../utils/helpers";
 
 function OrderTableOperations() {
+  const today = getToday();
+
   return (
     <TableOperations between>
       <FlexContainer>
@@ -11,7 +14,7 @@ function OrderTableOperations() {
           filterField="orderDate"
           options={[
             { value: "all", label: "Tất cả" },
-            { value: "today", label: "Hôm nay" },
+            { value: today, label: "Hôm nay" },
           ]}
         />
 
@@ -19,7 +22,8 @@ function OrderTableOperations() {
           filterField="orderStatus"
           options={[
             { value: "all", label: "Tất cả" },
-            { value: "pending", label: "Chờ" },
+            { value: "success", label: "Chưa xử lý" },
+            { value: "preparing", label: "Đang chuẩn bị" },
             { value: "completed", label: "Hoàn thành" },
             { value: "cancelled", label: "Bị hủy" },
           ]}
