@@ -1,6 +1,7 @@
 const express = require("express");
 const inventoryItemController = require("../controllers/inventoryItem.controller");
 const authController = require("../controllers/auth.controller");
+const { validateRequestId } = require("../middlewares/validateRequest");
 
 const router = express.Router();
 
@@ -11,9 +12,12 @@ router.use(
 );
 
 router.get("/", inventoryItemController.getAllInventoryItems);
-router.get("/:id", inventoryItemController.getInventoryItem);
 router.post("/", inventoryItemController.createInventoryItem);
-router.patch("/:id", inventoryItemController.updateInventoryItem);
-router.delete("/:id", inventoryItemController.deleteInventoryItem);
+router
+	.route("/:id")
+	.all(validateRequestId("id"))
+	.get(inventoryItemController.getInventoryItem)
+	.patch(inventoryItemController.updateInventoryItem)
+	.delete(inventoryItemController.deleteInventoryItem);
 
 module.exports = router;
