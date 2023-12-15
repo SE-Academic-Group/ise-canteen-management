@@ -24,7 +24,6 @@ const Heading = styled.h3`
   font-size: 2.4rem;
   font-weight: 500;
   margin-bottom: 2.4rem;
-  text-decoration: underline double;
   text-align: center;
 `;
 
@@ -34,7 +33,7 @@ function MenuItemsBox({ menuItems = [] }) {
       <Heading>Danh sách chi tiết</Heading>
       <Layout>
         {menuItems.map((menuItem) => (
-          <MenuItem key={menuItem.productId} menuItem={menuItem} />
+          <MenuItem key={menuItem._id} menuItem={menuItem} />
         ))}
       </Layout>
     </Container>

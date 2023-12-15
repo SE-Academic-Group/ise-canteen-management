@@ -1,16 +1,18 @@
 import styled from "styled-components";
 import { getImageUrl } from "../../utils/helpers";
+import ButtonText from "../../ui/ButtonText";
 
 const Container = styled.article`
   border: 1px solid var(--color-grey-300);
   padding: 1.2rem;
-  border-radius: 4px;
+  border-radius: 8px;
   background-color: var(--color-grey-50);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   text-align: center;
+  font-size: 1.4rem;
 
   & > *:not(:last-child) {
     margin-bottom: 0.4rem;
@@ -29,6 +31,7 @@ const Image = styled.img`
 `;
 
 const Name = styled.h4`
+  font-size: 1.6rem;
   font-weight: 500;
   text-wrap: balance;
   padding-inline: 0.4rem;
@@ -57,7 +60,9 @@ function MenuItem({ menuItem = {} }) {
         <p>
           Đã bán: {soldQuantity} / {totalQuantity}
         </p>
-        <Link href={`/products/${productId._id}`}>Chi tiết sản phẩm</Link>
+        <Link href={`/products/${productId._id}`}>
+          <ButtonText>Xem chi tiết</ButtonText>
+        </Link>
       </div>
     </Container>
   );

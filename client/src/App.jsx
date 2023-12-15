@@ -7,6 +7,7 @@ import { DarkModeProvider } from "./context/DarkModeContext";
 import GlobalStyles from "./styles/GlobalStyles";
 
 import PageNotFound from "./pages/PageNotFound";
+import TodayMenu from "./pages/TodayMenu";
 import Inventory from "./pages/Inventory";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
@@ -61,6 +62,7 @@ function App() {
               <Route path="products/:productId" element={<Product />} />
               <Route path="menus" element={<Menus />} />
               <Route path="menus/:menuId" element={<Menu />} />
+              <Route path="today-menu" element={<TodayMenu />} />
               <Route path="deposit" element={<Deposit />} />
               <Route path="inventory" element={<Inventory />} />
               <Route path="stats" element={<Stats />} />
