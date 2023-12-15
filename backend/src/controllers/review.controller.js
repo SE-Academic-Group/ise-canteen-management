@@ -21,6 +21,8 @@ exports.deleteReview = ControllerFactory.deleteOne(Review);
 
 // Middleware to check if the review belongs to the user
 exports.checkReviewBelongsToUser = async (req, res, next) => {
+	if (req.user?.role === "admin" || req.user?.role === "cashier") return next();
+
 	const review = await Review.findById(req.params.id);
 
 	if (!review) {
