@@ -8,17 +8,29 @@ const Payment = require("../models/payment.model");
 const User = require("../models/user.model");
 
 exports.getAllOrders = ControllerFactory.getAll(Order, {
-	populate: {
-		path: "orderItems.productId",
-		select: "name image",
-	},
+	populate: [
+		{
+			path: "orderItems.productId",
+			select: "name image",
+		},
+		{
+			path: "userId",
+			select: "name email",
+		},
+	],
 	allowNestedQueries: ["userId"],
 });
 exports.getOrder = ControllerFactory.getOne(Order, {
-	populate: {
-		path: "orderItems.productId",
-		select: "name image",
-	},
+	populate: [
+		{
+			path: "orderItems.productId",
+			select: "name image",
+		},
+		{
+			path: "userId",
+			select: "name email",
+		},
+	],
 });
 exports.createOrder = async (req, res, next) => {
 	// Get user from req.user
@@ -112,11 +124,17 @@ exports.createOrder = async (req, res, next) => {
 	}
 
 	// Populate order.orderItems.productId
-	await order.populate({
-		path: "orderItems.productId",
-		select: "name image",
-		options: { lean: true },
-	});
+	await order
+		.populate({
+			path: "orderItems.productId",
+			select: "name image",
+			options: { lean: true },
+		})
+		.populate({
+			path: "userId",
+			select: "name email",
+			options: { lean: true },
+		});
 
 	// Send response
 	res.status(201).json({
