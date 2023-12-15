@@ -1,7 +1,7 @@
+import { PiCookingPotDuotone } from "react-icons/pi";
 import { HiCheckBadge, HiEye, HiTrash } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
-import { useCancelOrder } from "./useCancelOrder";
-import { useCompleteOrder } from "./useCompleteOrder";
+import { useUpdateOrderStatus } from "./useUpdateOrderStatus";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Menus from "../../ui/Menus";
@@ -13,11 +13,14 @@ import { ORDER_STATUS_TAGS } from "../../constants/tags";
 
 function OrderRow({ order, serial }) {
   const navigate = useNavigate();
-  const { isCompleting, completeOrder } = useCompleteOrder();
-  const { isCancelling, cancelOrder } = useCancelOrder();
+  const { isUpdating: isCompleting, updateOrderStatus: completeOrder } =
+    useUpdateOrderStatus("complete", "hoàn thành");
+  const { isUpdating: isCancelling, updateOrderStatus: cancelOrder } =
+    useUpdateOrderStatus("cancelled", "bị hủy");
   const isWorking = isCompleting || isCancelling;
 
-  const { _id, totalPrice, orderStatus, orderDate, orderItems } = order;
+  const { _id, totalPrice, orderStatus, orderDate, orderItems, userId } = order;
+  const user = userId ?? { name: "Khách", email: "N/A" };
   const tag = ORDER_STATUS_TAGS[orderStatus];
   const shortDesc = orderItems
     .map((item) => item.quantity + " " + item.productId.name)
@@ -27,8 +30,8 @@ function OrderRow({ order, serial }) {
     <Table.Row>
       <Table.Column.Serial>{serial}</Table.Column.Serial>
       <Table.Column.Stacked>
-        <span>{"user.name"}</span>
-        <span>{"21120524@student.hcmus.edu.vn"}</span>
+        <span>{user.name}</span>
+        <span title={user.email}>{user.email}</span>
       </Table.Column.Stacked>
       <Table.Column.DateTime>{orderDate}</Table.Column.DateTime>
       <Tag type={tag.type}>{tag.label}</Tag>
@@ -46,16 +49,24 @@ function OrderRow({ order, serial }) {
               Xem chi tiết
             </Menus.Button>
 
-            {orderStatus.value === "pending" && (
+            {orderStatus === "pending" && (
+              <Menus.Button
+                icon={<HiCheckBadge />}
+                disabled={isWorking}
+                onClick={() => completeOrder(_id)}
+              >
+                Sẵn sàng
+              </Menus.Button>
+            )}
+
+            {orderStatus === "success" && (
               <>
                 <Menus.Button
-                  icon={<HiCheckBadge />}
+                  icon={<PiCookingPotDuotone />}
                   disabled={isWorking}
-                  onClick={() => completeOrder(_id)}
                 >
-                  Sẵn sàng
+                  Chuẩn bị
                 </Menus.Button>
-
                 <Modal.Open opens="cancel">
                   <Menus.Button icon={<HiTrash />}>Hủy đơn hàng</Menus.Button>
                 </Modal.Open>

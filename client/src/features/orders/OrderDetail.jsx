@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useMoveBack } from "../../hooks/useMoveBack";
-import { useCompleteOrder } from "./useCompleteOrder";
-import { useCancelOrder } from "./useCancelOrder";
+import { useUpdateOrderStatus } from "./useUpdateOrderStatus";
 import { useOrder } from "./useOrder";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
@@ -30,9 +29,13 @@ function OrderDetail() {
   const moveBack = useMoveBack();
   const navigate = useNavigate();
   const { order, isLoading, error } = useOrder();
-  const { isCancelling, cancelOrder } = useCancelOrder();
-  const { isCompleting, completeOrder } = useCompleteOrder();
-  const isWorking = isCancelling || isCompleting;
+  const { isUpdating: isCompleting, updateOrderStatus: completeOrder } =
+    useUpdateOrderStatus("complete", "hoàn thành");
+  const { isUpdating: isCancelling, updateOrderStatus: cancelOrder } =
+    useUpdateOrderStatus("cancelled", "bị hủy");
+  const { isUpdating: isPreparing, updateOrderStatus: prepareOrder } =
+    useUpdateOrderStatus("preparing", "đang chuẩn bị");
+  const isWorking = isCancelling || isCompleting || isPreparing;
 
   if (error) return <ErrorLoading error={error} />;
 
@@ -59,9 +62,10 @@ function OrderDetail() {
       <OrderDataBox order={order} />
 
       <ButtonGroup>
-        {orderStatus === "xxx" && (
+        {orderStatus === "success" && (
           <Modal>
-            <Button>Chuẩn bị</Button>
+            <Button onClick={() => prepareOrder(orderId)}>Chuẩn bị</Button>
+
             <Modal.Open opens="delete">
               <Button variation="danger" disabled={isWorking}>
                 Hủy đơn hàng
@@ -82,7 +86,7 @@ function OrderDetail() {
           </Modal>
         )}
 
-        {orderStatus === "success" && (
+        {orderStatus === "preparing" && (
           <Button onClick={() => completeOrder(orderId)}>Hoàn tất</Button>
         )}
 
