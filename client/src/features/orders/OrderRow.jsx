@@ -14,10 +14,12 @@ import { ORDER_STATUS_TAGS } from "../../constants/tags";
 function OrderRow({ order, serial }) {
   const navigate = useNavigate();
   const { isUpdating: isCompleting, updateOrderStatus: completeOrder } =
-    useUpdateOrderStatus("complete", "hoàn thành");
+    useUpdateOrderStatus("completed", "hoàn thành");
   const { isUpdating: isCancelling, updateOrderStatus: cancelOrder } =
     useUpdateOrderStatus("cancelled", "bị hủy");
-  const isWorking = isCompleting || isCancelling;
+  const { isUpdating: isPreparing, updateOrderStatus: prepareOrder } =
+    useUpdateOrderStatus("preparing", "đang chuẩn bị");
+  const isWorking = isCancelling || isCompleting || isPreparing;
 
   const { _id, totalPrice, orderStatus, orderDate, orderItems, userId } = order;
   const user = userId ?? { name: "Khách", email: "N/A" };
@@ -25,6 +27,8 @@ function OrderRow({ order, serial }) {
   const shortDesc = orderItems
     .map((item) => item.quantity + " " + item.productId.name)
     .join(", ");
+
+  console.log(order);
 
   return (
     <Table.Row>
@@ -49,7 +53,7 @@ function OrderRow({ order, serial }) {
               Xem chi tiết
             </Menus.Button>
 
-            {orderStatus === "pending" && (
+            {orderStatus === "preparing" && (
               <Menus.Button
                 icon={<HiCheckBadge />}
                 disabled={isWorking}
@@ -64,6 +68,7 @@ function OrderRow({ order, serial }) {
                 <Menus.Button
                   icon={<PiCookingPotDuotone />}
                   disabled={isWorking}
+                  onClick={() => prepareOrder(_id)}
                 >
                   Chuẩn bị
                 </Menus.Button>

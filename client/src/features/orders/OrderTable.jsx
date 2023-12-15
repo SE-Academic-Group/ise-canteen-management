@@ -33,7 +33,7 @@ export default function OrderTable() {
         <Table.Body
           data={orders}
           render={(order, i) => (
-            <OrderRow key={order.id} order={order} serial={i + 1} />
+            <OrderRow key={order._id} order={order} serial={i + 1} />
           )}
         />
 

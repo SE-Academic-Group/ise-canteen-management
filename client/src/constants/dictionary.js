@@ -94,8 +94,8 @@ export const UNIT = {
 };
 
 export const ORDER_STATUS = {
-  COMPLETE: {
-    en: "complete",
+  COMPLETED: {
+    en: "completed",
     vi: "Đã hoàn thành",
   },
   SUCCESS: {
