@@ -19,7 +19,7 @@ export default function UserTable() {
 
   return (
     <Menus>
-      <Table columns="12ch 80px 1fr 14ch 20ch 12ch 3.2rem">
+      <Table columns="12ch 80px 1fr 16ch 20ch 12ch 14ch 3.2rem">
         <Table.Header>
           <div>STT</div>
           <div>Ảnh</div>
@@ -27,6 +27,7 @@ export default function UserTable() {
           <div>SDT</div>
           <div>Phân quyền</div>
           <div>Số dư</div>
+          <div>Trạng thái</div>
           <div></div>
         </Table.Header>
 

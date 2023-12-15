@@ -27,10 +27,9 @@ const HeadingGroup = styled.div`
 
 function OrderDetail() {
   const moveBack = useMoveBack();
-  const navigate = useNavigate();
   const { order, isLoading, error } = useOrder();
   const { isUpdating: isCompleting, updateOrderStatus: completeOrder } =
-    useUpdateOrderStatus("complete", "hoàn thành");
+    useUpdateOrderStatus("completed", "hoàn thành");
   const { isUpdating: isCancelling, updateOrderStatus: cancelOrder } =
     useUpdateOrderStatus("cancelled", "bị hủy");
   const { isUpdating: isPreparing, updateOrderStatus: prepareOrder } =
@@ -76,11 +75,7 @@ function OrderDetail() {
               <ConfirmDelete
                 resourceName="đơn hàng"
                 disabled={isWorking}
-                onConfirm={() =>
-                  cancelOrder(order.id, {
-                    onSettled: () => navigate(-1),
-                  })
-                }
+                onConfirm={() => cancelOrder(orderId)}
               />
             </Modal.Window>
           </Modal>

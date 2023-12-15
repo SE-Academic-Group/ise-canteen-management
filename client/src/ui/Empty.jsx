@@ -9,8 +9,12 @@ const Styled = styled.h3`
   border-radius: 8px;
 `;
 
-function Empty({ resourceName }) {
-  return <Styled>Không thể tìm thấy {resourceName} nào.</Styled>;
+function Empty({ resourceName, description }) {
+  return (
+    <Styled>
+      {description ? description : `Không thể tìm thấy ${resourceName} nào.`}
+    </Styled>
+  );
 }
 
 export default Empty;

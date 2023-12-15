@@ -7,7 +7,7 @@ const ButtonIcon = styled.button`
   border-radius: var(--border-radius-sm);
   transition: all 0.2s;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background-color: var(--color-grey-100);
   }
 
@@ -16,6 +16,10 @@ const ButtonIcon = styled.button`
     height: 2.2rem;
 
     ${(props) => !props.raw && "fill: var(--color-brand-600)"}
+  }
+
+  &:disabled svg {
+    fill: var(--color-grey-400);
   }
 `;
 

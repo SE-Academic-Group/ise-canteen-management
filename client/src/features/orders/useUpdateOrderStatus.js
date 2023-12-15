@@ -5,7 +5,7 @@ import { updateOrder } from "../../services/apiOrders";
 
 /**
  *
- * @param {('complete'|'cancelled'|'preparing')} status
+ * @param {('completed'|'cancelled'|'preparing')} status
  * @param {string} statusMsg
  * @returns
  */
@@ -13,7 +13,7 @@ export function useUpdateOrderStatus(status, statusMsg) {
   const queryClient = useQueryClient();
 
   function updateOrderApi(orderId) {
-    return updateOrder(orderId, { orderStatus: status });
+    return updateOrder({ orderStatus: status }, orderId);
   }
 
   const { isLoading: isUpdating, mutate: updateOrderStatus } = useApiMutation({
