@@ -101,7 +101,7 @@ exports.deleteTodayMenuItem = async (req, res, next) => {
 
 exports.getTodayMenu = async (req, res, next) => {
 	// EXECUTE QUERY
-	const features = new APIFeatures(Model.find(), req.query)
+	const features = new APIFeatures(TodayMenuItem.find(), req.query)
 		.filter()
 		.limitFields()
 		.paginate()
@@ -109,16 +109,18 @@ exports.getTodayMenu = async (req, res, next) => {
 
 	// Added .lean() to improve performance
 	let docs = await features.query.lean();
+	let count;
 
 	if (docs.length !== 0) {
-		const count = await Model.countDocuments(features.filterObj);
+		count = await TodayMenuItem.countDocuments(features.filterObj);
 		// Set X-Total-Count header
-		res.set("Access-Control-Expose-Headers", "X-Total-Count");
-		res.set("X-Total-Count", count);
 	} else {
 		docs = null;
+		count = 0;
 	}
 
+	res.set("Access-Control-Expose-Headers", "X-Total-Count");
+	res.set("X-Total-Count", count);
 	// SEND RESPONSE
 	res.status(200).json({
 		status: "success",
