@@ -17,7 +17,7 @@ function LoginForm() {
   const { register, handleSubmit, formState } = useForm({
     defaultValues: {
       email: localStorage.getItem("email") ?? "",
-      password: "test1234", // TODO: Remove this
+      password: "",
     },
   });
   const { errors } = formState;
@@ -64,7 +64,7 @@ function LoginForm() {
           checked={isEmailRemembered}
           onChange={(e) => setIsEmailRemembered((val) => !val)}
         >
-          Nhớ email
+          Nhớ tôi lần sau
         </CheckBox>
       </FormRowVertical>
 
