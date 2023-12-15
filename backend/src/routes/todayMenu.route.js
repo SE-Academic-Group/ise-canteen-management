@@ -12,13 +12,13 @@ router.use(
 	authController.restrictTo("staff", "admin", "cashier")
 );
 
+router.post("/create-today-menu", todayMenuController.createTodayMenu);
+router.delete("/delete-today-menu", todayMenuController.deleteTodayMenu);
+router.post("/close-today-menu", todayMenuController.closeTodayMenu);
+
 // POST "/" should only be used to add new menu item after "/create-today-menu" is called
 router.post("/", todayMenuController.createTodayMenuItem);
 router.patch("/:id", todayMenuController.updateTodayMenuItem);
 router.delete("/:id", todayMenuController.deleteTodayMenuItem);
-
-router.post("/create-today-menu", todayMenuController.createTodayMenu);
-router.delete("/delete-today-menu", todayMenuController.deleteTodayMenu);
-router.post("/close-today-menu", todayMenuController.closeTodayMenu);
 
 module.exports = router;
