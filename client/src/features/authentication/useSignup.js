@@ -9,7 +9,7 @@ export function useSignup() {
     fn: signupApi,
     successMsg: "Đăng ký thành công!",
     onSuccess: () => {
-      navigate("/dashboard", { replace: true });
+      navigate("/", { replace: true });
     },
   });
 

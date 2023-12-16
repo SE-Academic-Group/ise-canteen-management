@@ -27,6 +27,7 @@ import Menu from "./pages/Menu";
 
 import ProtectedRoute from "./ui/ProtectedRoute";
 import CustomerOrder from "./pages/CustomerOrder";
+import RedirectPage from "./pages/RedirectPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,7 +49,8 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<ProtectedRoute />}>
-              <Route index element={<Navigate replace to="dashboard" />} />
+              {/* <Route index element={<Navigate replace to="dashboard" />} /> */}
+              <Route index element={<RedirectPage />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="account" element={<Account />} />
               <Route path="orders" element={<Orders />} />
