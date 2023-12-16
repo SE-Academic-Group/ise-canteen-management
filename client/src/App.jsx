@@ -6,6 +6,8 @@ import { Toaster } from "react-hot-toast";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import GlobalStyles from "./styles/GlobalStyles";
 
+import ProtectedRoute from "./ui/ProtectedRoute";
+
 import PageNotFound from "./pages/PageNotFound";
 import CreateOrder from "./pages/CreateOrder";
 import TodayMenu from "./pages/TodayMenu";
@@ -24,10 +26,9 @@ import Stats from "./pages/Stats";
 import Order from "./pages/Order";
 import Menus from "./pages/Menus";
 import Menu from "./pages/Menu";
-
-import ProtectedRoute from "./ui/ProtectedRoute";
 import CustomerOrder from "./pages/CustomerOrder";
 import RedirectPage from "./pages/RedirectPage";
+import CustomerAccount from "./pages/CustomerAccount";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -68,6 +69,7 @@ function App() {
               <Route path="settings" element={<Settings />} />
 
               <Route path="customer-order" element={<CustomerOrder />} />
+              <Route path="customer-account" element={<CustomerAccount />} />
             </Route>
 
             <Route path="login" element={<Login />} />
