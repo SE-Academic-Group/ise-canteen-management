@@ -5,7 +5,7 @@ import { updateCurrentUser } from "../../services/apiAuth";
 export function useUpdateUser() {
   const { isLoading: isUpdating, mutate: updateUser } = useApiMutation({
     fn: updateCurrentUser,
-    key: QUERY_KEYS.USER,
+    key: [QUERY_KEYS.USER],
     successMsg: "Cập nhật thông tin thành công!",
   });
 

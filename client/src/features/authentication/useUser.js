@@ -12,7 +12,7 @@ export function useUser() {
     data: user,
     error,
   } = useQuery({
-    queryKey: QUERY_KEYS.USER,
+    queryKey: [QUERY_KEYS.USER],
     queryFn: getCurrentUser,
     onError: (err) => {
       navigate("/login", { replace: true });
