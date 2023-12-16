@@ -9,6 +9,7 @@ import {
 } from "react-icons/hi2";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { BiFoodMenu } from "react-icons/bi";
+import { FaHistory } from "react-icons/fa";
 import { objectToArray } from "../utils/helpers";
 
 export const ROUTES = {
@@ -55,7 +56,7 @@ export const ROUTES = {
   MENUS: {
     path: "/menus",
     name: "Lịch sử thực đơn",
-    icon: BiFoodMenu,
+    icon: FaHistory,
   },
   SETTINGS: {
     path: "/settings",
