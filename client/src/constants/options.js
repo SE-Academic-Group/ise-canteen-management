@@ -1,5 +1,5 @@
 import { buildOptions } from "../utils/helpers";
-import { CATEGORY, ROLE, UNIT } from "./dictionary";
+import { CATEGORY, ROLE, UNIT, USER_ACCOUNT_STATE } from "./dictionary";
 
 /**
  * @constant {Array} _OPTIONS - The array of category options.
@@ -11,3 +11,4 @@ import { CATEGORY, ROLE, UNIT } from "./dictionary";
 export const CATEGORY_OPTIONS = buildOptions(CATEGORY);
 export const UNIT_OPTIONS = buildOptions(UNIT);
 export const ROLE_OPTIONS = buildOptions(ROLE);
+export const USER_ACCOUNT_STATE_OPTIONS = buildOptions(USER_ACCOUNT_STATE);

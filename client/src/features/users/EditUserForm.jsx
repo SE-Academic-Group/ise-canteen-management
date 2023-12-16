@@ -9,12 +9,15 @@ import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 
 import { FORM_RULES } from "../../constants/form";
-import { ROLE_OPTIONS } from "../../constants/options";
+import {
+  ROLE_OPTIONS,
+  USER_ACCOUNT_STATE_OPTIONS,
+} from "../../constants/options";
 
 function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {
   const { isEditing, editUser } = useEditUser();
 
-  const { _id: editId, ...editValues } = userToEdit;
+  const { _id: editId, active = true, ...editValues } = userToEdit;
 
   const { register, handleSubmit, reset, formState, getValues } = useForm({
     defaultValues: {
@@ -22,6 +25,7 @@ function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {
       name: editValues.name,
       phone: editValues.phone,
       role: editValues.role,
+      status: active ? "active" : "inactive",
     },
   });
   const { errors } = formState;
@@ -31,6 +35,10 @@ function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {
       reset();
       onCloseModal();
     }
+
+    const { status } = data;
+    data.active = status === "active";
+    delete data.status;
 
     editUser({ newUserData: data, id: editId }, { onSuccess });
   }
@@ -65,6 +73,15 @@ function EditUserForm({ userToEdit = {}, onCloseModal = () => {} }) {
           disabled={isEditing}
           options={ROLE_OPTIONS}
           {...register("role")}
+        />
+      </FormRow>
+
+      <FormRow label="Trạng thái" error={errors?.status?.message}>
+        <Select
+          id="status"
+          disabled={isEditing}
+          options={USER_ACCOUNT_STATE_OPTIONS}
+          {...register("status")}
         />
       </FormRow>
 
