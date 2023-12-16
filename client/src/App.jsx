@@ -6,6 +6,8 @@ import { Toaster } from "react-hot-toast";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import GlobalStyles from "./styles/GlobalStyles";
 
+import ProtectedRoute from "./ui/ProtectedRoute";
+
 import PageNotFound from "./pages/PageNotFound";
 import CreateOrder from "./pages/CreateOrder";
 import TodayMenu from "./pages/TodayMenu";
@@ -17,15 +19,17 @@ import Settings from "./pages/Settings";
 import Account from "./pages/Account";
 import Deposit from "./pages/Deposit";
 import Orders from "./pages/Orders";
+import SignUp from "./pages/SignUp";
 import Users from "./pages/Users";
 import Login from "./pages/Login";
 import Stats from "./pages/Stats";
 import Order from "./pages/Order";
 import Menus from "./pages/Menus";
 import Menu from "./pages/Menu";
-
-import ProtectedRoute from "./ui/ProtectedRoute";
-import AppLayout from "./ui/AppLayout";
+import CustomerOrder from "./pages/CustomerOrder";
+import RedirectPage from "./pages/RedirectPage";
+import CustomerAccount from "./pages/CustomerAccount";
+import CustomerProductDetail from "./pages/CustomerProductDetail";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,14 +50,9 @@ function App() {
 
         <BrowserRouter>
           <Routes>
-            <Route
-              element={
-                <ProtectedRoute>
-                  <AppLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Navigate replace to="dashboard" />} />
+            <Route element={<ProtectedRoute />}>
+              {/* <Route index element={<Navigate replace to="dashboard" />} /> */}
+              <Route index element={<RedirectPage />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="account" element={<Account />} />
               <Route path="orders" element={<Orders />} />
@@ -69,9 +68,17 @@ function App() {
               <Route path="inventory" element={<Inventory />} />
               <Route path="stats" element={<Stats />} />
               <Route path="settings" element={<Settings />} />
+
+              <Route path="customer-order" element={<CustomerOrder />} />
+              <Route path="customer-account" element={<CustomerAccount />} />
+              <Route
+                path="customer-products/:productId"
+                element={<CustomerProductDetail />}
+              />
             </Route>
 
             <Route path="login" element={<Login />} />
+            <Route path="signup" element={<SignUp />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

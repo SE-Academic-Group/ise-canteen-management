@@ -16,21 +16,15 @@ import Tag from "../../ui/Tag";
 import Row from "../../ui/Row";
 import ProductDataBox from "./ProductDataBox";
 
-import { translator } from "../../utils/translator";
 import ErrorLoading from "../../ui/ErrorLoading";
 import AddProductToTodayMenuForm from "./AddProductToTodayMenuForm";
+import { CATEGORY_TAGS } from "../../constants/tags";
 
 const HeadingGroup = styled.div`
   display: flex;
   gap: 2.4rem;
   align-items: center;
 `;
-
-const categoryToTagName = {
-  food: "green",
-  beverage: "blue",
-  other: "grey",
-};
 
 function ProductDetail() {
   const moveBack = useMoveBack();
@@ -46,19 +40,14 @@ function ProductDetail() {
   if (!product) return <Empty resourceName="Sản phẩm" />;
 
   const { category, _id: productId } = product;
-
-  const categoryTag = {
-    tag: categoryToTagName[category],
-    name: translator("category", category),
-    value: category,
-  };
+  const tag = CATEGORY_TAGS[category];
 
   return (
     <>
       <Row type="horizontal">
         <HeadingGroup>
           <Heading as="h1">Sản phẩm #{productId}</Heading>
-          <Tag type={categoryTag.tag}>{categoryTag.name}</Tag>
+          <Tag type={tag.type}>{tag.label}</Tag>
         </HeadingGroup>
         <ButtonText onClick={moveBack}>
           <span role="presentation">&larr;</span>

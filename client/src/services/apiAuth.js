@@ -27,17 +27,17 @@ export async function logout() {
 /**
  * Sign up a user.
  *
- * @param {Object} user - The user object containing username, password, email, and name.
- * @param {string} user.username - The username of the user.
- * @param {string} user.password - The password of the user.
- * @param {string} user.email - The email of the user.
- * @param {string} user.name - The name of the user.
- * @returns {Promise<Object>} - A promise that resolves to the response data.
+ * @param {Object} userData - The user data.
+ * @param {string} userData.password - The user's password.
+ * @param {string} userData.passwordConfirm - The user's password confirmation.
+ * @param {string} userData.email - The user's email.
+ * @param {string} userData.name - The user's name.
+ * @returns {Promise<Object>} The response data from the server.
  */
-export async function signup({ username, password, email, name }) {
+export async function signup({ password, passwordConfirm, email, name }) {
   const { data } = await axiosClient.post("auth/signup", {
-    username,
     password,
+    passwordConfirm,
     email,
     name,
   });
@@ -97,6 +97,18 @@ export async function updatePassword({
     newPasswordConfirm,
     password: oldPassword,
     passwordConfirm: newPasswordConfirm,
+  });
+
+  return data.data;
+}
+
+/**
+ * Deactivates the user account.
+ * @returns {Promise<any>} The response data from the server.
+ */
+export async function deactivateAccount({ passwordConfirm }) {
+  const { data } = await axiosClient.delete("auth/me", {
+    data: { passwordConfirm },
   });
 
   return data.data;

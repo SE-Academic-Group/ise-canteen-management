@@ -104,7 +104,6 @@ const GlobalStyles = createGlobalStyle`
 html {
   font-size: 62.5%;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
 body {
@@ -199,7 +198,7 @@ img {
 .custom-scrollbar {
   --sb-track-color: var(--color-grey-300);
   --sb-thumb-color: var(--color-brand-500);
-  --sb-size: 8px;
+  --sb-size: 4px;
 
   scrollbar-color: var(--sb-thumb-color)
                    var(--sb-track-color);

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { useLogin } from "./useLogin";
 
 import FormRowVertical from "../../ui/FormRowVertical";
@@ -10,6 +11,7 @@ import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 
 function LoginForm() {
+  const navigate = useNavigate();
   const { login, isLoading } = useLogin();
   const [isEmailRemembered, setIsEmailRemembered] = useState(
     localStorage.getItem("email") ? true : false
@@ -69,8 +71,17 @@ function LoginForm() {
       </FormRowVertical>
 
       <FormRowVertical>
-        <Button size="large">
+        <Button size="large" disabled={isLoading}>
           {isLoading ? <SpinnerMini /> : "Đăng nhập"}
+        </Button>
+        <Button
+          size="large"
+          disabled={isLoading}
+          type="button"
+          variation="secondary"
+          onClick={() => navigate("/signup")}
+        >
+          Đăng ký
         </Button>
       </FormRowVertical>
     </Form>

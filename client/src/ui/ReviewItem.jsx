@@ -11,6 +11,10 @@ const StyledReviewItem = styled.article`
   padding: 1.2rem;
   border-radius: var(--border-radius-md);
   font-size: 1.4rem;
+
+  @media (width < 768px) {
+    font-size: 1.2rem;
+  }
 `;
 
 function ReviewItem({ review }) {

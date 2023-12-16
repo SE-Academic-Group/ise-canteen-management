@@ -1,84 +1,96 @@
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { useSignup } from "./useSignup";
+
+import FormRowVertical from "../../ui/FormRowVertical";
 import FormRow from "../../ui/FormRow";
 import Button from "../../ui/Button";
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
+import { FORM_RULES } from "../../constants/form";
 
 function SignupForm() {
-  const { register, formState, getValues, handleSubmit, reset } = useForm();
+  const navigate = useNavigate();
+  const { isLoading, signup } = useSignup();
+  const { register, formState, getValues, handleSubmit, reset } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      passwordConfirm: "",
+    },
+    mode: "onBlur",
+  });
   const { errors } = formState;
 
-  function onSubmit({ fullName, email, password }) {
-    console.log("SignupForm", { fullName, email, password });
+  function onSubmit(data) {
+    function onSuccess() {
+      reset();
+    }
+
+    signup(data, { onSuccess });
   }
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow label="Full name" error={errors?.fullName?.message}>
+      <FormRowVertical label="Tên người dùng" error={errors?.name?.message}>
         <Input
           type="text"
-          id="fullName"
-          disabled={true}
-          {...register("fullName", { required: "This field is required" })}
+          id="name"
+          disabled={isLoading}
+          autoComplete="name"
+          {...register("name", FORM_RULES.FULL_NAME)}
         />
-      </FormRow>
+      </FormRowVertical>
 
-      <FormRow label="Email address" error={errors?.email?.message}>
+      <FormRowVertical label="Email" error={errors?.email?.message}>
         <Input
           type="email"
           id="email"
-          disabled={true}
-          {...register("email", {
-            required: "This field is required",
-            pattern: {
-              value: /\S+@\S+\.\S+/,
-              message: "Please provide a valid email address",
-            },
-          })}
+          autoComplete="email"
+          disabled={isLoading}
+          {...register("email", FORM_RULES.EMAIL)}
         />
-      </FormRow>
+      </FormRowVertical>
 
-      <FormRow
-        label="Password (min 8 characters)"
+      <FormRowVertical
+        label="Mật khẩu (Tối thiểu 8 ký tự)"
         error={errors?.password?.message}
       >
         <Input
           type="password"
           id="password"
-          disabled={true}
-          {...register("password", {
-            required: "This field is required",
-            minLength: {
-              value: 8,
-              message: "Password needs a minimum of 8 characters",
-            },
-          })}
+          disabled={isLoading}
+          {...register("password", FORM_RULES.PASSWORD)}
         />
-      </FormRow>
+      </FormRowVertical>
 
-      <FormRow label="Repeat password" error={errors?.passwordConfirm?.message}>
+      <FormRowVertical
+        label="Nhập lại mật khẩu"
+        error={errors?.passwordConfirm?.message}
+      >
         <Input
           type="password"
           id="passwordConfirm"
-          disabled={true}
+          disabled={isLoading}
           {...register("passwordConfirm", {
-            required: "This field is required",
+            required: "Mật khẩu không được để trống",
             validate: (value) =>
-              value === getValues().password || "Passwords need to match",
+              value === getValues().password || "Mật khẩu không khớp",
           })}
         />
-      </FormRow>
+      </FormRowVertical>
 
       <FormRow>
+        <Button disabled={isLoading}>Đăng ký</Button>
         <Button
+          type="button"
           variation="secondary"
-          type="reset"
-          disabled={true}
-          onClick={reset}
+          disabled={isLoading}
+          onClick={() => navigate("/login")}
         >
-          Cancel
+          Đăng nhập
         </Button>
-        <Button disabled={true}>Create new user</Button>
       </FormRow>
     </Form>
   );
