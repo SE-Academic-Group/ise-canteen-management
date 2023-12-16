@@ -26,6 +26,9 @@ export function useUpdateOrderStatus(status, statusMsg) {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.ORDER],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.TODAY_MENU],
+      });
     },
     successMsg: `Đơn hàng đã được đánh dấu ${statusMsg}!`,
   });
