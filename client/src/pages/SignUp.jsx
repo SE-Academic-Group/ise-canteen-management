@@ -8,7 +8,7 @@ const LoginLayout = styled.main`
   min-height: 100vh;
   min-height: 100svh;
   display: grid;
-  grid-template-columns: min(56rem, 94%);
+  grid-template-columns: min(48rem, 94%);
   align-content: center;
   justify-content: center;
   gap: 3.2rem;
