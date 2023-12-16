@@ -6,7 +6,7 @@ function CustomerHomeButton() {
   const navigate = useNavigate();
 
   return (
-    <ButtonIcon onClick={() => navigate("/")}>
+    <ButtonIcon onClick={() => navigate("/customer-order")}>
       <RiHome4Fill />
     </ButtonIcon>
   );
