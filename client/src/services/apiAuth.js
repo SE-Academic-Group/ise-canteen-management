@@ -101,3 +101,15 @@ export async function updatePassword({
 
   return data.data;
 }
+
+/**
+ * Deactivates the user account.
+ * @returns {Promise<any>} The response data from the server.
+ */
+export async function deactivateAccount({ passwordConfirm }) {
+  const { data } = await axiosClient.delete("auth/me", {
+    data: { passwordConfirm },
+  });
+
+  return data.data;
+}
