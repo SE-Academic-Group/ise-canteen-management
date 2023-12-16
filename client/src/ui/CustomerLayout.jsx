@@ -28,17 +28,19 @@ const Container = styled.div`
 `;
 
 function CustomerLayout() {
-  return (
-    <StyledAppLayout>
-      <Header />
-      <Sidebar />
-      <Main>
-        <Container>
-          <Outlet />
-        </Container>
-      </Main>
-    </StyledAppLayout>
-  );
+  // return (
+  //   <StyledAppLayout>
+  //     <Header />
+  //     <Sidebar />
+  //     <Main>
+  //       <Container>
+  //         <Outlet />
+  //       </Container>
+  //     </Main>
+  //   </StyledAppLayout>
+  // );
+
+  return <div>customer layout</div>;
 }
 
 export default CustomerLayout;
