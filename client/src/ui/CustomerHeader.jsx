@@ -22,8 +22,8 @@ function CustomerHeader() {
   return (
     <StyledHeader>
       <CustomerHomeButton />
-      <CustomerAvatar />
       <CustomerHeaderMenu />
+      <CustomerAvatar />
     </StyledHeader>
   );
 }

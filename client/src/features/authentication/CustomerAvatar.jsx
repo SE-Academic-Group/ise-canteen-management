@@ -3,13 +3,14 @@ import { useUser } from "./useUser";
 
 import SpinnerMini from "../../ui/SpinnerMini";
 import { getImageUrl, getPlaceholderImageUrl } from "../../utils/helpers";
+import { useNavigate } from "react-router-dom";
 
 const StyledUserAvatar = styled.div`
   display: flex;
   gap: 1.2rem;
   align-items: center;
   font-weight: 500;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: var(--color-grey-600);
 `;
 
@@ -21,10 +22,12 @@ const Avatar = styled.img`
   object-position: center;
   border-radius: 50%;
   outline: 2px solid var(--color-grey-100);
+  cursor: pointer;
 `;
 
 function CustomerAvatar() {
   const { user, isLoading } = useUser();
+  const navigate = useNavigate();
 
   if (isLoading) return <SpinnerMini />;
 
@@ -33,8 +36,12 @@ function CustomerAvatar() {
 
   return (
     <StyledUserAvatar>
-      <Avatar src={imageUrl} alt={`Avatar of ${name}`} />
-      <span>{name}</span>
+      <Avatar
+        src={imageUrl}
+        alt={`Avatar of ${name}`}
+        onClick={() => navigate("/customer-account")}
+      />
+      {/* <span>{name}</span> */}
     </StyledUserAvatar>
   );
 }

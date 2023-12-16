@@ -17,11 +17,6 @@ function CustomerHeaderMenu() {
   return (
     <StyledHeaderMenu>
       <li>
-        <ButtonIcon onClick={() => navigate("/account")}>
-          <HiOutlineUser />
-        </ButtonIcon>
-      </li>
-      <li>
         <ButtonIcon onClick={() => navigate("/customer-deposit")}>
           <RiMoneyDollarCircleFill />
         </ButtonIcon>
