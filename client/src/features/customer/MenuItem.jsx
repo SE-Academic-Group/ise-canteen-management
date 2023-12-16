@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 import Tag from "../../ui/Tag";
 import { formatVietnameseCurrency, getImageUrl } from "../../utils/helpers";
+import { NavLink } from "react-router-dom";
 
 const Container = styled.article`
   font-size: 1.2rem;
@@ -36,6 +37,13 @@ const Name = styled.p`
   font-weight: 500;
 `;
 
+const DetailLink = styled(NavLink)`
+  color: var(--color-brand-600);
+  font-weight: 500;
+  font-size: 1.2rem;
+  text-decoration: underline;
+`;
+
 function MenuItem({
   item,
   handleAddItem,
@@ -54,11 +62,16 @@ function MenuItem({
   }
 
   return (
-    <Container className={active ? "active" : ""} onClick={handleClickItem}>
-      <Image src={getImageUrl(image)} alt={item.name} />
+    <Container className={active ? "active" : ""}>
+      <Image
+        src={getImageUrl(image)}
+        alt={item.name}
+        onClick={handleClickItem}
+      />
       <Name>{name}</Name>
       {quantity > 0 ? <p>Còn {quantity}</p> : <Tag type="red">Hết hàng</Tag>}
       <p>{formatVietnameseCurrency(price)}</p>
+      <DetailLink to="custom">Chi tiết</DetailLink>
     </Container>
   );
 }

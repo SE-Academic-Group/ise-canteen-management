@@ -6,6 +6,8 @@ import Empty from "../../ui/Empty";
 import DataItem from "../../ui/DataItem";
 import MenuItemSummary from "./MenuItemSummary";
 import { formatVietnameseCurrency } from "../../utils/helpers";
+import CreateOrderGuide from "./CreateOrderGuide";
+import { useUser } from "../authentication/useUser";
 
 const Border = styled.div`
   border: 2px solid var(--color-brand-200);
@@ -33,8 +35,15 @@ function CreateOrderSummary({
   handleRemoveItem,
   handleUpdateQuantity,
 }) {
+  const { user } = useUser();
+
   if (addedItems.length === 0) {
-    return <Empty description="Bạn chưa thêm sản phẩm nào" />;
+    return (
+      <>
+        <CreateOrderGuide />
+        <Empty description="Bạn chưa thêm sản phẩm nào" />
+      </>
+    );
   }
 
   const total = addedItems.reduce((acc, item) => {
@@ -54,6 +63,7 @@ function CreateOrderSummary({
             />
           ))}
         </div>
+
         <div>
           <h3>Tóm tắt</h3>
           <DataItem label="Tổng số sản phẩm" icon={<MdOutlineNumbers />}>
@@ -61,6 +71,9 @@ function CreateOrderSummary({
           </DataItem>
           <DataItem label="Tổng tiền" icon={<FaRegMoneyBillAlt />}>
             {formatVietnameseCurrency(total)}
+          </DataItem>
+          <DataItem label="Số dư của bạn" icon={<FaRegMoneyBillAlt />}>
+            {user ? formatVietnameseCurrency(user.balance) : "Đang tải..."}
           </DataItem>
         </div>
       </Layout>
