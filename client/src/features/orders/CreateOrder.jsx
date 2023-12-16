@@ -1,12 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import Button from "../../ui/Button";
-import { NavLink } from "react-router-dom";
 
 function CreateOrder() {
+  const navigate = useNavigate();
   return (
     <div>
-      <Button>
-        <NavLink to="/create-order">Tạo đơn hàng</NavLink>
-      </Button>
+      <Button onClick={() => navigate("/create-order")}>Tạo đơn hàng</Button>
     </div>
   );
 }
