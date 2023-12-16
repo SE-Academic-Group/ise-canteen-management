@@ -16,7 +16,7 @@ const Content = styled.div`
 `;
 
 const StepHeading = styled(Heading)`
-  margin-bottom: 2rem;
+  margin-bottom: 0.8rem;
   text-align: center;
 `;
 
@@ -25,6 +25,7 @@ const Layout = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(28ch, 1fr));
   gap: 1.6rem;
   width: 100%;
+  margin-top: 1.2rem;
 `;
 
 function SearchCustomer({ currentCustomer, handleSelectCustomer }) {

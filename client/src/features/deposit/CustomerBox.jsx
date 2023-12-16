@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Container = styled.button`
   padding: 1.2rem;
-  border: 1px solid var(--color-grey-300);
+  border: 2px dashed var(--color-grey-200);
   border-radius: 8px;
   background-color: var(--color-grey-50);
   display: flex;

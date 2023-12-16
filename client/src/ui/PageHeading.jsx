@@ -3,8 +3,8 @@ import Heading from "./Heading";
 import ResetURLButton from "./ResetURLButton";
 
 const Container = styled.div`
-  background-color: var(--color-grey-100);
-  border: 1px solid var(--color-grey-200);
+  background-color: var(--color-grey-0);
+  border: 1px solid var(--color-grey-100);
   border-radius: 8px;
   padding: 1rem;
   display: flex;

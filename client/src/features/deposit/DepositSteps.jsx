@@ -12,7 +12,7 @@ import SearchCustomer from "./SearchCustomer";
 
 const Container = styled.div`
   padding: 3.2rem;
-  border: 1px solid var(--color-grey-300);
+  border: 1px solid var(--color-grey-100);
   border-radius: 8px;
   background-color: var(--color-grey-0);
 `;

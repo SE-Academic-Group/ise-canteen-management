@@ -27,7 +27,7 @@ const AmountButton = styled.button`
   border: unset;
   font-size: 3.2rem;
   padding: 0.8rem 1.6rem;
-  border: 1px solid var(--color-grey-300);
+  border: 2px dashed var(--color-grey-300);
   border-radius: 8px;
   font-weight: 500;
 
