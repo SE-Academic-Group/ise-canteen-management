@@ -24,6 +24,10 @@ const P = styled.p`
   font-size: 1.4rem;
   margin-left: 0.8rem;
 
+  @media (width < 768px) {
+    font-size: 1.2rem;
+  }
+
   & span {
     font-weight: 600;
   }
@@ -42,6 +46,10 @@ const PaginationButton = styled.button`
   border-radius: var(--border-radius-sm);
   font-weight: 500;
   font-size: 1.4rem;
+
+  @media (width < 768px) {
+    font-size: 1.2rem;
+  }
 
   display: flex;
   align-items: center;
@@ -69,7 +77,7 @@ const PaginationButton = styled.button`
   }
 `;
 
-function Pagination({ count, hasBox = false }) {
+function Pagination({ count, hasBox = false, compact = false }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentPage = !searchParams.get("page")
     ? 1
@@ -98,13 +106,19 @@ function Pagination({ count, hasBox = false }) {
   return (
     <Container>
       <StyledPagination>
-        <P>
-          Hiển thị <span>{(currentPage - 1) * PAGE_SIZE + 1}</span> &rarr;{" "}
-          <span>
-            {currentPage === pageCount ? count : currentPage * PAGE_SIZE}
-          </span>{" "}
-          trong <span>{count}</span> kết quả
-        </P>
+        {!compact ? (
+          <P>
+            Hiển thị <span>{(currentPage - 1) * PAGE_SIZE + 1}</span> &rarr;{" "}
+            <span>
+              {currentPage === pageCount ? count : currentPage * PAGE_SIZE}
+            </span>{" "}
+            trong <span>{count}</span> kết quả
+          </P>
+        ) : (
+          <P>
+            Trang <span>{currentPage}</span> / <span>{pageCount}</span>
+          </P>
+        )}
 
         <Buttons>
           <PaginationButton onClick={prevPage} disabled={currentPage === 1}>
