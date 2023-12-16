@@ -31,6 +31,7 @@ const Image = styled.img`
   border-radius: 4px;
   background-color: var(--color-grey-0);
   margin-block-end: 1.6rem;
+  cursor: pointer;
 `;
 
 const Name = styled.p`
