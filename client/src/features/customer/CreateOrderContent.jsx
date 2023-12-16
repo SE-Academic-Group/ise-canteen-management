@@ -9,7 +9,6 @@ import Button from "../../ui/Button";
 import Empty from "../../ui/Empty";
 import CreateOrderSummary from "./CreateOrderSummary";
 import CreateOrderForm from "./CreateOrderForm";
-import CreateOrderHeading from "./CreateOrderHeading";
 
 function CreateOrderContent() {
   const { isLoading, error, count, menuItems } = useTodayMenu();
@@ -83,8 +82,6 @@ function CreateOrderContent() {
 
   return (
     <>
-      <CreateOrderHeading />
-
       {content}
 
       <CreateOrderSummary

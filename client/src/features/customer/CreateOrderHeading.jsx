@@ -3,6 +3,7 @@ import Heading from "../../ui/Heading";
 
 const StyledHeading = styled(Heading)`
   text-align: center;
+  margin-bottom: 2.4rem;
 `;
 
 function CreateOrderHeading() {
