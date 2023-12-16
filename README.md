@@ -43,11 +43,11 @@ Please follow these steps below:
    You have to have 2 terminal tabs to achieve step 5, and 6 (make sure there are in the same root directory of the cloned repo)
    - At first terminal
      ```bash
-     yarn
+     cd client && yarn
      ```
    - At the second one
      ```bash
-     yarn
+     cd backend && yarn
      ```
 6. Start the dev servers
    - At first terminal
