@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { formatVietnameseCurrency, getImageUrl } from "../../utils/helpers";
 import { CiSquarePlus, CiTrash } from "react-icons/ci";
 import ButtonIcon from "../../ui/ButtonIcon";
+import Tag from "../../ui/Tag";
 
 const Container = styled.article`
   text-align: center;
@@ -34,12 +35,20 @@ const Name = styled.p`
   font-weight: 500;
 `;
 
-function MenuItem({ item, handleAddItem, handleRemoveItem, active }) {
+function MenuItem({
+  item,
+  handleAddItem,
+  handleRemoveItem,
+  handleUpdateQuantity,
+  active,
+}) {
   const { name, image, price, quantity } = item;
 
   function handleSelectItem() {
     if (!active) {
       handleAddItem(item);
+    } else {
+      handleUpdateQuantity(item._id, null, true);
     }
   }
 
@@ -54,11 +63,14 @@ function MenuItem({ item, handleAddItem, handleRemoveItem, active }) {
       <Image src={getImageUrl(image)} alt={item.name} />
       <div>
         <Name>{name}</Name>
-        <p>Còn {quantity}</p>
+        {quantity > 0 ? <p>Còn {quantity}</p> : <Tag type="red">Hết hàng</Tag>}
         <p>{formatVietnameseCurrency(price)}</p>
       </div>
       <div>
-        <ButtonIcon onClick={handleSelectItem} disabled={active}>
+        <ButtonIcon
+          onClick={handleSelectItem}
+          disabled={active || quantity <= 0}
+        >
           <CiSquarePlus />
         </ButtonIcon>
         <ButtonIcon onClick={handleDeleteItem} disabled={!active}>
