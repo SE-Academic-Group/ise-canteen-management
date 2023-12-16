@@ -105,7 +105,6 @@ function CreateOrderContent() {
 
             if (res) {
               handleCreateOrder();
-              handleReset();
             }
           }}
           disabled={addedItems.size === 0 || isCreating}
