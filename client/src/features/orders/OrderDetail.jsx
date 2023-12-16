@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { useUpdateOrderStatus } from "./useUpdateOrderStatus";
 import { useOrder } from "./useOrder";

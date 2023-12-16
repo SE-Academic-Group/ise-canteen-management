@@ -58,6 +58,17 @@ export const ROLE = {
   },
 };
 
+export const USER_ACCOUNT_STATE = {
+  ACTIVE: {
+    en: "active",
+    vi: "Hoạt động",
+  },
+  INACTIVE: {
+    en: "inactive",
+    vi: "Tạm khóa",
+  },
+};
+
 export const UNIT = {
   BOTTLE: {
     en: "bottle",
