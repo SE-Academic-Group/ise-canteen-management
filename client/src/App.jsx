@@ -17,6 +17,7 @@ import Settings from "./pages/Settings";
 import Account from "./pages/Account";
 import Deposit from "./pages/Deposit";
 import Orders from "./pages/Orders";
+import SignUp from "./pages/SignUp";
 import Users from "./pages/Users";
 import Login from "./pages/Login";
 import Stats from "./pages/Stats";
@@ -25,8 +26,7 @@ import Menus from "./pages/Menus";
 import Menu from "./pages/Menu";
 
 import ProtectedRoute from "./ui/ProtectedRoute";
-import AppLayout from "./ui/AppLayout";
-import SignUp from "./pages/SignUp";
+import CustomerOrder from "./pages/CustomerOrder";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -64,6 +64,8 @@ function App() {
               <Route path="inventory" element={<Inventory />} />
               <Route path="stats" element={<Stats />} />
               <Route path="settings" element={<Settings />} />
+
+              <Route path="customer-order" element={<CustomerOrder />} />
             </Route>
 
             <Route path="login" element={<Login />} />

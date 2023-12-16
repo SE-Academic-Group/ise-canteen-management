@@ -1,21 +1,19 @@
 import { Outlet } from "react-router-dom";
-import Sidebar from "./Sidebar";
-import Header from "./Header";
+import CustomerHeader from "./CustomerHeader";
 import styled from "styled-components";
 
 const StyledAppLayout = styled.div`
+  min-height: 100vh;
+  min-height: 100dvh;
   display: grid;
-  grid-template-columns: 26rem 1fr;
   grid-template-rows: auto 1fr;
-  height: 100vh;
-  position: relative;
 `;
 
 const Main = styled.main.attrs({
   className: "custom-scrollbar",
 })`
   background-color: var(--color-grey-50);
-  padding: 4rem 4.8rem 6.4rem;
+  padding: 1.6rem;
   overflow-y: auto;
 `;
 
@@ -28,19 +26,18 @@ const Container = styled.div`
 `;
 
 function CustomerLayout() {
-  // return (
-  //   <StyledAppLayout>
-  //     <Header />
-  //     <Sidebar />
-  //     <Main>
-  //       <Container>
-  //         <Outlet />
-  //       </Container>
-  //     </Main>
-  //   </StyledAppLayout>
-  // );
+  return (
+    <StyledAppLayout>
+      <CustomerHeader />
+      <Main>
+        <Container>
+          <Outlet />
+        </Container>
+      </Main>
+    </StyledAppLayout>
+  );
 
-  return <div>customer layout</div>;
+  // return <div>customer layout</div>;
 }
 
 export default CustomerLayout;
