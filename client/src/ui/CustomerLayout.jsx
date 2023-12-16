@@ -14,6 +14,7 @@ const Main = styled.main.attrs({
 })`
   background-color: var(--color-grey-50);
   padding: 1.6rem;
+  padding-block-end: 3.2rem;
   overflow-y: auto;
 `;
 

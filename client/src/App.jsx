@@ -29,6 +29,7 @@ import Menu from "./pages/Menu";
 import CustomerOrder from "./pages/CustomerOrder";
 import RedirectPage from "./pages/RedirectPage";
 import CustomerAccount from "./pages/CustomerAccount";
+import CustomerProductDetail from "./pages/CustomerProductDetail";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -70,6 +71,10 @@ function App() {
 
               <Route path="customer-order" element={<CustomerOrder />} />
               <Route path="customer-account" element={<CustomerAccount />} />
+              <Route
+                path="customer-products/:productId"
+                element={<CustomerProductDetail />}
+              />
             </Route>
 
             <Route path="login" element={<Login />} />

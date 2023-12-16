@@ -52,7 +52,7 @@ function MenuItem({
   handleUpdateQuantity,
   active,
 }) {
-  const { name, image, price, quantity } = item;
+  const { name, image, price, quantity, productId } = item;
 
   function handleClickItem() {
     if (active) {
@@ -72,7 +72,7 @@ function MenuItem({
       <Name>{name}</Name>
       {quantity > 0 ? <p>Còn {quantity}</p> : <Tag type="red">Hết hàng</Tag>}
       <p>{formatVietnameseCurrency(price)}</p>
-      <DetailLink to="custom">Chi tiết</DetailLink>
+      <DetailLink to={`/customer-products/${productId}`}>Chi tiết</DetailLink>
     </Container>
   );
 }

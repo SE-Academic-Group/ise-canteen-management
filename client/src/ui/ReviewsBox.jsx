@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Heading from "./Heading";
 
 const StyledReviewsBox = styled.section`
-  background-color: var(--color-grey-100);
+  background-color: var(--color-grey-50);
   padding: 1.6rem;
   border-radius: var(--border-radius-md);
 `;
