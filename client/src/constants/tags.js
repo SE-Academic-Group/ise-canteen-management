@@ -1,5 +1,5 @@
 import { buildTagOptions } from "../utils/helpers";
-import { CATEGORY, ORDER_STATUS, ROLE } from "./dictionary";
+import { CATEGORY, CHARGE_STATUS, ORDER_STATUS, ROLE } from "./dictionary";
 
 /**
  * @constant {Array} TAGS - The array of role tag options.
@@ -11,3 +11,4 @@ import { CATEGORY, ORDER_STATUS, ROLE } from "./dictionary";
 export const ROLE_TAGS = buildTagOptions(ROLE);
 export const CATEGORY_TAGS = buildTagOptions(CATEGORY);
 export const ORDER_STATUS_TAGS = buildTagOptions(ORDER_STATUS);
+export const CHARGE_STATUS_TAGS = buildTagOptions(CHARGE_STATUS);

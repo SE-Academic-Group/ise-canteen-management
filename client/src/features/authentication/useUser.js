@@ -9,7 +9,7 @@ export function useUser() {
 
   const {
     isLoading,
-    data: user,
+    data: user = {},
     error,
   } = useQuery({
     queryKey: [QUERY_KEYS.USER],

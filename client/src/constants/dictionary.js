@@ -1,7 +1,7 @@
 //! When you add a new dictionary key,
 //! you must add it to the DictionaryKey type and the dictionary object below.
 /**
- * @typedef {('category'|'role'|'unit'|'order_status')} DictionaryKey
+ * @typedef {('category'|'role'|'unit'|'order_status'|'charge_status')} DictionaryKey
  */
 
 export const CATEGORY = {
@@ -124,5 +124,20 @@ export const ORDER_STATUS = {
   PENDING: {
     en: "pending",
     vi: "Đang chờ",
+  },
+};
+
+export const CHARGE_STATUS = {
+  SUCCESS: {
+    en: "success",
+    vi: "Thành công",
+  },
+  PENDING: {
+    en: "pending",
+    vi: "Đang chờ",
+  },
+  FAILED: {
+    en: "failed",
+    vi: "Thất bại",
   },
 };

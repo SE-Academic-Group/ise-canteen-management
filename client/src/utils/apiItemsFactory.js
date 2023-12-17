@@ -70,13 +70,16 @@ export function createEditItemFactory(name) {
     }
 
     if (id) {
-      await axiosClient.patch(`${name}/${id}`, postData, config);
-    } else {
-      await axiosClient.post(
-        `${name}`,
-        Array.isArray(data) ? data : postData,
-        config
-      );
+      const res = await axiosClient.patch(`${name}/${id}`, postData, config);
+      return res.data.data;
     }
+
+    const res = await axiosClient.post(
+      `${name}`,
+      Array.isArray(data) ? data : postData,
+      config
+    );
+
+    return res.data.data;
   };
 }
