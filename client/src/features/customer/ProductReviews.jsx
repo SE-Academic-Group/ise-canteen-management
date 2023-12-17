@@ -37,7 +37,7 @@ function ProductReviews({ productId }) {
 
   if (isLoading) return <Spinner />;
 
-  if (!reviews) return <Empty resourceName="Đánh giá" />;
+  if (!count) return <Empty resourceName="Đánh giá" />;
 
   return (
     <ReviewsBox>
