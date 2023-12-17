@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
  * @param {string} options.key - The key for the query.
  * @returns {Object} - The result of the query fetch.
  */
-export function useQueryFetch({ fn, key }) {
+export function useQueryFetch({ fn, key, ...options }) {
   const {
     isLoading,
     data = {},
@@ -17,6 +17,7 @@ export function useQueryFetch({ fn, key }) {
     queryKey: key,
     queryFn: fn,
     retry: false,
+    ...options,
   });
 
   return { isLoading, error, data };

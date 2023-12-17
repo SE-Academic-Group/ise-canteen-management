@@ -23,6 +23,7 @@ export function useTodayMenu() {
   } = useQueryFetch({
     fn: () => getTodayMenu(queryOptions),
     key: queryKey,
+    refetchInterval: 2500,
   });
 
   const noPage = Math.ceil(count / PAGE_SIZE);
