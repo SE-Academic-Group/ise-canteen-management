@@ -1,5 +1,4 @@
 import { HiMiniArrowPath } from "react-icons/hi2";
-import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import ButtonIcon from "./ButtonIcon";
 import { useQueryClient } from "@tanstack/react-query";
