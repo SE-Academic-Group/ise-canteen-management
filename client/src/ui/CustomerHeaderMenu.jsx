@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Logout from "../features/authentication/Logout";
 import ButtonIcon from "./ButtonIcon";
-import { HiOutlineUser } from "react-icons/hi2";
+import { MdWorkHistory } from "react-icons/md";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import DarkModeToggle from "./DarkModeToggle";
@@ -19,6 +19,11 @@ function CustomerHeaderMenu() {
       <li>
         <ButtonIcon onClick={() => navigate("/customer-deposit")}>
           <RiMoneyDollarCircleFill />
+        </ButtonIcon>
+      </li>
+      <li>
+        <ButtonIcon onClick={() => navigate("/my-orders")}>
+          <MdWorkHistory />
         </ButtonIcon>
       </li>
       <li>
