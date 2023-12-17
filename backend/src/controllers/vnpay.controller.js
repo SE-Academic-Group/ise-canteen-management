@@ -117,24 +117,7 @@ exports.vnpayReturn = async (req, res, next) => {
 			$inc: { balance: chargeAmount },
 		});
 
-		res.status(200).send(`
-    <!DOCTYPE html>
-    <html lang="vi">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Điều hướng</title>
-      </head>
-      <body>
-        <h1>Nạp tiền thành công, đang điều hướng về ứng dụng</h1>
-
-        <script>
-          setTimeout(() => {
-            window.location.href = "http://localhost:5173/customer-charge-history";
-          }, 2000);
-        </script>
-      </body>
-    </html>`);
+		res.status(200).redirect(`http://localhost:5173/customer-charge-history`);
 	} else {
 		// Thanh toán thất bại. Kiểm tra rspCode để biết lý do thất bại
 
@@ -178,25 +161,7 @@ exports.vnpayReturn = async (req, res, next) => {
 		chargeHistory.chargeError = errMessage;
 		await chargeHistory.save();
 
-		res.status(200).send(`
-    <!DOCTYPE html>
-    <html lang="vi">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Điều hướng</title>
-      </head>
-      <body>
-        <h1>${errMessage}</h1>
-        <h1>Điều hướng về trang nạp tiền sau 2s</h1>
-
-        <script>
-          setTimeout(() => {
-            window.location.href = "http://localhost:5173/customer-charge-history";
-          }, 2000);
-        </script>
-      </body>
-    </html>`);
+		res.status(200).redirect(`http://localhost:5173/customer-charge-history`);
 	}
 };
 
