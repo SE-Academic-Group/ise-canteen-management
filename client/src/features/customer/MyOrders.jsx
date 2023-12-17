@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { useUser } from "../authentication/useUser";
-import { useMyOrders } from "./useMyOrder";
+import { useMyOrders } from "./useMyOrders";
 
 import ErrorLoading from "../../ui/ErrorLoading";
 import Empty from "../../ui/Empty";

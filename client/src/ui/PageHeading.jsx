@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Heading from "./Heading";
 import ResetURLButton from "./ResetURLButton";
+import RefreshButton from "./RefreshButton";
 
 const Container = styled.div`
   background-color: var(--color-grey-0);
@@ -12,11 +13,12 @@ const Container = styled.div`
   align-items: center;
 `;
 
-function PageHeading({ children }) {
+function PageHeading({ children, queryKey, noReset = false }) {
   return (
     <Container>
       <Heading as="h1">{children}</Heading>
-      <ResetURLButton />
+      {!noReset && <ResetURLButton />}
+      {queryKey && <RefreshButton queryKey={queryKey} />}
     </Container>
   );
 }

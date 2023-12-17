@@ -1,7 +1,8 @@
-import { FaFilterCircleXmark } from "react-icons/fa6";
+import { HiMiniArrowPath } from "react-icons/hi2";
 import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import ButtonIcon from "./ButtonIcon";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Button = styled(ButtonIcon)`
   &:hover {
@@ -13,17 +14,17 @@ const Button = styled(ButtonIcon)`
   }
 `;
 
-export default function ResetURLButton() {
-  const [, setSearchParams] = useSearchParams();
+export default function RefreshButton({ queryKey }) {
+  const queryClient = useQueryClient();
 
   function handleClick() {
-    setSearchParams({});
+    queryClient.invalidateQueries(queryKey);
   }
 
   return (
     <Button onClick={handleClick}>
-      <span className="sr-only">Làm mới bộ lọc, tìm kiếm và sắp xếp</span>
-      <FaFilterCircleXmark role="presentation" />
+      <span className="sr-only">Làm mới nội dung</span>
+      <HiMiniArrowPath role="presentation" />
     </Button>
   );
 }
