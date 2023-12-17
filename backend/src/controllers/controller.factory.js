@@ -53,7 +53,7 @@ exports.getAll = (Model, options) => async (req, res, next) => {
 		.sort();
 
 	// Populate options
-	if (options && options.populate) {
+	if (options?.populate) {
 		if (Array.isArray(options.populate)) {
 			options.populate.forEach((option) => features.query.populate(option));
 		} else {
