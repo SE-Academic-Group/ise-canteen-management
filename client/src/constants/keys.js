@@ -10,4 +10,5 @@ export const QUERY_KEYS = {
   MENUS: "menus",
   MENU: "menu",
   TODAY_MENU: "todayMenu",
+  CHARGE_HISTORY: "chargeHistory",
 };
