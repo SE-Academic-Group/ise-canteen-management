@@ -37,6 +37,200 @@ const menuHistorySchema = new mongoose.Schema(
 	}
 );
 
+menuHistorySchema.statics.generateMenuReport = async function (
+	startDate,
+	endDate,
+	statisticType
+) {
+	let dateField;
+
+	switch (statisticType) {
+		case "day":
+			dateField = {
+				$dateToString: { format: "%Y-%m-%d", date: "$menuDate" },
+			};
+			break;
+		case "month":
+			dateField = {
+				$dateToString: { format: "%Y-%m", date: "$menuDate" },
+			};
+			break;
+		case "year":
+			dateField = {
+				$dateToString: { format: "%Y", date: "$menuDate" },
+			};
+			break;
+		default:
+			throw new AppError(
+				"Không hỗ trợ thống kê theo kiểu này",
+				400,
+				"INVALID_ARGUMENTS"
+			);
+	}
+
+	const menuStatistics = await MenuHistory.aggregate([
+		{
+			$match: {
+				menuDate: {
+					$gte: startDate,
+					$lte: endDate,
+				},
+			},
+		},
+		{
+			$unwind: "$menuItems",
+		},
+		{
+			$group: {
+				_id: {
+					date: dateField,
+					productId: "$menuItems.productId",
+				},
+				totalQuantity: { $sum: "$menuItems.totalQuantity" },
+				totalPrice: {
+					$sum: { $multiply: ["$menuItems.price", "$menuItems.totalQuantity"] },
+				},
+			},
+		},
+		{
+			$group: {
+				_id: "$_id.date",
+				menuStats: {
+					$push: {
+						productId: "$_id.productId",
+						totalQuantity: "$totalQuantity",
+						totalPrice: "$totalPrice",
+					},
+				},
+			},
+		},
+		{
+			$project: {
+				_id: 0,
+				date: "$_id",
+				menuStats: 1,
+			},
+		},
+	]);
+
+	return menuStats;
+};
+
+menuHistorySchema.statics.generateSaleReport = async function (
+	startDate,
+	endDate,
+	statisticType
+) {
+	let dateField;
+
+	switch (statisticType) {
+		case "day":
+			dateField = {
+				$dateToString: { format: "%Y-%m-%d", date: "$menuDate" },
+			};
+			break;
+		case "month":
+			dateField = {
+				$dateToString: { format: "%Y-%m", date: "$menuDate" },
+			};
+			break;
+		case "year":
+			dateField = {
+				$dateToString: { format: "%Y", date: "$menuDate" },
+			};
+			break;
+		default:
+			throw new AppError(
+				"Không hỗ trợ thống kê theo kiểu này",
+				400,
+				"INVALID_ARGUMENTS"
+			);
+	}
+
+	const saleStatistics = await MenuHistory.aggregate([
+		{
+			$match: {
+				menuDate: {
+					$gte: startDate,
+					$lte: endDate,
+				},
+			},
+		},
+		{
+			$unwind: "$menuItems",
+		},
+		{
+			$group: {
+				_id: {
+					date: dateField,
+					productId: "$menuItems.productId",
+				},
+				totalQuantity: { $sum: "$menuItems.totalQuantity" },
+				totalPrice: {
+					$sum: {
+						$multiply: ["$menuItems.price", "$menuItems.totalQuantity"],
+					},
+				},
+				soldQuantity: {
+					$sum: {
+						$subtract: [
+							"$menuItems.totalQuantity",
+							"$menuItems.remainQuantity",
+						],
+					},
+				},
+			},
+		},
+		{
+			$group: {
+				_id: "$_id.date",
+				saleStats: {
+					$push: {
+						productId: "$_id.productId",
+						totalQuantity: "$totalQuantity",
+						totalPrice: "$totalPrice",
+						soldQuantity: "$soldQuantity",
+						soldPercent: {
+							$multiply: [
+								{
+									$divide: ["$soldQuantity", "$totalQuantity"],
+								},
+								100,
+							],
+						},
+					},
+				},
+				totalQuantity: { $sum: "$totalQuantity" },
+				totalPrice: { $sum: "$totalPrice" },
+				totalSoldQuantity: { $sum: "$soldQuantity" },
+				avgSoldPercent: {
+					$avg: {
+						$multiply: [
+							{
+								$divide: ["$soldQuantity", "$totalQuantity"],
+							},
+							100,
+						],
+					},
+				},
+			},
+		},
+		{
+			$project: {
+				_id: 0,
+				date: "$_id",
+				saleStats: 1,
+				totalQuantity: 1,
+				totalPrice: 1,
+				totalSoldQuantity: 1,
+				avgSoldPercent: 1,
+			},
+		},
+	]);
+
+	return saleStatistics;
+};
+
 const MenuHistory = mongoose.model("MenuHistory", menuHistorySchema);
 
 module.exports = MenuHistory;
