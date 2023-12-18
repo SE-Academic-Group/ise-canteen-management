@@ -3,6 +3,7 @@ const InventoryExport = require("../models/inventoryExport.model");
 const InventoryItem = require("../models/inventoryItem.model");
 const MenuHistory = require("../models/menuHistory.model");
 const Payment = require("../models/payment.model");
+const Product = require("../models/product.model");
 const ChargeHistory = require("../models/chargeHistory.model");
 const statisticDateConverter = require("../utils/statistic.dateConverter");
 
@@ -21,6 +22,12 @@ exports.importStatistic = async (req, res, next) => {
 		endDate,
 		type
 	);
+
+	// Populate inventoryItem name
+	await InventoryItem.populate(importStats, {
+		path: "items.inventoryItemId",
+		select: "name category",
+	});
 
 	res.status(200).json({
 		status: "success",
@@ -44,6 +51,11 @@ exports.exportStatistic = async (req, res, next) => {
 		type
 	);
 
+	await InventoryItem.populate(exportStats, {
+		path: "items.inventoryItemId",
+		select: "name category",
+	});
+
 	res.status(200).json({
 		status: "success",
 		data: exportStats,
@@ -65,6 +77,22 @@ exports.saleStatistic = async (req, res, next) => {
 		endDate,
 		type
 	);
+
+	await Product.populate(saleStats, {
+		path: "items.productId",
+		select: "name category",
+	});
+
+	saleStats.forEach((stat) => {
+		stat.items.forEach((item) => {
+			if (item.productId?.category === "food") {
+				// For "food" items, set and calculate totalPriceLoss
+				item.totalPriceLoss = item.totalPrice - item.soldPrice;
+			} else {
+				item.totalPriceLoss = 0;
+			}
+		});
+	});
 
 	res.status(200).json({
 		status: "success",
