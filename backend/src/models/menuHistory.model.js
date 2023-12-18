@@ -179,17 +179,31 @@ menuHistorySchema.statics.generateSaleReport = async function (
 						],
 					},
 				},
+				soldPrice: {
+					$sum: {
+						$multiply: [
+							"$menuItems.price",
+							{
+								$subtract: [
+									"$menuItems.totalQuantity",
+									"$menuItems.remainQuantity",
+								],
+							},
+						],
+					},
+				},
 			},
 		},
 		{
 			$group: {
 				_id: "$_id.date",
-				saleStats: {
+				items: {
 					$push: {
 						productId: "$_id.productId",
 						totalQuantity: "$totalQuantity",
 						totalPrice: "$totalPrice",
 						soldQuantity: "$soldQuantity",
+						soldPrice: "$soldPrice",
 						soldPercent: {
 							$multiply: [
 								{
@@ -203,6 +217,7 @@ menuHistorySchema.statics.generateSaleReport = async function (
 				totalQuantity: { $sum: "$totalQuantity" },
 				totalPrice: { $sum: "$totalPrice" },
 				totalSoldQuantity: { $sum: "$soldQuantity" },
+				totalSoldPrice: { $sum: "$soldPrice" },
 				avgSoldPercent: {
 					$avg: {
 						$multiply: [
@@ -219,9 +234,10 @@ menuHistorySchema.statics.generateSaleReport = async function (
 			$project: {
 				_id: 0,
 				date: "$_id",
-				saleStats: 1,
+				items: 1,
 				totalQuantity: 1,
 				totalPrice: 1,
+				totalSoldPrice: 1,
 				totalSoldQuantity: 1,
 				avgSoldPercent: 1,
 			},
