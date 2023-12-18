@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const InventoryItem = require("./inventoryItem.model");
+const AppError = require("../utils/appError");
 
 const inventoryImportSchema = new mongoose.Schema(
 	{
@@ -34,7 +35,6 @@ inventoryImportSchema.pre("save", async function (next) {
 	const promises = this.importItems.map(async (item) => {
 		if (!item.price) {
 			const inventoryItem = await InventoryItem.findById(item.inventoryItemId);
-			console.log(inventoryItem);
 			item.price = inventoryItem?.price;
 		}
 	});
@@ -45,43 +45,84 @@ inventoryImportSchema.pre("save", async function (next) {
 });
 
 // Static method to generate the report statistics of inventory import
-inventoryImportSchema.statics.generateImportReport = async function (
+inventoryImportSchema.statics.generateImportReport = async (
 	startDate,
-	endDate
-) {
-	const stats = await this.aggregate([
+	endDate,
+	statisticType
+) => {
+	let dateField;
+
+	switch (statisticType) {
+		case "day":
+			dateField = {
+				$dateToString: { format: "%Y-%m-%d", date: "$importDate" },
+			};
+			break;
+		case "week":
+			dateField = { $isoWeek: "$importDate" };
+			break;
+		case "month":
+			dateField = { $dateToString: { format: "%Y-%m", date: "$importDate" } };
+			break;
+		case "year":
+			dateField = { $year: "$importDate" };
+			break;
+	}
+
+	const importStatistics = await InventoryImport.aggregate([
 		{
 			$match: {
-				importDate: {
-					$gte: startDate,
-					$lte: endDate,
-				},
+				importDate: { $gte: new Date(startDate), $lte: new Date(endDate) },
+			},
+		},
+		{
+			$addFields: {
+				date: dateField,
 			},
 		},
 		{
 			$unwind: "$importItems",
 		},
 		{
-			$lookup: {
-				from: "inventoryitems",
-				localField: "importItems.inventoryItemId",
-				foreignField: "_id",
-				as: "inventoryItem",
-			},
-		},
-		{
-			$unwind: "$inventoryItem",
-		},
-		{
 			$group: {
-				_id: "$inventoryItem.name",
-				totalImport: { $sum: "$importItems.quantity" },
-				totalCost: {
-					$sum: { $multiply: ["$importItems.price", "$importItems.quantity"] },
+				_id: { date: "$date", itemId: "$importItems.inventoryItemId" },
+				totalQuantity: { $sum: "$importItems.quantity" },
+				totalValue: {
+					$sum: {
+						$multiply: ["$importItems.quantity", "$importItems.price"],
+					},
 				},
 			},
 		},
+		{
+			$group: {
+				_id: "$_id.date",
+				items: {
+					$push: {
+						inventoryItemId: "$_id.itemId",
+						quantity: "$totalQuantity",
+						totalValue: "$totalValue",
+					},
+				},
+				totalQuantity: { $sum: "$totalQuantity" },
+				totalValue: { $sum: "$totalValue" },
+			},
+		},
+		{
+			$project: {
+				_id: 0,
+				date: "$_id",
+				totalQuantity: 1,
+				totalValue: 1,
+				items: 1,
+			},
+		},
+		{
+			$sort: { date: 1 },
+		},
 	]);
+
+	return importStatistics;
 };
 
 const InventoryImport = mongoose.model(
