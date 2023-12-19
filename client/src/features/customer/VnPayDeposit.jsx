@@ -50,6 +50,7 @@ function VnPayDeposit() {
               value: 10000,
               message: "Số tiền tối thiểu là 10.000đ",
             },
+            valueAsNumber: true,
           })}
         />
       </FormRowVertical>

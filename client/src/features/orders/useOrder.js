@@ -8,7 +8,7 @@ export function useOrder() {
 
   const {
     isLoading,
-    data: order,
+    data: order = {},
     error,
   } = useQueryFetch({
     fn: () => getOrder(orderId),

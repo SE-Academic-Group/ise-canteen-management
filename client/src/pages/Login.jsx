@@ -1,42 +1,29 @@
-import styled from "styled-components";
+import { Navigate } from "react-router-dom";
+import { useUser } from "../features/authentication/useUser";
 
 import LoginForm from "../features/authentication/LoginForm";
+import FullPageSpinner from "../ui/FullPageSpinner";
+import FormLayout from "../ui/FormLayout";
 import Heading from "../ui/Heading";
 import Logo from "../ui/Logo";
-import { useUser } from "../features/authentication/useUser";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
-const LoginLayout = styled.main`
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 48rem;
-  align-content: center;
-  justify-content: center;
-  gap: 3.2rem;
-  background-color: var(--color-grey-50);
-`;
 
 function Login() {
-  const navigate = useNavigate();
   const { isLoading, isAuthenticated } = useUser();
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated, navigate]);
-
   if (isLoading) {
-    return null;
+    return <FullPageSpinner />;
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/" />;
   }
 
   return (
-    <LoginLayout>
+    <FormLayout>
       <Logo />
       <Heading as="h4">Đăng nhập vào hệ thống</Heading>
       <LoginForm />
-    </LoginLayout>
+    </FormLayout>
   );
 }
 

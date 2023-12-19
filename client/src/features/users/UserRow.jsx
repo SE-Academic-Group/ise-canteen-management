@@ -13,10 +13,10 @@ import { useDeleteUser } from "./useDeleteUser";
 import { ROLE_TAGS } from "../../constants/tags";
 import { getImageUrl, getPlaceholderImageUrl } from "../../utils/helpers";
 
-function UserRow({ user, serial }) {
+function UserRow({ user = {}, serial }) {
   const { deleteUser, isDeleting } = useDeleteUser();
   const { user: currentUser, isLoading } = useUser();
-  const isCurrentUser = currentUser._id === user._id;
+  const isCurrentUser = currentUser?._id === user?._id;
 
   if (isLoading) {
     return <SpinnerMini />;

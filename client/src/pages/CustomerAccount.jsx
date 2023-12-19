@@ -2,10 +2,11 @@ import { useUser } from "../features/authentication/useUser";
 import DeleteCustomerAccountForm from "../features/customer/DeleteCustomerAccountForm";
 import UpdateCustomerDataForm from "../features/customer/UpdateCustomerDataForm";
 import UpdateCustomerPasswordForm from "../features/customer/UpdateCustomerPasswordForm";
+
 import BackgroundHeading from "../ui/BackgroundHeading";
 import Heading from "../ui/Heading";
-import Row from "../ui/Row";
 import Spinner from "../ui/Spinner";
+import Row from "../ui/Row";
 
 function CustomerAccount() {
   const { isLoading, user } = useUser();

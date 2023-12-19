@@ -39,9 +39,8 @@ function CustomerAvatar() {
       <Avatar
         src={imageUrl}
         alt={`Avatar of ${name}`}
-        onClick={() => navigate("/customer-account")}
+        onClick={() => navigate("/customer/account")}
       />
-      {/* <span>{name}</span> */}
     </StyledUserAvatar>
   );
 }

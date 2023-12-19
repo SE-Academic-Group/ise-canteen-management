@@ -22,6 +22,10 @@ export function useUser() {
       }
     },
     retry: false,
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
 
   return { isLoading, user, isAuthenticated: !error && !isLoading };

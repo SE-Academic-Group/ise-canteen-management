@@ -91,6 +91,13 @@ const GlobalStyles = createGlobalStyle`
   --border-radius-sm: 5px;
   --border-radius-md: 7px;
   --border-radius-lg: 9px;
+  --border-100: 1px solid var(--color-grey-100);
+  --border-200: 1px solid var(--color-grey-200);
+  --border-300: 1px solid var(--color-grey-300);
+  --border-dashed: 2px dashed var(--color-grey-300);
+
+  --main-width: 120rem;
+  --main-width-sm: 76rem;
 }
 
 *,
@@ -104,6 +111,14 @@ const GlobalStyles = createGlobalStyle`
 html {
   font-size: 62.5%;
   box-sizing: border-box;
+
+  @media (width < 500px) {
+    font-size: 50%;
+  }
+
+  @media (width < 768px) {
+    font-size: 56.25%;
+  }
 }
 
 body {
@@ -114,6 +129,7 @@ body {
   font-size: 1.6rem;
   line-height: 1.5;
   color: var(--color-grey-700);
+  background-color: var(--color-grey-50);
 }
 
 input,
@@ -142,8 +158,8 @@ input:focus-visible,
 button:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid var(--color-brand-600);
-  outline-offset: -1px;
+  outline: 2px dashed var(--color-brand-600);
+  outline-offset: 2px;
 }
 
 button:has(svg) {
@@ -168,6 +184,7 @@ h5,
 h6 {
   overflow-wrap: break-word;
   hyphens: auto;
+  text-wrap: balance;
 }
 
 img {

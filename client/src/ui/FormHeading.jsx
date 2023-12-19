@@ -6,8 +6,8 @@ const FormHeading = styled(Heading)`
   margin-block-end: 2rem;
   margin-inline: 1rem;
   text-align: center;
-  background-color: var(--color-grey-100);
-  border-radius: 4px;
+  background-color: var(--color-grey-50);
+  border-radius: var(--border-radius-md);
   border: 1px solid var(--color-grey-200);
 `;
 

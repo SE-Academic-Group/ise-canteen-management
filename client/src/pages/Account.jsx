@@ -1,6 +1,8 @@
+import { useUser } from "../features/authentication/useUser";
 import UpdatePasswordForm from "../features/authentication/UpdatePasswordForm";
 import UpdateUserDataForm from "../features/authentication/UpdateUserDataForm";
-import { useUser } from "../features/authentication/useUser";
+import DeleteCustomerAccountForm from "../features/customer/DeleteCustomerAccountForm";
+
 import BackgroundHeading from "../ui/BackgroundHeading";
 import Heading from "../ui/Heading";
 import Spinner from "../ui/Spinner";
@@ -26,6 +28,15 @@ function Account() {
         <Heading as="h3">Mật khẩu</Heading>
         <UpdatePasswordForm />
       </Row>
+
+      {user.role === "customer" && (
+        <>
+          <Heading danger as="h2">
+            Mật khẩu
+          </Heading>
+          <DeleteCustomerAccountForm />
+        </>
+      )}
     </>
   );
 }

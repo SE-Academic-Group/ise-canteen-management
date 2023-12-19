@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
+import Progressing from "../../ui/Progressing";
+import Pagination from "../../ui/Pagination";
 import SearchBox from "../../ui/SearchBox";
 import CustomerBox from "./CustomerBox";
 import Heading from "../../ui/Heading";
-import Spinner from "../../ui/Spinner";
 
 import { useCustomers } from "./useCustomers";
 
@@ -29,16 +30,15 @@ const Layout = styled.div`
 `;
 
 function SearchCustomer({ currentCustomer, handleSelectCustomer }) {
-  const { customers, isLoading } = useCustomers();
+  const state = useCustomers();
+  const { customers, count } = state;
 
   return (
     <>
       <StepHeading as="h2">Tìm thông tin khách hàng</StepHeading>
       <Content>
         <SearchBox />
-        {isLoading ? (
-          <Spinner />
-        ) : (
+        <Progressing {...state} resourceName="khách hàng">
           <Layout>
             {customers.map((customer) => (
               <CustomerBox
@@ -49,7 +49,8 @@ function SearchCustomer({ currentCustomer, handleSelectCustomer }) {
               />
             ))}
           </Layout>
-        )}
+        </Progressing>
+        <Pagination count={count} hasBox />
       </Content>
     </>
   );

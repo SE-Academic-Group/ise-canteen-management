@@ -7,7 +7,7 @@ export function useMenuHistory() {
   const { menuId } = useParams();
   const {
     isLoading,
-    data: menuHistory,
+    data: menuHistory = {},
     error,
   } = useQueryFetch({
     fn: () => getMenuHistory(menuId),

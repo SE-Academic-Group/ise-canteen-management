@@ -1,21 +1,28 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import GlobalStyles from "./styles/GlobalStyles";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 import { DarkModeProvider } from "./context/DarkModeContext";
-import GlobalStyles from "./styles/GlobalStyles";
 
 import ProtectedRoute from "./ui/ProtectedRoute";
 
+import CustomerProductDetail from "./pages/CustomerProductDetail";
+import CustomerAccount from "./pages/CustomerAccount";
+import CustomerDeposit from "./pages/CustomerDeposit";
+import CustomerOrders from "./pages/CustomerOrders";
+import CustomerOrder from "./pages/CustomerOrder";
+import RedirectPage from "./pages/RedirectPage";
 import PageNotFound from "./pages/PageNotFound";
 import CreateOrder from "./pages/CreateOrder";
 import TodayMenu from "./pages/TodayMenu";
 import Inventory from "./pages/Inventory";
 import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
-import Product from "./pages/Product";
 import Settings from "./pages/Settings";
+import Product from "./pages/Product";
 import Account from "./pages/Account";
 import Deposit from "./pages/Deposit";
 import Orders from "./pages/Orders";
@@ -26,18 +33,11 @@ import Stats from "./pages/Stats";
 import Order from "./pages/Order";
 import Menus from "./pages/Menus";
 import Menu from "./pages/Menu";
-import CustomerOrder from "./pages/CustomerOrder";
-import RedirectPage from "./pages/RedirectPage";
-import CustomerAccount from "./pages/CustomerAccount";
-import CustomerOrders from "./pages/CustomerOrders";
-import CustomerProductDetail from "./pages/CustomerProductDetail";
-import CustomerDeposit from "./pages/CustomerDeposit";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 60 * 1000,
-      // staleTime: 0,
     },
   },
 });
@@ -53,7 +53,6 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<ProtectedRoute />}>
-              {/* <Route index element={<Navigate replace to="dashboard" />} /> */}
               <Route index element={<RedirectPage />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="account" element={<Account />} />
@@ -71,14 +70,16 @@ function App() {
               <Route path="stats" element={<Stats />} />
               <Route path="settings" element={<Settings />} />
 
-              <Route path="customer-order" element={<CustomerOrder />} />
-              <Route path="customer-account" element={<CustomerAccount />} />
-              <Route
-                path="customer-products/:productId"
-                element={<CustomerProductDetail />}
-              />
-              <Route path="my-orders" element={<CustomerOrders />} />
-              <Route path="customer-deposit" element={<CustomerDeposit />} />
+              <Route path="customer">
+                <Route path="order" element={<CustomerOrder />} />
+                <Route path="account" element={<CustomerAccount />} />
+                <Route
+                  path="products/:productId"
+                  element={<CustomerProductDetail />}
+                />
+                <Route path="orders" element={<CustomerOrders />} />
+                <Route path="deposit" element={<CustomerDeposit />} />
+              </Route>
             </Route>
 
             <Route path="login" element={<Login />} />
