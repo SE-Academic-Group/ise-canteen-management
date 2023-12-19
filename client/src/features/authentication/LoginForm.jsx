@@ -6,9 +6,11 @@ import { useLogin } from "./useLogin";
 import FormRowVertical from "../../ui/FormRowVertical";
 import SpinnerMini from "../../ui/SpinnerMini";
 import CheckBox from "../../ui/CheckBox";
+import FormRow from "../../ui/FormRow";
 import Button from "../../ui/Button";
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
+import { FORM_RULES } from "../../constants/form";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -42,9 +44,7 @@ function LoginForm() {
           id="email"
           autoComplete="email"
           disabled={isLoading}
-          {...register("email", {
-            required: "Email không được để trống",
-          })}
+          {...register("email", FORM_RULES.EMAIL)}
         />
       </FormRowVertical>
 
@@ -54,9 +54,7 @@ function LoginForm() {
           id="password"
           disabled={isLoading}
           autoComplete="current-password"
-          {...register("password", {
-            required: "Mật khẩu không được để trống",
-          })}
+          {...register("password", FORM_RULES.PASSWORD)}
         />
       </FormRowVertical>
 
@@ -70,12 +68,11 @@ function LoginForm() {
         </CheckBox>
       </FormRowVertical>
 
-      <FormRowVertical>
-        <Button size="large" disabled={isLoading}>
+      <FormRow hasButton>
+        <Button disabled={isLoading}>
           {isLoading ? <SpinnerMini /> : "Đăng nhập"}
         </Button>
         <Button
-          size="large"
           disabled={isLoading}
           type="button"
           variation="secondary"
@@ -83,7 +80,7 @@ function LoginForm() {
         >
           Đăng ký
         </Button>
-      </FormRowVertical>
+      </FormRow>
     </Form>
   );
 }

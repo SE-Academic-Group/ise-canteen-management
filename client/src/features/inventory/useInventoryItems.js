@@ -34,5 +34,5 @@ export function useInventoryItems() {
     when: page > 1,
   });
 
-  return { isLoading, error, inventoryItems: data, count };
+  return { isLoading, error, inventoryItems: data || [], count };
 }

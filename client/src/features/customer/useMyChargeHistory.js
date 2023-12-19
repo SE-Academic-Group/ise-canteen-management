@@ -8,5 +8,5 @@ export function useMyChargeHistory(userId) {
     key: [QUERY_KEYS.CHARGE_HISTORY, userId],
   });
 
-  return { isLoading, error, history: data?.data, count: data?.count };
+  return { isLoading, error, history: data?.data || [], count: data?.count };
 }

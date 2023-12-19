@@ -8,5 +8,5 @@ export function useMyOrders(userId) {
     key: [QUERY_KEYS.ORDERS, userId],
   });
 
-  return { isLoading, error, orders: data?.data, count: data?.count };
+  return { isLoading, error, orders: data?.data || [], count: data?.count };
 }

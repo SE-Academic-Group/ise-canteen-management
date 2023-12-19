@@ -1,10 +1,10 @@
 import { useSearchParams } from "react-router-dom";
+import { useState } from "react";
 import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
 
 import Input from "./Input";
 import Button from "./Button";
-import { useState } from "react";
 
 const SearchBoxContainer = styled.form`
   display: inline-flex;
@@ -14,7 +14,6 @@ const SearchBoxContainer = styled.form`
 
 const SearchInputContainer = styled.div`
   --reset-button-size: 3.6rem;
-
   position: relative;
   display: flex;
 `;

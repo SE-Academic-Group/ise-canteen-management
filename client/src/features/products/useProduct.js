@@ -8,7 +8,7 @@ export function useProduct() {
   const { productId } = useParams();
   const {
     isLoading,
-    data: product,
+    data: product = {},
     error,
   } = useQueryFetch({
     fn: () => getProduct(productId),

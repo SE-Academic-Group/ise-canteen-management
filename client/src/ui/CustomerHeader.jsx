@@ -5,9 +5,14 @@ import CustomerHomeButton from "./CustomerHomeButton";
 
 const StyledHeader = styled.header`
   background-color: var(--color-grey-0);
-  padding: 1.2rem 1.6rem;
   border-bottom: 1px solid var(--color-grey-100);
+`;
 
+const Container = styled.div`
+  max-width: var(--main-width-sm, 120rem);
+  margin: 0 auto;
+
+  padding: 1.2rem 1.6rem;
   display: flex;
   gap: 2.4rem;
   align-items: center;
@@ -21,9 +26,11 @@ const StyledHeader = styled.header`
 function CustomerHeader() {
   return (
     <StyledHeader>
-      <CustomerHomeButton />
-      <CustomerHeaderMenu />
-      <CustomerAvatar />
+      <Container sm>
+        <CustomerHomeButton />
+        <CustomerHeaderMenu />
+        <CustomerAvatar />
+      </Container>
     </StyledHeader>
   );
 }

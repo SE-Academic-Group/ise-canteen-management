@@ -18,5 +18,5 @@ export function useCustomers() {
     key: queryKey,
   });
 
-  return { isLoading, error, customers: data, count };
+  return { isLoading, error, customers: data || [], count };
 }

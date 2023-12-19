@@ -34,5 +34,5 @@ export function useOrders() {
     when: page > 1,
   });
 
-  return { isLoading, error, orders: data, count };
+  return { isLoading, error, orders: data || [], count };
 }

@@ -1,24 +1,23 @@
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useUser } from "../features/authentication/useUser";
-import { useEffect } from "react";
+import FullPageSpinner from "../ui/FullPageSpinner";
 
 function RedirectPage() {
-  const navigate = useNavigate();
-  const { isLoading, user } = useUser();
+  const { isLoading, user, isAuthenticated } = useUser();
 
-  useEffect(() => {
-    if (user) {
-      if (user.role === "admin") {
-        navigate("/dashboard");
-      } else if (user.role === "customer") {
-        navigate("/customer-order");
-      }
-    }
-  }, [isLoading, user, navigate]);
+  if (isLoading) {
+    return <FullPageSpinner />;
+  }
 
-  if (isLoading) return null;
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
 
-  return null;
+  if (user.role === "customer") {
+    return <Navigate to="/customer/order" />;
+  }
+
+  return <Navigate to="/dashboard" />;
 }
 
 export default RedirectPage;

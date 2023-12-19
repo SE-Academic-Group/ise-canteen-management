@@ -7,7 +7,7 @@ const StyledHeading = styled(Heading)`
 `;
 
 function CreateOrderHeading() {
-  return <StyledHeading as="h2">Hôm nay ăn gì?</StyledHeading>;
+  return <StyledHeading>Hôm nay ăn gì?</StyledHeading>;
 }
 
 export default CreateOrderHeading;

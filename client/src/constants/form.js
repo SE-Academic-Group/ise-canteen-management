@@ -1,104 +1,164 @@
-import {
-  max,
-  min,
-  email,
-  invalid,
-  maxLength,
-  minLength,
-  required,
-} from "../utils/formMessageBuilders";
 import * as REGEX_PATTERNS from "./regex";
+import { toTitleCase } from "../utils/helpers";
 
-// TODO: Refactor this to be more readable
+function required(field) {
+  field = toTitleCase(field);
+  return `${field} không được để trống`;
+}
+
+function invalid(field) {
+  field = toTitleCase(field);
+  return `${field} không hợp lệ`;
+}
+
+function minLength(field, length) {
+  field = toTitleCase(field);
+  return `${field} phải có ít nhất ${length} ký tự`;
+}
+
+function maxLength(field, length) {
+  field = toTitleCase(field);
+  return `${field} không được quá ${length} ký tự`;
+}
+
+function minValue(field, value) {
+  field = toTitleCase(field);
+  return `${field} phải lớn hơn ${value}`;
+}
+
+function maxValue(field, value) {
+  field = toTitleCase(field);
+  return `${field} phải nhỏ hơn ${value}`;
+}
+
+export const LENGTH = {
+  PHONE: 10,
+};
+
+export const MIN_LENGTH = {
+  FULL_NAME: 3,
+  PRODUCT_NAME: 3,
+  PASSWORD: 8,
+  DESCRIPTION: 10,
+};
+
+export const MAX_LENGTH = {
+  FULL_NAME: 50,
+  PRODUCT_NAME: 56,
+  DESCRIPTION: 256,
+};
+
+export const MIN_VALUE = {
+  PRICE: 1000,
+  STOCK_AMOUNT: 0,
+};
+
+export const MAX_VALUE = {
+  PRICE: 100000000,
+  STOCK_AMOUNT: 1000,
+};
+
+export const FORM_LABELS = {
+  EMAIL: "Email",
+  FULL_NAME: "Tên",
+  PHONE: "Số điện thoại",
+  PASSWORD: "Mật khẩu",
+  PRODUCT_NAME: "Tên sản phẩm",
+  PRICE: "Giá",
+  DESCRIPTION: "Mô tả",
+  STOCK_AMOUNT: "Số lượng",
+  AMOUNT: "Số lượng",
+};
+
 export const FORM_RULES = {
   REQUIRED: (field) => {
-    return { required: required`${field}` };
+    return { required: required(field) };
   },
   EMAIL: {
-    required: required`email`,
+    required: required(FORM_LABELS.EMAIL),
     pattern: {
       value: REGEX_PATTERNS.EMAIL,
-      message: email``,
+      message: invalid(FORM_LABELS.EMAIL),
     },
   },
   FULL_NAME: {
-    required: required`tên`,
+    required: required(FORM_LABELS.FULL_NAME),
     minLength: {
-      value: 3,
-      message: minLength`tên ${3}`,
+      value: MIN_LENGTH.FULL_NAME,
+      message: minLength(FORM_LABELS.FULL_NAME, MIN_LENGTH.FULL_NAME),
     },
     pattern: {
       value: REGEX_PATTERNS.VIETNAMESE_NAME,
-      message: invalid`tên`,
+      message: invalid(FORM_LABELS.FULL_NAME),
     },
   },
   PHONE: {
     pattern: {
       value: REGEX_PATTERNS.VIETNAMESE_PHONE_NUMBER,
-      message: invalid`số điện thoại`,
-    },
-    maxLength: {
-      value: 10,
-      message: maxLength`số điện thoại ${10}`,
+      message: invalid(FORM_LABELS.PHONE),
     },
   },
   PASSWORD: {
-    required: required`mật khẩu`,
+    required: required(FORM_LABELS.PASSWORD),
     min: {
-      value: 6,
-      message: minLength`mật khẩu ${6}`,
+      value: MIN_LENGTH.PASSWORD,
+      message: minLength(FORM_LABELS.PASSWORD, MIN_LENGTH.PASSWORD),
     },
   },
   PRODUCT_NAME: {
-    required: required`Tên sản phẩm`,
-    pattern: {
-      value: REGEX_PATTERNS.VIETNAMESE_NAME,
-      message: invalid`Tên sản phẩm`,
-    },
+    required: required(FORM_LABELS.PRODUCT_NAME),
     minLength: {
-      value: 3,
-      message: minLength`Tên sản phẩm ${3}`,
+      value: MIN_LENGTH.FULL_NAME,
+      message: minLength(FORM_LABELS.PRODUCT_NAME, MIN_LENGTH.PRODUCT_NAME),
     },
     maxLength: {
-      value: 50,
-      message: maxLength`Tên sản phẩm ${50}`,
+      value: MAX_LENGTH.FULL_NAME,
+      message: maxLength(FORM_LABELS.PRODUCT_NAME, MAX_LENGTH.PRODUCT_NAME),
     },
   },
   PRICE: {
-    required: required`Giá`,
+    required: required(FORM_LABELS.PRICE),
     min: {
-      value: 1000,
-      message: min`Giá ${1000}`,
+      value: MIN_VALUE.PRICE,
+      message: minValue(FORM_LABELS.PRICE, MIN_VALUE.PRICE),
     },
     max: {
-      value: 100000000,
-      message: max`Giá ${100000000}`,
+      value: MAX_VALUE.PRICE,
+      message: maxValue(FORM_LABELS.PRICE, MAX_VALUE.PRICE),
     },
     valueAsNumber: true,
   },
   DESCRIPTION: {
     minLength: {
-      value: 10,
-      message: minLength`Mô tả ${10}`,
+      value: MIN_LENGTH.DESCRIPTION,
+      message: minLength(FORM_LABELS.DESCRIPTION, MIN_LENGTH.DESCRIPTION),
     },
     maxLength: {
-      value: 256,
-      message: maxLength`Mô tả ${256}`,
+      value: MAX_LENGTH.DESCRIPTION,
+      message: maxLength(FORM_LABELS.DESCRIPTION, MAX_LENGTH.DESCRIPTION),
     },
   },
   STOCK_AMOUNT: {
+    required: required(FORM_LABELS.STOCK_AMOUNT),
     min: {
-      value: 0,
-      message: min`Số lượng ${0}`,
+      value: MIN_VALUE.STOCK_AMOUNT,
+      message: minValue(FORM_LABELS.STOCK_AMOUNT, MIN_VALUE.STOCK_AMOUNT),
     },
-    required: required`Số lượng`,
+    max: {
+      value: MAX_VALUE.STOCK_AMOUNT,
+      message: maxValue(FORM_LABELS.STOCK_AMOUNT, MAX_VALUE.STOCK_AMOUNT),
+    },
     valueAsNumber: true,
   },
   AMOUNT: {
-    required: "Vui lòng nhập số lượng",
+    required: required(FORM_LABELS.AMOUNT),
     min: {
-      value: 1,
-      message: "Số lượng phải lớn hơn 0",
+      value: MIN_VALUE.STOCK_AMOUNT,
+      message: minValue(FORM_LABELS.AMOUNT, MIN_VALUE.STOCK_AMOUNT),
+    },
+    max: {
+      value: MAX_VALUE.STOCK_AMOUNT,
+      message: maxValue(FORM_LABELS.AMOUNT, MAX_VALUE.STOCK_AMOUNT),
     },
     valueAsNumber: true,
   },

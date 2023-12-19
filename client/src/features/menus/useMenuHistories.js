@@ -32,5 +32,5 @@ export function useMenuHistories() {
     when: page > 1,
   });
 
-  return { isLoading, error, menuHistories: data, count };
+  return { isLoading, error, menuHistories: data || [], count };
 }
