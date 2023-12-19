@@ -96,10 +96,13 @@ exports.getUser = async (req, res, next) => {
 	});
 };
 exports.updateUser = async (req, res, next) => {
-	const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+	const query = User.findByIdAndUpdate(req.params.id, req.body, {
 		new: true,
 		runValidators: false,
 	});
+	query.includeInactive = true;
+
+	const user = await query;
 
 	if (!user) {
 		throw new AppError(
@@ -117,7 +120,28 @@ exports.updateUser = async (req, res, next) => {
 		data: user,
 	});
 };
-exports.deleteUser = ControllerFactory.deleteOne(User);
+exports.deleteUser = async (req, res, next) => {
+	const query = User.findByIdAndDelete(req.params.id);
+	query.includeInactive = true;
+
+	const user = await query;
+
+	if (!user) {
+		throw new AppError(
+			404,
+			"NOT_FOUND",
+			`Không tìm thấy người dùng với ID ${req.params.id}.`,
+			{
+				id: req.params.id,
+			}
+		);
+	}
+
+	res.status(204).json({
+		status: "success",
+		data: null,
+	});
+};
 
 // ----- For customer to manage their own account -----
 // For uploading user image
