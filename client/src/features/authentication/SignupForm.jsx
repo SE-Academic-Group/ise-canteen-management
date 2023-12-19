@@ -81,7 +81,7 @@ function SignupForm() {
         />
       </FormRowVertical>
 
-      <FormRow>
+      <FormRow hasButton>
         <Button disabled={isLoading}>Đăng ký</Button>
         <Button
           type="button"
