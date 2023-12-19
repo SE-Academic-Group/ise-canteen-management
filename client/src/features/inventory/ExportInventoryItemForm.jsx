@@ -17,14 +17,14 @@ function ExportInventoryItemForm({
   const { isExporting, exportInventoryItem } = useExportInventoryItem();
   const { register, formState, handleSubmit, reset, watch } = useForm({
     defaultValues: {
-      exportQuantity: 0,
+      quantity: 0,
     },
   });
   const { _id: inventoryItemId, stockAmount } = itemToExport;
 
   function onSubmit(data) {
-    const { exportQuantity } = data;
-    const exportData = [{ inventoryItemId, exportQuantity }];
+    const { quantity } = data;
+    const exportData = [{ inventoryItemId, quantity }];
 
     function onSuccess(data) {
       reset();
@@ -40,24 +40,24 @@ function ExportInventoryItemForm({
 
       <InventoryItemDataBox
         item={itemToExport}
-        importNumber={watch("exportQuantity")}
+        importNumber={watch("quantity")}
         isExport
       />
 
-      <FormRow
-        label="Số lượng xuất"
-        error={formState.errors.exportQuantity?.message}
-      >
+      <FormRow label="Số lượng xuất" error={formState.errors.quantity?.message}>
         <Input
           type="number"
           step={1}
-          min={0}
+          min={1}
           max={stockAmount}
-          {...register("exportQuantity", {
-            ...FORM_RULES.exportQuantity,
-            max: stockAmount,
+          {...register("quantity", {
+            ...FORM_RULES.AMOUNT,
+            max: {
+              value: stockAmount,
+              message: `Số lượng xuất không được vượt quá ${stockAmount}`,
+            },
+            valueAsNumber: true,
           })}
-          disabled={isExporting}
         />
       </FormRow>
 

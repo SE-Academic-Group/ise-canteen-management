@@ -6,6 +6,7 @@ const TableOperations = styled.div`
   gap: 1.6rem;
 
   ${(props) => props.between && `justify-content: space-between;`}
+  ${(props) => props.end && `justify-content: flex-end;`}
 `;
 
 export default TableOperations;

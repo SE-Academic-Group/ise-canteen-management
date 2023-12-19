@@ -67,7 +67,7 @@ function CreateOrderContent() {
   } else if (isLoading) {
     content = <Spinner />;
   } else if (!count) {
-    content = <Empty resourceName="món ăn" />;
+    content = <Empty resourceName="sản phẩm" />;
   } else {
     content = (
       <CreateOrderForm

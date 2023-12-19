@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 const Confirm = styled.div`
-  width: min(40rem, 96%);
+  /* width: min(40rem, 96%); */
+  width: 40rem;
   margin-inline: auto;
   display: flex;
   flex-direction: column;

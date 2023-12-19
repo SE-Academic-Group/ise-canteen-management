@@ -13,6 +13,7 @@ const StyledPagination = styled.div`
 `;
 
 const PaginationBox = styled.div`
+  width: 100%;
   margin-top: 2.4rem;
   padding: 1.2rem;
   border-radius: 8px;
