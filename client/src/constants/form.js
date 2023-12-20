@@ -54,7 +54,7 @@ export const MIN_VALUE = {
 };
 
 export const MAX_VALUE = {
-  PRICE: 100000000,
+  PRICE: 10000000,
   STOCK_AMOUNT: 1000,
 };
 
