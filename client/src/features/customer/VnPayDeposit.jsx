@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
-import Button from "../../ui/Button";
-import Form from "../../ui/Form";
-import FormRow from "../../ui/FormRow";
-import FormRowVertical from "../../ui/FormRowVertical";
-import Input from "../../ui/Input";
 import { useVnPayDeposit } from "./useVnPayDeposit";
+
+import FormRowVertical from "../../ui/FormRowVertical";
+import FormRow from "../../ui/FormRow";
+import Button from "../../ui/Button";
+import Input from "../../ui/Input";
+import Form from "../../ui/Form";
+import { FORM_RULES } from "../../constants/form";
 
 function VnPayDeposit() {
   const { isCreating, createDeposit } = useVnPayDeposit();
@@ -43,15 +45,9 @@ function VnPayDeposit() {
         <Input
           type="number"
           disabled={isCreating}
-          min="10000"
-          {...register("chargeAmount", {
-            required: "Vui lòng nhập số tiền cần nạp",
-            min: {
-              value: 10000,
-              message: "Số tiền tối thiểu là 10.000đ",
-            },
-            valueAsNumber: true,
-          })}
+          min={10000}
+          step={1000}
+          {...register("chargeAmount", FORM_RULES.PRICE)}
         />
       </FormRowVertical>
 

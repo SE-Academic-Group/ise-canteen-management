@@ -114,9 +114,15 @@ function DepositSteps() {
         </HideComponent>
       </Container>
       <ButtonGroup>
-        <Button variation="secondary" onClick={prevStep} disabled={step === 0}>
-          Quay lại
-        </Button>
+        <HideComponent hidden={isSessionDone}>
+          <Button
+            variation="secondary"
+            onClick={prevStep}
+            disabled={step === 0}
+          >
+            Quay lại
+          </Button>
+        </HideComponent>
         <Button
           variation="danger"
           onClick={handleReset}
