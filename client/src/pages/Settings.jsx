@@ -1,11 +1,11 @@
 import UpdateSettingsForm from "../features/settings/UpdateSettingsForm";
-import Heading from "../ui/Heading";
+import BackgroundHeading from "../ui/BackgroundHeading";
 import Row from "../ui/Row";
 
 function Settings() {
   return (
     <Row>
-      <Heading as="h1">Cài đặt</Heading>
+      <BackgroundHeading as="h1">Cài đặt</BackgroundHeading>
       <UpdateSettingsForm />
     </Row>
   );
