@@ -1,9 +1,9 @@
-import Heading from "../ui/Heading";
+import BackgroundHeading from "../ui/BackgroundHeading";
 
 function Stats() {
   return (
     <>
-      <Heading as="h1">Thống kê</Heading>
+      <BackgroundHeading as="h1">Thống kê</BackgroundHeading>
     </>
   );
 }
