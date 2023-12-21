@@ -1,4 +1,6 @@
 module.exports = function (startDate, endDate, type) {
+	if (!type) type = "today";
+
 	switch (type) {
 		case "today":
 			type = "day";

@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const InventoryItem = require("./inventoryItem.model");
 const AppError = require("../utils/appError");
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
+const statisticTypeToDateFieldConverter = require("../utils/statistic.typeToDateField.converter");
 
 const inventoryImportSchema = new mongoose.Schema(
 	{
@@ -51,24 +52,10 @@ inventoryImportSchema.statics.generateImportReport = async (
 	endDate,
 	statisticType
 ) => {
-	let dateField;
-
-	switch (statisticType) {
-		case "day":
-			dateField = {
-				$dateToString: { format: "%Y-%m-%d", date: "$importDate" },
-			};
-			break;
-		case "week":
-			dateField = { $isoWeek: "$importDate" };
-			break;
-		case "month":
-			dateField = { $dateToString: { format: "%Y-%m", date: "$importDate" } };
-			break;
-		case "year":
-			dateField = { $year: "$importDate" };
-			break;
-	}
+	let dateField = statisticTypeToDateFieldConverter(
+		statisticType,
+		"importDate"
+	);
 
 	const importStatistics = await InventoryImport.aggregate([
 		{

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const InventoryItem = require("./inventoryItem.model");
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
+const statisticTypeToDateFieldConverter = require("../utils/statistic.typeToDateField.converter");
 
 const inventoryExportSchema = new mongoose.Schema(
 	{
@@ -58,27 +59,10 @@ inventoryExportSchema.statics.generateExportReport = async function (
 	endDate,
 	statisticType
 ) {
-	let dateField;
-
-	switch (statisticType) {
-		case "day":
-			dateField = {
-				$dateToString: { format: "%Y-%m-%d", date: "$exportDate" },
-			};
-			break;
-
-		case "month":
-			dateField = {
-				$dateToString: { format: "%Y-%m", date: "$exportDate" },
-			};
-			break;
-
-		case "year":
-			dateField = {
-				$dateToString: { format: "%Y", date: "$exportDate" },
-			};
-			break;
-	}
+	let dateField = statisticTypeToDateFieldConverter(
+		statisticType,
+		"exportDate"
+	);
 
 	const exportStatistics = await InventoryExport.aggregate([
 		{

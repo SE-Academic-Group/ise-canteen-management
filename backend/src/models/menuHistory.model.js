@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
+const statisticTypeToDateFieldConverter = require("../utils/statistic.typeToDateField.converter");
 
 const menuHistorySchema = new mongoose.Schema(
 	{
@@ -122,31 +123,7 @@ menuHistorySchema.statics.generateSaleReport = async function (
 	endDate,
 	statisticType
 ) {
-	let dateField;
-
-	switch (statisticType) {
-		case "day":
-			dateField = {
-				$dateToString: { format: "%Y-%m-%d", date: "$menuDate" },
-			};
-			break;
-		case "month":
-			dateField = {
-				$dateToString: { format: "%Y-%m", date: "$menuDate" },
-			};
-			break;
-		case "year":
-			dateField = {
-				$dateToString: { format: "%Y", date: "$menuDate" },
-			};
-			break;
-		default:
-			throw new AppError(
-				"Không hỗ trợ thống kê theo kiểu này",
-				400,
-				"INVALID_ARGUMENTS"
-			);
-	}
+	let dateField = statisticTypeToDateFieldConverter(statisticType, "menuDate");
 
 	const saleStatistics = await MenuHistory.aggregate([
 		{
@@ -242,6 +219,9 @@ menuHistorySchema.statics.generateSaleReport = async function (
 				totalSoldQuantity: 1,
 				avgSoldPercent: 1,
 			},
+		},
+		{
+			$sort: { date: 1 },
 		},
 	]);
 
