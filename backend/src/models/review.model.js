@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Product = require("./product.model");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const reviewSchema = new mongoose.Schema(
 	{
@@ -58,8 +59,6 @@ reviewSchema.statics.calcRatingAverage = async function (productId) {
 		},
 	]);
 
-	console.log(stats);
-
 	if (stats.length > 0) {
 		await Product.findByIdAndUpdate(productId, {
 			ratingAverage: stats[0].ratingAverage,
@@ -68,7 +67,6 @@ reviewSchema.statics.calcRatingAverage = async function (productId) {
 };
 
 reviewSchema.post("save", async function (doc, next) {
-	console.log("post save");
 	await doc.constructor.calcRatingAverage(doc.productId);
 	next();
 });
@@ -77,6 +75,8 @@ reviewSchema.post(/^findOneAnd/, async function (doc, next) {
 	await doc.constructor.calcRatingAverage(doc.productId);
 	next();
 });
+
+reviewSchema.plugin(mongooseLeanVirtuals);
 
 const Review = mongoose.model("Review", reviewSchema);
 

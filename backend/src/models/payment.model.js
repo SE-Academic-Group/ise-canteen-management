@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const paymentSchema = new mongoose.Schema(
 	{
@@ -40,6 +41,8 @@ const paymentSchema = new mongoose.Schema(
 );
 
 paymentSchema.index({ orderId: 1 });
+
+paymentSchema.plugin(mongooseLeanVirtuals);
 
 const Payment = mongoose.model("Payment", paymentSchema);
 

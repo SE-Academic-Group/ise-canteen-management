@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const inventoryItemSchema = new mongoose.Schema(
 	{
@@ -40,6 +41,8 @@ const inventoryItemSchema = new mongoose.Schema(
 );
 
 inventoryItemSchema.index({ name: 1 });
+
+inventoryItemSchema.plugin(mongooseLeanVirtuals);
 
 const InventoryItem = mongoose.model("InventoryItem", inventoryItemSchema);
 

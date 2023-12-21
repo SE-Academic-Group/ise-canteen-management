@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const InventoryItem = require("./inventoryItem.model");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const inventoryExportSchema = new mongoose.Schema(
 	{
@@ -162,6 +163,8 @@ inventoryExportSchema.statics.generateExportReport = async function (
 
 	return exportStatistics;
 };
+
+inventoryExportSchema.plugin(mongooseLeanVirtuals);
 
 const InventoryExport = mongoose.model(
 	"InventoryExport",

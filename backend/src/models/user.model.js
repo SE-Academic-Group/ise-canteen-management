@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const userSchema = new mongoose.Schema(
 	{
@@ -124,6 +125,8 @@ userSchema.methods.isChangedPasswordAfter = function (JWTTimestamp) {
 	// False: token was issued before password change time
 	return false;
 };
+
+userSchema.plugin(mongooseLeanVirtuals);
 
 const User = mongoose.model("User", userSchema);
 
