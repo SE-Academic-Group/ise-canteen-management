@@ -12,5 +12,6 @@ router.use(
 router.get("/import", statisticController.importStatistic);
 router.get("/export", statisticController.exportStatistic);
 router.get("/sale", statisticController.saleStatistic);
+router.get("/revenue", statisticController.revenueStatistic);
 
 module.exports = router;

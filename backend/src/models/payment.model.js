@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
+const statisticTypeToDateField = require("../utils/statistic.typeToDateField.converter");
 
 const paymentSchema = new mongoose.Schema(
 	{
@@ -41,6 +42,50 @@ const paymentSchema = new mongoose.Schema(
 );
 
 paymentSchema.index({ orderId: 1 });
+
+paymentSchema.statics.generateRevenueReport = async function (
+	startDate,
+	endDate,
+	statisticType
+) {
+	let dateField = statisticTypeToDateField(statisticType, "paymentDate");
+
+	// Calculate total revenue
+	const revenueStatistics = await Payment.aggregate([
+		{
+			$match: {
+				paymentDate: {
+					$gte: startDate,
+					$lte: endDate,
+				},
+				paymentStatus: "success",
+			},
+		},
+		{
+			$addFields: {
+				date: dateField,
+			},
+		},
+		{
+			$group: {
+				_id: "$date",
+				totalRevenue: { $sum: "$paymentAmount" },
+			},
+		},
+		{
+			$project: {
+				_id: 0,
+				date: "$_id",
+				totalRevenue: 1,
+			},
+		},
+		{
+			$sort: { date: 1 },
+		},
+	]);
+
+	return revenueStatistics;
+};
 
 paymentSchema.plugin(mongooseLeanVirtuals);
 

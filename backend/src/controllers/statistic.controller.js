@@ -99,3 +99,43 @@ exports.saleStatistic = async (req, res, next) => {
 		data: saleStats,
 	});
 };
+
+exports.revenueStatistic = async (req, res, next) => {
+	let { type, startDate, endDate } = req.query;
+
+	// Convert startDate, endDate to Date object
+	// and type to statisticType
+	const converted = statisticDateConverter(startDate, endDate, type);
+	startDate = converted.startDate;
+	endDate = converted.endDate;
+	type = converted.type;
+
+	const revenueStats = await Payment.generateRevenueReport(
+		startDate,
+		endDate,
+		type
+	);
+
+	const importStats = await InventoryImport.generateImportReport(
+		startDate,
+		endDate,
+		type
+	);
+
+	// Calculate profit = revenue - import value
+	revenueStats.forEach((stat) => {
+		const importStat = importStats.find((item) => item.date === stat.date);
+		if (importStat) {
+			stat.totalImportValue = importStat.totalValue;
+			stat.totalProfit = stat.totalRevenue - importStat.totalValue;
+		} else {
+			stat.totalImportValue = 0;
+			stat.totalProfit = stat.totalRevenue;
+		}
+	});
+
+	res.status(200).json({
+		status: "success",
+		data: revenueStats,
+	});
+};
