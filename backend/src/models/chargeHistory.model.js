@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const chargeHistorySchema = new mongoose.Schema(
 	{
@@ -39,6 +40,7 @@ const chargeHistorySchema = new mongoose.Schema(
 );
 
 chargeHistorySchema.index({ userId: 1 });
+chargeHistorySchema.plugin(mongooseLeanVirtuals);
 
 const ChargeHistory = mongoose.model("ChargeHistory", chargeHistorySchema);
 

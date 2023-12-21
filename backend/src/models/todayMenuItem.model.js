@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const todayMenuItemSchema = new mongoose.Schema(
 	{
@@ -46,6 +47,7 @@ const todayMenuItemSchema = new mongoose.Schema(
 );
 
 todayMenuItemSchema.index({ productId: 1 }, { unique: true });
+todayMenuItemSchema.plugin(mongooseLeanVirtuals);
 
 const TodayMenuItem = mongoose.model("TodayMenuItem", todayMenuItemSchema);
 

@@ -60,7 +60,7 @@ exports.getAllUsers = async (req, res, next) => {
 		.sort();
 
 	// Added .lean() to improve performance
-	const docs = await features.query.lean();
+	const docs = await features.query.lean({ virtuals: true });
 	const count = await User.countDocuments(features.filterObj);
 
 	// SEND RESPONSE
@@ -73,7 +73,9 @@ exports.getAllUsers = async (req, res, next) => {
 	});
 };
 exports.getUser = async (req, res, next) => {
-	const query = User.findById(req.params.id).select("+active").lean();
+	const query = User.findById(req.params.id)
+		.select("+active")
+		.lean({ virtuals: true });
 	query.includeInactive = true;
 
 	const doc = await query;

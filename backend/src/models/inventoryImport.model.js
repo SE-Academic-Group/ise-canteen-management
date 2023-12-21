@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const InventoryItem = require("./inventoryItem.model");
 const AppError = require("../utils/appError");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const inventoryImportSchema = new mongoose.Schema(
 	{
@@ -124,6 +125,8 @@ inventoryImportSchema.statics.generateImportReport = async (
 
 	return importStatistics;
 };
+
+inventoryImportSchema.plugin(mongooseLeanVirtuals);
 
 const InventoryImport = mongoose.model(
 	"InventoryImport",

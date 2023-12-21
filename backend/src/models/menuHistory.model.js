@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const menuHistorySchema = new mongoose.Schema(
 	{
@@ -246,6 +247,8 @@ menuHistorySchema.statics.generateSaleReport = async function (
 
 	return saleStatistics;
 };
+
+menuHistorySchema.plugin(mongooseLeanVirtuals);
 
 const MenuHistory = mongoose.model("MenuHistory", menuHistorySchema);
 

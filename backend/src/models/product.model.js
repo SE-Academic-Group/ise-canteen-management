@@ -1,5 +1,6 @@
 const slugify = require("slugify");
 const mongoose = require("mongoose");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const productSchema = new mongoose.Schema(
 	{
@@ -35,6 +36,7 @@ const productSchema = new mongoose.Schema(
 );
 
 productSchema.index({ name: 1 });
+productSchema.plugin(mongooseLeanVirtuals);
 
 const Product = mongoose.model("Product", productSchema);
 

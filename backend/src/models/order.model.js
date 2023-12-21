@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 
 const orderSchema = new mongoose.Schema(
 	{
@@ -47,6 +48,8 @@ const orderSchema = new mongoose.Schema(
 
 orderSchema.index({ orderDate: 1, orderStatus: 1 });
 orderSchema.index({ userId: 1 });
+
+orderSchema.plugin(mongooseLeanVirtuals);
 
 const Order = mongoose.model("Order", orderSchema);
 

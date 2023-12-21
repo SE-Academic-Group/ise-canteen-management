@@ -62,7 +62,7 @@ exports.getAll = (Model, options) => async (req, res, next) => {
 	}
 
 	// Added .lean() to improve performance
-	const docs = await features.query.lean();
+	const docs = await features.query.lean({ virtuals: true });
 	const count = await Model.countDocuments(features.filterObj);
 
 	// SEND RESPONSE
@@ -76,7 +76,7 @@ exports.getAll = (Model, options) => async (req, res, next) => {
 };
 
 exports.getOne = (Model, options) => async (req, res, next) => {
-	const query = Model.findById(req.params.id).lean();
+	const query = Model.findById(req.params.id).lean({ virtuals: true });
 	if (options && options.populate) {
 		if (Array.isArray(options.populate)) {
 			options.populate.forEach((option) => query.populate(option));

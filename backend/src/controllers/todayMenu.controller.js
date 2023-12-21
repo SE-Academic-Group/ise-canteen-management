@@ -108,7 +108,7 @@ exports.getTodayMenu = async (req, res, next) => {
 		.sort();
 
 	// Added .lean() to improve performance
-	let docs = await features.query.lean();
+	let docs = await features.query.lean({ virtuals: true });
 	let count;
 
 	if (docs.length !== 0) {
@@ -223,7 +223,9 @@ exports.closeTodayMenu = async (req, res, next) => {
 };
 
 async function populateMenuItemWithProductInfo(menuItem) {
-	const product = await Product.findById(menuItem.productId).lean();
+	const product = await Product.findById(menuItem.productId).lean({
+		virtuals: true,
+	});
 	if (!product) {
 		throw new AppError(
 			404,

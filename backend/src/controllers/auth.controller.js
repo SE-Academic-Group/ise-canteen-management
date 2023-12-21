@@ -236,8 +236,8 @@ exports.protect = async (req, res, next) => {
 	const query = User.findById(
 		decoded.id,
 		"+password +passwordChangedAt +active"
-	);
-	query.includeInActive = true;
+	).lean({ virtuals: true });
+	query.includeInactive = true;
 	const currentUser = await query;
 
 	if (!currentUser)
@@ -251,7 +251,7 @@ exports.protect = async (req, res, next) => {
 		);
 
 	// 4) Check if user changed password after the token was issued
-	if (currentUser.isChangedPasswordAfter(decoded.iat))
+	if (isChangedPasswordAfter(currentUser.passwordChangedAt, decoded.iat))
 		throw new AppError(
 			401,
 			"SESSION_EXPIRED",
@@ -282,29 +282,6 @@ exports.restrictTo = (...roles) => {
 	};
 };
 
-async function verifyToken(token, tokenSecret) {
-	try {
-		decoded = await promisify(jwt.verify)(token, tokenSecret);
-
-		return decoded;
-	} catch (err) {
-		if (err instanceof jwt.TokenExpiredError) {
-			throw err;
-		} else if (
-			err instanceof jwt.JsonWebTokenError ||
-			err instanceof jwt.NotBeforeError
-		) {
-			throw new AppError(
-				401,
-				"INVALID_TOKENS",
-				"Phiên đăng nhập có vấn đề. Vui lòng đăng nhập lại."
-			);
-		} else {
-			throw err;
-		}
-	}
-}
-
 exports.passwordConfirm = async (req, res, next) => {
 	const { passwordConfirm } = req.body;
 
@@ -330,3 +307,37 @@ exports.passwordConfirm = async (req, res, next) => {
 
 	next();
 };
+
+async function verifyToken(token, tokenSecret) {
+	try {
+		decoded = await promisify(jwt.verify)(token, tokenSecret);
+
+		return decoded;
+	} catch (err) {
+		if (err instanceof jwt.TokenExpiredError) {
+			throw err;
+		} else if (
+			err instanceof jwt.JsonWebTokenError ||
+			err instanceof jwt.NotBeforeError
+		) {
+			throw new AppError(
+				401,
+				"INVALID_TOKENS",
+				"Phiên đăng nhập có vấn đề. Vui lòng đăng nhập lại."
+			);
+		} else {
+			throw err;
+		}
+	}
+}
+
+function isChangedPasswordAfter(passwordChangedAt, JWTTimestamp) {
+	// Password has been changed after user being created
+	if (passwordChangedAt) {
+		const passwordChangeTime = parseInt(passwordChangedAt.getTime() / 1000, 10);
+		return JWTTimestamp < passwordChangeTime;
+	}
+
+	// False: token was issued before password change time
+	return false;
+}
