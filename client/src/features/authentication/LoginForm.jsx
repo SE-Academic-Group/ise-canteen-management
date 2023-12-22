@@ -64,7 +64,7 @@ function LoginForm() {
           checked={isEmailRemembered}
           onChange={(e) => setIsEmailRemembered((val) => !val)}
         >
-          Nhớ tôi lần sau
+          Nhớ email cho lần đăng nhập sau
         </CheckBox>
       </FormRowVertical>
 
