@@ -84,7 +84,7 @@ exports.saleStatistic = async (req, res, next) => {
 	});
 
 	saleStats.forEach((stat) => {
-		stat.items.forEach((item) => {
+		stat.items?.forEach((item) => {
 			if (item.productId?.category === "food") {
 				// For "food" items, set and calculate totalPriceLoss
 				item.totalPriceLoss = item.totalPrice - item.soldPrice;

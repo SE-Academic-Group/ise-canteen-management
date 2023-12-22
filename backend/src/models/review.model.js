@@ -36,7 +36,7 @@ const reviewSchema = new mongoose.Schema(
 	}
 );
 
-reviewSchema.index({ userId: 1, productId: 1 }, { unique: true });
+reviewSchema.index({ productId: 1, userId: 1 }, { unique: true });
 
 reviewSchema.pre("save", function (next) {
 	if (!this.isNew) {

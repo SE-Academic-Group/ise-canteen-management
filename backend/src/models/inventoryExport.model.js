@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const InventoryItem = require("./inventoryItem.model");
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 const statisticTypeToDateFieldConverter = require("../utils/statistic.typeToDateField.converter");
+const statisticAddMissingDates = require("../utils/statistic.addMissingDates");
 
 const inventoryExportSchema = new mongoose.Schema(
 	{
@@ -145,7 +146,21 @@ inventoryExportSchema.statics.generateExportReport = async function (
 		},
 	]);
 
-	return exportStatistics;
+	const keys = [
+		"totalQuantity",
+		"totalValue",
+		"remainQuantity",
+		"avgUsedPercent",
+	];
+	const exportStatisticsWithMissingDates = statisticAddMissingDates(
+		exportStatistics,
+		startDate,
+		endDate,
+		statisticType,
+		keys
+	);
+
+	return exportStatisticsWithMissingDates;
 };
 
 inventoryExportSchema.plugin(mongooseLeanVirtuals);

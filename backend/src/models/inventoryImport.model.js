@@ -3,6 +3,7 @@ const InventoryItem = require("./inventoryItem.model");
 const AppError = require("../utils/appError");
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 const statisticTypeToDateFieldConverter = require("../utils/statistic.typeToDateField.converter");
+const statisticAddMissingDates = require("../utils/statistic.addMissingDates");
 
 const inventoryImportSchema = new mongoose.Schema(
 	{
@@ -30,8 +31,6 @@ const inventoryImportSchema = new mongoose.Schema(
 		toJSON: { virtuals: true, versionKey: false },
 	}
 );
-
-inventoryImportSchema.index({ inventoryItemId: 1 });
 
 inventoryImportSchema.pre("save", async function (next) {
 	const promises = this.importItems.map(async (item) => {
@@ -110,7 +109,16 @@ inventoryImportSchema.statics.generateImportReport = async (
 		},
 	]);
 
-	return importStatistics;
+	const keys = ["totalQuantity", "totalValue"];
+	const importStatisticsWithMissingDates = statisticAddMissingDates(
+		importStatistics,
+		startDate,
+		endDate,
+		statisticType,
+		keys
+	);
+
+	return importStatisticsWithMissingDates;
 };
 
 inventoryImportSchema.plugin(mongooseLeanVirtuals);
