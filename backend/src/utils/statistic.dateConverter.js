@@ -15,28 +15,37 @@ module.exports = function (startDate, endDate, type) {
 			type = "day";
 			startDate = new Date(startDate);
 			endDate = new Date(endDate);
+			break;
 
-			startDate.setHours(0, 0, 0, 0);
-			endDate.setHours(23, 59, 59, 999);
+		case "week":
+			// startDate: 7 days ago
+			// endDate: today
+			type = "day";
+			startDate = new Date();
+			endDate = new Date();
+
+			startDate.setDate(startDate.getDate() - 6);
 			break;
 
 		case "month":
+			// startDate: 30 days ago
+			// endDate: today
+			type = "day";
 			startDate = new Date();
 			endDate = new Date();
 
-			startDate.setDate(1);
-			startDate.setHours(0, 0, 0, 0);
-			endDate.setHours(23, 59, 59, 999);
+			startDate.setDate(startDate.getDate() - 30);
 			break;
 
 		case "year":
+			type = "month";
 			startDate = new Date();
 			endDate = new Date();
 
-			startDate.setMonth(0, 1);
-			startDate.setHours(0, 0, 0, 0);
-			endDate.setMonth(11, 31);
-			endDate.setHours(23, 59, 59, 999);
+			// startDate: 12 months ago
+			// endDate: today
+			startDate.setMonth(startDate.getMonth() - 11);
+
 			break;
 	}
 

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 const statisticTypeToDateField = require("../utils/statistic.typeToDateField.converter");
+const statisticAddMissingDates = require("../utils/statistic.addMissingDates");
 
 const paymentSchema = new mongoose.Schema(
 	{
@@ -84,7 +85,17 @@ paymentSchema.statics.generateRevenueReport = async function (
 		},
 	]);
 
-	return revenueStatistics;
+	// Add missing dates
+	const keys = ["totalRevenue"];
+	const revenueStatisticsWithMissingDates = statisticAddMissingDates(
+		revenueStatistics,
+		startDate,
+		endDate,
+		statisticType,
+		keys
+	);
+
+	return revenueStatisticsWithMissingDates;
 };
 
 paymentSchema.plugin(mongooseLeanVirtuals);

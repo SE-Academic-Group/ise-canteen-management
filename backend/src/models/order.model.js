@@ -46,8 +46,7 @@ const orderSchema = new mongoose.Schema(
 	}
 );
 
-orderSchema.index({ orderDate: 1, orderStatus: 1 });
-orderSchema.index({ userId: 1 });
+orderSchema.index({ userId: 1, orderDate: 1 });
 
 orderSchema.plugin(mongooseLeanVirtuals);
 

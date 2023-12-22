@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 const statisticTypeToDateFieldConverter = require("../utils/statistic.typeToDateField.converter");
+const statisticAddMissingDates = require("../utils/statistic.addMissingDates");
 
 const menuHistorySchema = new mongoose.Schema(
 	{
@@ -225,7 +226,23 @@ menuHistorySchema.statics.generateSaleReport = async function (
 		},
 	]);
 
-	return saleStatistics;
+	const keys = [
+		"totalQuantity",
+		"totalPrice",
+		"totalSoldPrice",
+		"totalSoldQuantity",
+		"avgSoldPercent",
+	];
+
+	const saleStatisticsWithMissingDates = statisticAddMissingDates(
+		saleStatistics,
+		startDate,
+		endDate,
+		statisticType,
+		keys
+	);
+
+	return saleStatisticsWithMissingDates;
 };
 
 menuHistorySchema.plugin(mongooseLeanVirtuals);
