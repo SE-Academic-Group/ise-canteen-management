@@ -6,7 +6,7 @@ function Dashboard() {
   return (
     <>
       <BackgroundHeading as="h1">Tổng quan</BackgroundHeading>
-      <DashboardFilter />
+      {/* <DashboardFilter /> */}
       <DashboardLayout />
     </>
   );
