@@ -36,7 +36,7 @@ exports.createChargeHistory = async (req, res, next) => {
 		}
 
 		// Get the charged user by email from req.body
-		const query = User.findOne({ email });
+		const query = User.findOne({ email }).select("+active");
 		query.includeInactive = true;
 		const user = await query;
 
