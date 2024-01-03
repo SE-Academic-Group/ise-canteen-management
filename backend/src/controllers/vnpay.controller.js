@@ -113,9 +113,11 @@ exports.vnpayReturn = async (req, res, next) => {
 		await chargeHistory.save();
 		// Update user's balance
 		const { userId, chargeAmount } = chargeHistory;
-		await User.findByIdAndUpdate(userId, {
+		const query = User.findByIdAndUpdate(userId, {
 			$inc: { balance: chargeAmount },
 		});
+		query.includeInactive = true;
+		const user = await query;
 
 		res.status(200).redirect(`${process.env.FRONTEND_URL}/customer/deposit`);
 	} else {

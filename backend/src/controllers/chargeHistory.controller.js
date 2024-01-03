@@ -36,12 +36,24 @@ exports.createChargeHistory = async (req, res, next) => {
 		}
 
 		// Get the charged user by email from req.body
-		const user = await User.findOne({ email });
+		const query = User.findOne({ email });
+		query.includeInactive = true;
+		const user = await query;
+
 		if (!user) {
 			throw new AppError(
 				404,
 				"NOT_FOUND",
 				`Không tìm thấy người dùng với email ${email}.`,
+				{ email }
+			);
+		}
+
+		if (!user.active) {
+			throw new AppError(
+				400,
+				"BAD_REQUEST",
+				`Người dùng với email ${email} đã bị khóa.`,
 				{ email }
 			);
 		}

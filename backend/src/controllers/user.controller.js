@@ -11,7 +11,11 @@ const User = require("../models/user.model");
 // For admin to manage users
 exports.createUser = async (req, res, next) => {
 	// Check if email is already taken
-	if (await User.findOne({ email: req.body.email })) {
+	const query = User.findOne({ email: req.body.email }).select("+active");
+	query.includeInactive = true;
+	const existUser = await query;
+
+	if (existUser) {
 		throw new AppError(
 			400,
 			"BAD_REQUEST",
