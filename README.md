@@ -1,4 +1,4 @@
-![HCMUS Canteen management system logo](./images/logo-light.png)
+![HCMUS Canteen management system logo](./images/logo.png)
 
 # HCMUS Canteen Management
 
@@ -6,7 +6,7 @@ If you are my team member, you are free to use this repo. If not please contact 
 
 ## Get started
 
-Please follow these steps below:
+Please follow the steps below:
 
 ### ⏳ Installation
 
@@ -24,7 +24,7 @@ Please follow these steps below:
    ```bash
    git clone https://github.com/tmphat1312/ise-canteen-management.git canteen-mg-system
    ```
-3. Open the cloned project on the terminal and make sure you are at root directory of the repo
+3. Open the cloned project on the terminal and make sure you are at the root directory of the repo
    ```bash
    cd canteen-ms-system
    ```
@@ -40,25 +40,25 @@ Please follow these steps below:
    - Place .env.local in the `client` directory
 
 5. Install packages
-   You have to have 2 terminal tabs to achieve step 5, and 6 (make sure there are in the same root directory of the cloned repo)
-   - At first terminal
+   You have to have 2 terminal tabs to achieve step 5, and 6 (make sure they are in the same root directory of the cloned repo)
+   - On the first terminal
      ```bash
      cd client && yarn
      ```
-   - At the second one
+   - On the second one
      ```bash
      cd backend && yarn
      ```
 6. Start the dev servers
-   - At first terminal
+   - On the first terminal
      ```bash
      yarn dev
      ```
-   - At the second one
+   - On the second one
      ```bash
      yarn start
      ```
-7. Open your browser and type `localhost:5173` or hit `o` on the client server terminal (`yarn dev` terminal)
+7. Open your browser and type `localhost:5173` or hit `o` on the client-server terminal (`yarn dev` terminal)
 
 ### 🖐 Requirements
 
@@ -71,10 +71,16 @@ Please follow these steps below:
 
 ## Team members
 
-## Roadmap
+- 21120505 - Trần Đức Minh
+- 21120515 - Trần Phước Nhân
+- 21120519 - Lê Thanh Phát
+- 21120521 - Nguyễn Phúc Phát
+- 21120524 - Trương Minh Phát
 
-## Why this repo exists?
+## Why does this repo exist?
+
+This repo hosts code for the Introduction to Software Engineering course project.
 
 ## License
 
-## Acknowledgements
+You will not have any permission to use this code without our consent
