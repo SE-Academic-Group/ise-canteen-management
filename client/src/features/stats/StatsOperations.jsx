@@ -3,7 +3,7 @@ import Filter from "../../ui/Filter";
 
 function StatsOperations() {
   return (
-    <TableOperations end>
+    <TableOperations end="true">
       <Filter
         filterField="type"
         options={[
