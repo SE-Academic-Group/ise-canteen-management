@@ -232,3 +232,18 @@ export function getErrorMessage(error) {
     error?.response?.data?.message || error?.response?.data?.errors;
   return errMsg || "Có lỗi xảy ra, vui lòng thử lại.";
 }
+
+/**
+ * Converts a full date string to a short date format.
+ * @param {string} date - The full date string in the format "YYYY-MM-DD".
+ * @returns {string} The short date string in the format "DD/MM" or "MM/YYYY" if the input is invalid.
+ */
+export function fullDateToShortDate(date) {
+  const dateArr = date.split("-");
+
+  if (dateArr.length !== 3) {
+    return `${dateArr[1]}/${dateArr[0]}`;
+  }
+
+  return `${dateArr[2]}/${dateArr[1]}`;
+}

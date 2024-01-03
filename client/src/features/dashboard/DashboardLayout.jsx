@@ -1,14 +1,16 @@
 import styled from "styled-components";
-import { useUsers } from "../users/useUsers";
+import { useNumberOfCustomers } from "./useNumberOfCustomers";
 import { useProducts } from "../products/useProducts";
 import { useOrders } from "../orders/useOrders";
-import Stats from "./Stats";
+import { useUsers } from "../users/useUsers";
+
 import FullPageSpinner from "../../ui/FullPageSpinner";
+import Stats from "./Stats";
+import DashboardFilter from "./DashboardFilter";
+import RevenueChart from "./RevenueChart";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: auto 34rem auto;
   gap: 2.4rem;
 `;
 
@@ -16,7 +18,10 @@ function DashboardLayout() {
   const { isLoading: isUserLoading, count: noUsers } = useUsers();
   const { isLoading: isProductLoading, count: noProducts } = useProducts();
   const { isLoading: isOrderLoading, count: noOrders } = useOrders();
-  const isWorking = isUserLoading || isProductLoading || isOrderLoading;
+  const { isLoading: isNoCustomersLoading, count: noCustomers } =
+    useNumberOfCustomers();
+  const isWorking =
+    isUserLoading || isProductLoading || isOrderLoading || isNoCustomersLoading;
 
   if (isWorking) {
     return <FullPageSpinner />;
@@ -24,16 +29,14 @@ function DashboardLayout() {
 
   return (
     <StyledDashboardLayout>
-      <Stats noUsers={noUsers} noProducts={noProducts} noOrders={noOrders} />
-      {/* <Stats
-        bookings={bookings}
-        confirmedStays={confirmedStays}
-        numDays={numDays}
-        cabinCount={cabins.length}
+      <Stats
+        noUsers={noUsers}
+        noProducts={noProducts}
+        noOrders={noOrders}
+        noCustomers={noCustomers}
       />
-      <TodayActivity /> */}
-      {/* <DurationChart confirmedStays={confirmedStays} />
-      <SalesChart bookings={bookings} numDays={numDays} /> */}
+      <DashboardFilter />
+      <RevenueChart />
     </StyledDashboardLayout>
   );
 }

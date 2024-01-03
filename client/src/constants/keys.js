@@ -11,4 +11,6 @@ export const QUERY_KEYS = {
   MENU: "menu",
   TODAY_MENU: "todayMenu",
   CHARGE_HISTORY: "chargeHistory",
+  NUMBER_OF_CUSTOMERS: "numberOfCustomers",
+  REVENUE_STAT: "revenueStat",
 };
