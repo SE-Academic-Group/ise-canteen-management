@@ -28,7 +28,13 @@ function TodayMenuActions() {
             </Modal.Open>
           </>
         ) : (
-          <Button onClick={() => createTodayMenu([])} disabled={isWorking}>
+          <Button
+            onClick={() => {
+              createTodayMenu([]);
+              navigate("/products");
+            }}
+            disabled={isWorking}
+          >
             Tạo thực đơn hôm nay
           </Button>
         )}
