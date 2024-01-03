@@ -13,4 +13,5 @@ export const QUERY_KEYS = {
   CHARGE_HISTORY: "chargeHistory",
   NUMBER_OF_CUSTOMERS: "numberOfCustomers",
   REVENUE_STAT: "revenueStat",
+  IMPORT_STAT: "importStat",
 };

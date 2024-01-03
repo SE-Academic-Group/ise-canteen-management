@@ -9,3 +9,5 @@ export async function getNumberOfCustomers() {
 }
 
 export const getRevenueStat = getItemsFactory("/statistics/revenue");
+export const getImportStat = getItemsFactory("/statistics/import");
+export const getExportStat = getItemsFactory("/statistics/export,");

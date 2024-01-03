@@ -5,7 +5,7 @@ import TableOperations from "../../ui/TableOperations";
 
 function InventoryTableOperations() {
   return (
-    <TableOperations end>
+    <TableOperations end="true">
       <SelectFIlter
         filterField={"category"}
         options={[
