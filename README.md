@@ -1,4 +1,4 @@
-![HCMUS Canteen management system logo](./images/logo.png)
+![HCMUS Canteen management system logo](./docs/logo.png)
 
 # HCMUS Canteen Management
 
