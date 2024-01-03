@@ -6,11 +6,3 @@ services:
     ports:
       - "6969:6969"
     command: yarn start
-
-  client:
-    build: client/
-    ports:
-      - "5173:5173"
-    command: yarn dev
-    depends_on:
-      - backend
