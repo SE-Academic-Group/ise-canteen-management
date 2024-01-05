@@ -158,6 +158,8 @@ exports.resizeUserPhoto = async (req, res, next) => {
 	req.file.filename = `/images/users/user-${req.user.id}-${Date.now()}.jpeg`;
 	const writtenFilePath = `${__dirname}/../public${req.file.filename}`;
 
+	console.log("Written file path: ", writtenFilePath);
+
 	await sharp(req.file.buffer)
 		.resize(500, 500)
 		.toFormat("jpeg")
