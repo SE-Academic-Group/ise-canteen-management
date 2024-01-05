@@ -71,7 +71,7 @@ Please follow the steps below:
 
 ## Team members
 
-- 21120505 - Trần Đức Minh
+- 21120502 - Trần Đức Minh
 - 21120515 - Trần Phước Nhân
 - 21120519 - Lê Thanh Phát
 - 21120521 - Nguyễn Phúc Phát
