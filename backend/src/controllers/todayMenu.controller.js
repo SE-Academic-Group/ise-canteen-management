@@ -35,9 +35,9 @@ exports.createTodayMenuItem = async (req, res, next) => {
 			throw new AppError(
 				400,
 				"DUPLICATE_KEY",
-				`Sản phẩm ${product.name} đã có trong menu hôm nay`,
+				`Sản phẩm ${product?.name} đã có trong menu hôm nay`,
 				{
-					name: product.name,
+					name: product?.name,
 				}
 			);
 		}
@@ -185,14 +185,7 @@ exports.closeTodayMenu = async (req, res, next) => {
 		// 1) Update the remaining quantity of today menu item in Product
 		const product = await Product.findById(item.productId);
 		if (!product) {
-			throw new AppError(
-				404,
-				"NOT_FOUND",
-				`Không có product với ID ${item.productId}`,
-				{
-					id: item.productId,
-				}
-			);
+			continue;
 		}
 
 		product.quantity = item.quantity;
