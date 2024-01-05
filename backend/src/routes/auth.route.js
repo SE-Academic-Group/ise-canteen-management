@@ -6,6 +6,7 @@ const { validateRequest } = require("../middlewares/validateRequest");
 const loginSchema = require("../schemas/auth/login.schema");
 const signupSchema = require("../schemas/auth/signup.schema");
 const updateMeSchema = require("../schemas/auth/updateMe.schema");
+const updatePasswordSchema = require("../schemas/auth/updatePassword.schema");
 
 const router = express.Router();
 
@@ -23,6 +24,10 @@ router.patch(
 );
 router.delete("/me", authController.passwordConfirm, userController.deleteMe);
 
-router.patch("/update-password", authController.updatePassword);
+router.patch(
+	"/update-password",
+	validateRequest(updatePasswordSchema),
+	authController.updatePassword
+);
 
 module.exports = router;
