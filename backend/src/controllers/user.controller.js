@@ -202,6 +202,8 @@ exports.updateMe = async (req, res, next) => {
 		req.user.image !== updatedUser.image &&
 		!(req.user.image.search("default") !== -1) // prevent deleting default image
 	) {
+		console.log("Old image: ", req.user.image);
+		console.log("New image: ", updatedUser.image);
 		const imagePath = path.join(__dirname, `../public${req.user.image}`);
 		fs.unlink(imagePath, (err) => {
 			if (err) {
