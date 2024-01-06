@@ -143,7 +143,7 @@ export function toTitleCase(value) {
  */
 export function generatePasswordFromEmail(email) {
   const emailParts = email.split("@");
-  const generatedPassword = emailParts[0];
+  const generatedPassword = emailParts[0].toString().padEnd(8, "0");
   return generatedPassword;
 }
 
