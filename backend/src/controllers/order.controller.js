@@ -263,7 +263,11 @@ exports.deleteOrder = ControllerFactory.deleteOne(Order);
 
 // Middleware
 exports.checkOrderOwnership = async (req, res, next) => {
-	if (req.user.role === "admin" || req.user.role === "cashier") {
+	if (
+		req.user.role === "admin" ||
+		req.user.role === "cashier" ||
+		req.user.role === "staff"
+	) {
 		return next();
 	}
 
