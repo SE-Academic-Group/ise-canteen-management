@@ -8,7 +8,7 @@ export function useCustomers() {
   const { q, page } = useApiParams();
   const filters = [{ field: "role", value: "customer" }];
   const queryKey = [QUERY_KEYS.USERS, filters, q, page];
-  const queryOptions = { filters, q, limit: 20, page };
+  const queryOptions = { filters, q, page };
 
   const {
     isLoading,
