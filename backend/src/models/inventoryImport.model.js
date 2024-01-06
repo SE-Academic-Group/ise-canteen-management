@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const InventoryItem = require("./inventoryItem.model");
-const AppError = require("../utils/appError");
 const mongooseLeanVirtuals = require("mongoose-lean-virtuals");
 const statisticTypeToDateFieldConverter = require("../utils/statistic.typeToDateField.converter");
 const statisticAddMissingDates = require("../utils/statistic.addMissingDates");

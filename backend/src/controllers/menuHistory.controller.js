@@ -1,7 +1,6 @@
 const MenuHistory = require("../models/menuHistory.model");
 const Product = require("../models/product.model");
 const ControllerFactory = require("./controller.factory");
-const AppError = require("../utils/appError");
 
 exports.getAllMenuHistory = ControllerFactory.getAll(MenuHistory, {
 	populate: {

@@ -215,17 +215,6 @@ exports.updateOrder = async (req, res, next) => {
 					{ $inc: { quantity: item.quantity } },
 					{ new: true, runValidators: true, session }
 				);
-
-				if (!refundedTodayMenuItem) {
-					throw new AppError(
-						404,
-						"NOT_FOUND",
-						`Không tìm thấy todaymenuitem với productId ${item.productId}`,
-						{
-							productId: item.productId,
-						}
-					);
-				}
 			}
 
 			// 3) Refund user.balance
@@ -274,7 +263,11 @@ exports.deleteOrder = ControllerFactory.deleteOne(Order);
 
 // Middleware
 exports.checkOrderOwnership = async (req, res, next) => {
-	if (req.user.role === "admin" || req.user.role === "cashier") {
+	if (
+		req.user.role === "admin" ||
+		req.user.role === "cashier" ||
+		req.user.role === "staff"
+	) {
 		return next();
 	}
 
@@ -290,7 +283,7 @@ exports.checkOrderOwnership = async (req, res, next) => {
 		);
 	}
 
-	if (!order.userId || order.userId.toString() !== req.user.id) {
+	if (!order.userId || order.userId.toString() !== req.user?.id) {
 		throw new AppError(
 			403,
 			"FORBIDDEN",

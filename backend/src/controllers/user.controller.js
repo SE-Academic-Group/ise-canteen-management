@@ -11,7 +11,11 @@ const User = require("../models/user.model");
 // For admin to manage users
 exports.createUser = async (req, res, next) => {
 	// Check if email is already taken
-	if (await User.findOne({ email: req.body.email })) {
+	const query = User.findOne({ email: req.body.email }).select("+active");
+	query.includeInactive = true;
+	const existUser = await query;
+
+	if (existUser) {
 		throw new AppError(
 			400,
 			"BAD_REQUEST",
@@ -154,6 +158,8 @@ exports.resizeUserPhoto = async (req, res, next) => {
 	req.file.filename = `/images/users/user-${req.user.id}-${Date.now()}.jpeg`;
 	const writtenFilePath = `${__dirname}/../public${req.file.filename}`;
 
+	console.log("Written file path: ", writtenFilePath);
+
 	await sharp(req.file.buffer)
 		.resize(500, 500)
 		.toFormat("jpeg")
@@ -198,6 +204,8 @@ exports.updateMe = async (req, res, next) => {
 		req.user.image !== updatedUser.image &&
 		!(req.user.image.search("default") !== -1) // prevent deleting default image
 	) {
+		console.log("Old image: ", req.user.image);
+		console.log("New image: ", updatedUser.image);
 		const imagePath = path.join(__dirname, `../public${req.user.image}`);
 		fs.unlink(imagePath, (err) => {
 			if (err) {

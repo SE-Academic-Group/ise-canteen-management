@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  backend:
+    build: backend/
+    ports:
+      - "6969:6969"
+    command: yarn start

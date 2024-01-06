@@ -12,7 +12,19 @@ const User = require("../models/user.model");
 exports.signup = async (req, res, next) => {
 	const { name, email, password, passwordConfirm } = req.body;
 
-	const existUser = await User.findOne({ email });
+	const query = User.findOne({ email }).select("+active");
+	query.includeInactive = true;
+	const existUser = await query;
+
+	if (existUser && !existUser.active) {
+		throw new AppError(
+			400,
+			"BAD_REQUEST",
+			`Người dùng với email ${email} đã bị khóa.`,
+			{ email }
+		);
+	}
+
 	if (existUser) {
 		throw new AppError(400, "DUPLICATE_KEYS", "Email đã tồn tại.", { email });
 	}

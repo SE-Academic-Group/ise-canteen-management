@@ -19,6 +19,7 @@ exports.createAccessToken = (user, req) => {
 			Date.now() + process.env.ACCESS_COOKIE_EXPIRES_IN * 60 * 1000
 		),
 		httpOnly: true,
+		sameSite: "none",
 	};
 
 	if (req.secure || req.headers["x-forwarded-proto"] === "https") {
@@ -41,6 +42,7 @@ exports.createRefreshToken = (user, req) => {
 			Date.now() + process.env.REFRESH_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
 		),
 		httpOnly: true,
+		sameSite: "none",
 	};
 
 	if (req.secure || req.headers["x-forwarded-proto"] === "https") {
