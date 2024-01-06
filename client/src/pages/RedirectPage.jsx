@@ -17,6 +17,14 @@ function RedirectPage() {
     return <Navigate to="/customer/order" />;
   }
 
+  if (user.role === "staff") {
+    return <Navigate to="/orders" />;
+  }
+
+  if (user.role === "cashier") {
+    return <Navigate to="/stats" />;
+  }
+
   return <Navigate to="/dashboard" />;
 }
 
