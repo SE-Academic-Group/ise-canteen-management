@@ -16,7 +16,7 @@ exports.signup = async (req, res, next) => {
 	query.includeInactive = true;
 	const existUser = await query;
 
-	if (existUser && existUser.active) {
+	if (existUser && !existUser.active) {
 		throw new AppError(
 			400,
 			"BAD_REQUEST",
