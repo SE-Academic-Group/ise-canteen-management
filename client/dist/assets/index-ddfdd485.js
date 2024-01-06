@@ -2036,7 +2036,7 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
     background-color: var(--color-brand-200);
     color: var(--color-brand-600);
   }
-`;function Ome({customer:e,active:t,onClick:r}){return C(Sme,{className:t?"active":"",onClick:r,children:[d("span",{children:e.name}),d("span",{children:e.email})]})}function Eme(){const{q:e,page:t}=ma(),r=[{field:"role",value:"customer"}],n=[Ce.USERS,r,e,t],i={filters:r,q:e,limit:20,page:t},{isLoading:a,error:o,data:{data:s,count:l}}=Bt({fn:()=>Ho(i),key:n}),u=Math.ceil(l/20);return Mr({fn:()=>Ho({...i,page:t+1}),key:n.with(3,t+1),when:t<u}),Mr({fn:()=>Ho({...i,page:t-1}),key:n.with(3,t-1),when:t>1}),{isLoading:a,error:o,customers:s||[],count:l}}const kme=R.div`
+`;function Ome({customer:e,active:t,onClick:r}){return C(Sme,{className:t?"active":"",onClick:r,children:[d("span",{children:e.name}),d("span",{children:e.email})]})}function Eme(){const{q:e,page:t}=ma(),r=[{field:"role",value:"customer"}],n=[Ce.USERS,r,e,t],i={filters:r,q:e,page:t},{isLoading:a,error:o,data:{data:s,count:l}}=Bt({fn:()=>Ho(i),key:n}),u=Math.ceil(l/20);return Mr({fn:()=>Ho({...i,page:t+1}),key:n.with(3,t+1),when:t<u}),Mr({fn:()=>Ho({...i,page:t-1}),key:n.with(3,t-1),when:t>1}),{isLoading:a,error:o,customers:s||[],count:l}}const kme=R.div`
   padding: 1.6rem;
   display: flex;
   flex-direction: column;
